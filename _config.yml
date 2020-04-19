@@ -23,7 +23,7 @@ email: constanza.fierro94@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Website to host my posts in NLP and other topics that may emerge in the
   future.
-baseurl: "blog_posts" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: constanzafierro
 github_username:  cfierro94
