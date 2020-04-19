@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Attention is all you need, the transformer architecture. | Constanza’s Blog Post</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Attention is all you need, the transformer architecture." />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Website to host my posts in NLP and other topics that may emerge in the future." />
+<meta property="og:description" content="Website to host my posts in NLP and other topics that may emerge in the future." />
+<link rel="canonical" href="http://localhost:4000/nlp-summaries/attention-is-all-you-need" />
+<meta property="og:url" content="http://localhost:4000/nlp-summaries/attention-is-all-you-need" />
+<meta property="og:site_name" content="Constanza’s Blog Post" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-18T20:00:00+02:00" />
+<script type="application/ld+json">
+{"headline":"Attention is all you need, the transformer architecture.","dateModified":"2020-04-18T20:00:00+02:00","datePublished":"2020-04-18T20:00:00+02:00","url":"http://localhost:4000/nlp-summaries/attention-is-all-you-need","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nlp-summaries/attention-is-all-you-need"},"description":"Website to host my posts in NLP and other topics that may emerge in the future.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Constanza's Blog Post" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Constanza&#39;s Blog Post</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Attention is all you need, the transformer architecture.</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-04-18T20:00:00+02:00" itemprop="datePublished">Apr 18, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    
+<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<blockquote>
+  <p>Paper summary: Attention is all you need , Dec. 2017. (<a href="https://arxiv.org/abs/1706.03762">link</a>)</p>
+</blockquote>
+
+<h2 id="why-is-it-important">Why is it important?</h2>
+
+<p>This is the paper that first introduced the transformer architecture, which allowed language models to be way bigger than before thanks to its capability of being easily parallelizable. Consequently, models such as BERT and GPT achieved far better results in diverse NLP tasks.</p>
+
+<h2 id="what-does-it-propose">What does it propose?</h2>
+
+<p>This work proposed a network architecture to perform neural machine translation (NMT). This new model is entirely based on the attention mechanism, contrary to the standard at that point of using recurrent networks with attention. The architecture was tested in two NMT tasks and it outperformed the best existent models, in addition to using less resources. What’s more, the model was also successfully tested in a different task (english constituency parsing).</p>
+
+<p>The inherently sequential nature of RNNs precludes parallelization within training examples, moreover the best RNNs architectures don’t rely solely on one or a couple of hidden states, but use attention to attend to the most relevant hidden states. That’s why the architecture presented in this paper is so relevant and impactful, it’s able to achieve best results getting rid of the sequentiality of RNNs.</p>
+
+<h2 id="how-does-it-work">How does it work?</h2>
+
+<p>The Transformer is an encoder-decoder architecture, the encoder corresponds to the left side of the image below and the decoder to the right one. In this paper the authors introduced the multi-head self-attention layer and the positional encodings used in the architecture (details in the next 2 sections).</p>
+
+<p>Essentially, token embeddings are added with their positional encoding and used as inputs in the encoder and decoder. The encoder is composed of a stack of N=6 layers (one layer in Image 1). The decoder is also composed of a stack of N=6 identical layers, which has the two sub-layers of the encoder but it inserts a third sub-layer first that performs a multi-head attention over the output. Each feed-forward and multi-head self-attention layer is followed by a residual connection and a layer normalization, that is the output of each sub-layer is <script type="math/tex">\text{LayerNorm}(x+\text{SubLayer}(x))</script>.</p>
+
+<p>Some extra details:</p>
+
+<ul>
+  <li>Byte pair encoding is used to define the tokens of the text.</li>
+  <li>The feed forward network consists of two linear transformations with a ReLu in between.</li>
+  <li>Regularizations:
+    <ul>
+      <li>Dropout on the output of each sub-layer (before it’s added and normalized).</li>
+      <li>Label smoothing.</li>
+    </ul>
+  </li>
+  <li>Beam search is used to generate the text.</li>
+</ul>
+
+<figure>
+<img src="../assets/img/nlp-summary-01/architecture.png" alt="Figure 1. The Transformer architecture." style="width:60%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+</figure>
+
+<h3 id="positional-encoding">Positional Encoding</h3>
+
+<p>Motivation: Since there’s no recurrence, a positional encoding vector is added to the token embedding to inject information about the position in the text.</p>
+
+<p>The <script type="math/tex">PE(w_t)</script>, the positional encoding for the word <script type="math/tex">w</script> at position <script type="math/tex">t</script>, is a vector of dimension <script type="math/tex">d_{model}</script> equal to the embedding dimension. We compute each dimension <script type="math/tex">i</script> of this vector as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_i*t) & \text{if} \quad i \; \text{is even} \\      cos(k_i*t) & \text{if} \quad i \; \text{is odd} \\\end{array} \right. \\[20pt]\text{where,} \quad k_i = \frac{1}{10000^{2i/d_{model}}} %]]></script>
+
+<p>Which give as,</p>
+
+<script type="math/tex; mode=display">PE(w_t) = \begin{bmatrix}sin(k_1t)\\cos(k_1t)\\... \\sin(k_{d/2}t)\\cos(k_{d/2}t)\end{bmatrix}</script>
+
+<p>We can think of this as a bit representation of numbers, each bit changes periodically and we can tell that one number is bigger than another because of the bits activated and its order. More of this intuition in <a href="https://kazemnejad.com/blog/transformer_architecture_positional_encoding/">this blog post</a>.</p>
+
+<p>The authors showed that learned positional embeddings were as good as these in their test sets. But they think sin/cos is better because it could extrapolate better.</p>
+
+<h3 id="attention-layer">Attention Layer</h3>
+
+<p>Instead of just having one attention layer the authors found beneficial to linearly project the attention mechanism, thus performing multiple attentions in parallel (Image 2). Each of the attention mechanisms is a scaled dot-product attention explained below.</p>
+
+<figure>
+<img src="../assets/img/nlp-summary-01/attentions.png" alt="Figure 2. Attention mechanisms of the Transformer." style="width:70%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 2. Attention mechanisms of the Transformer.</figcaption>
+</figure>
+
+<h4 id="scaled-dot-product-attention">Scaled Dot-Product Attention</h4>
+
+<p>Attention is a function that takes a query and a set of key-value pairs as inputs, and computes a weighted sum of the values, where the weights are obtained from a compatibility function between the query and the corresponding key.</p>
+
+<p>The specific attention used here, is called <em>scaled dot-product</em> because the compatibility function used is:</p>
+
+<script type="math/tex; mode=display">\text{weight}(q,k_i) =\text{softmax}(\frac{q\cdot k_i}{\sqrt{d_k}}) \quad \text{where} \, q,k_i \in \!R^{d_k}</script>
+
+<p>The authors decided to use a dot-product attention over an additive attention because it is faster to compute and more space-efficient. But it has been shown to perform worse for larger dimensions of the input (<script type="math/tex">d_k</script>), thus they added the scaling factor <script type="math/tex">\sqrt{d_k}</script> to counteract the effect of the dot product getting too large (which they suspect is the problem).</p>
+
+<h4 id="masked-multi-head-self-attention">Masked Multi-Head Self-Attention</h4>
+
+<p>In training we don’t want to show the complete output sentence to our model, but instead we want to present the words one by one, to not let extra information flow in the decoder. That’s why in Image 2 we see a “Mask opt.” which refers to setting those vectors to -inf, making them 0 after the softmax. Image 3 can help to understand how this affects the architecture overall.</p>
+
+<figure>
+<img src="../assets/img/nlp-summary-01/mask-transformer.png" alt="Figure 3. The Transformer architecture masking the output." style="width:70%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 3. The Transformer architecture masking the output.</figcaption>
+</figure>
+
+<h2 id="whats-next">What’s next!</h2>
+
+<p>BERT and GPT are just some of the applications that the Transformer can have, but it has also been applied to <a href="http://openaccess.thecvf.com/content_cvpr_2018/html/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.html">images</a>, <a href="https://arxiv.org/abs/1710.10903]">graph networks</a>, <a href="https://arxiv.org/abs/1805.08318">GANs</a>, among others, achieving state-of-the-art results. It has also been useful to interpret a part of the models that use it (<a href="https://arxiv.org/abs/1910.05276">https://arxiv.org/abs/1910.05276</a>).</p>
+
+  </div><a class="u-url" href="/nlp-summaries/attention-is-all-you-need" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Constanza&#39;s Blog Post</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Constanza&#39;s Blog Post</li><li><a class="u-email" href="mailto:constanza.fierro94@gmail.com">constanza.fierro94@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/cfierro94"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">cfierro94</span></a></li><li><a href="https://www.twitter.com/constanzafierro"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">constanzafierro</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Website to host my posts in NLP and other topics that may emerge in the future.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
