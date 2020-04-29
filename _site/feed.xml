@@ -1,4 +1,166 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-19T13:58:46+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s Blog Post</title><subtitle>Website to host my posts in NLP and other topics that may emerge in the future.</subtitle><entry><title type="html">Attention is all you need, the transformer architecture.</title><link href="http://localhost:4000/nlp-summaries/attention-is-all-you-need" rel="alternate" type="text/html" title="Attention is all you need, the transformer architecture." /><published>2020-04-18T20:00:00+02:00</published><updated>2020-04-18T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/attention-is-all-you-need">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-29T23:30:31+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catching NLP</title><subtitle>Website to host my posts about NLP and other topics that may emerge in the future.</subtitle><entry><title type="html">Deep dive: Attention is all you need.</title><link href="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need" rel="alternate" type="text/html" title="Deep dive: Attention is all you need." /><published>2020-04-25T18:00:00+02:00</published><updated>2020-04-25T18:00:00+02:00</updated><id>http://localhost:4000/nlp-deep-dive/deep-dive-attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;/script&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The objective of this article is to understand the concepts on which the transformer architecture (&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;Vaswani et. al&lt;/a&gt;) is based on.&lt;br /&gt;
+If you want a general overview of the paper you can check the &lt;a href=&quot;https://cfierro94.github.io/blog_posts/nlp-summaries/attention-is-all-you-need&quot;&gt;summary&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here I’m going to present a summary of:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding&quot;&gt;Byte pair encoding&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#beam-search&quot;&gt;Beam search&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#label-smoothing&quot;&gt;Label smoothing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#dropout&quot;&gt;Dropout&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#layer-normalization&quot;&gt;Layer Normalization&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;byte-pair-encoding&quot;&gt;Byte Pair Encoding&lt;/h2&gt;
+
+&lt;h4 id=&quot;context&quot;&gt;Context&lt;/h4&gt;
+
+&lt;p&gt;This is an algorithm to define the tokens for which we’re going to learn vector embeddings. The simplest way to do this is consider each word and punctuation in the text as a token. The problem with this approach is that in testing we won’t have an embedding for words we didn’t see before. Some research has successfully used characters as tokens (&lt;a href=&quot;https://arxiv.org/abs/1508.06615&quot;&gt;Kim et. al 2016&lt;/a&gt;, &lt;a href=&quot;https://arxiv.org/abs/1603.00810&quot;&gt;Costa-Jussa et. al 2016&lt;/a&gt;). Byte pair encoding can be put in the middle of these two techniques.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-algorithm&quot;&gt;The algorithm&lt;/h4&gt;
+
+&lt;p&gt;The motivation behind the algorithm is to define a set of tokens that can be used to construct any word, but also contain the most typical words. So we can learn good representations for the most common terms but at the same time remain flexible and have some knowledge for unknown words. The algorithm then is as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We start the tokens set with each of the possible characters plus an end-word character.&lt;/li&gt;
+  &lt;li&gt;We determine the number of merges that we want to do.&lt;/li&gt;
+  &lt;li&gt;For every merge, we will count the occurences of each pair of tokens in our corpus, and we’re going to add as a string the pair (the concatenation) the most frequent. Therefore, adding 1 new token to our set.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;With this, the size of the vocabulary = the number of merges + the number of different characters + 1 (the end-word character). So if we define the number of merges as &lt;script type=&quot;math/tex&quot;&gt;\inf&lt;/script&gt; then the vocabulary is all the possible characters and all the different words.&lt;/p&gt;
+
+&lt;h2 id=&quot;beam-search&quot;&gt;Beam Search&lt;/h2&gt;
+
+&lt;h4 id=&quot;context-1&quot;&gt;Context&lt;/h4&gt;
+
+&lt;p&gt;There are different algorithms to decode the final output sequence. This is because our model outputs a probability distribution over our vocabulary, and then we need to choose one word each time until we arrived at the end character. One option (&lt;em&gt;greddy decoding&lt;/em&gt;) would be to choose at each step the word with the highest probability, but the problem is that this may not lead to the highest probability sentence because it’s calculated as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(w_0...w_n) = \prod_i P(w_i) \\
+\iff \log(P(w_0...w_n)) = \sum_i \log(w_i)&lt;/script&gt;
+
+&lt;h4 id=&quot;the-algorithm-1&quot;&gt;The algorithm&lt;/h4&gt;
+
+&lt;p&gt;Instead of being that greedy, beam search proposes to maintain &lt;code class=&quot;highlighter-rouge&quot;&gt;beam_size&lt;/code&gt; hypothesis (possible sentences). Then at each step:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We predict the next &lt;code class=&quot;highlighter-rouge&quot;&gt;beam_size&lt;/code&gt; tokens for each hypothesis&lt;/li&gt;
+  &lt;li&gt;From all those possible sentences we take the &lt;code class=&quot;highlighter-rouge&quot;&gt;beam_size&lt;/code&gt; most probable hypothesis.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We can stop when we complete &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; sentences (arrived at the end character), or after &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; steps. Additionally, they propose to normalize (to divide) the sentence probability by &lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt;, so longer sentences are not less probable.&lt;/p&gt;
+
+&lt;h2 id=&quot;label-smoothing&quot;&gt;Label smoothing&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1512.00567&quot;&gt;(Szegedy et. al)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a regularization technique that encourages the model to be less confident, therefore more adaptable.&lt;/p&gt;
+
+&lt;p&gt;In classifications problems we have ground truth data that follows a distribution &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; that we usually define as a one hot vector:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp; \text{if} \quad y=y_i \\0 &amp; \text{if} \quad \text{otherwise} \\\end{array} \right. %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;If we use the softmax to calculate the output probabilities and we use cross entropy as the loss, then this labels representation can lead to overfitting, therefore this technique proposes to use smoother labels.&lt;/p&gt;
+
+&lt;h3 id=&quot;understanding-the-problem&quot;&gt;Understanding the problem&lt;/h3&gt;
+
+&lt;p&gt;In classification problems where we predict the label with a softmax as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(y_j|z) = \frac{\exp(z_j)}{\sum_i \exp(z_i)}&lt;/script&gt;
+
+&lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is the input, &lt;script type=&quot;math/tex&quot;&gt;y_j&lt;/script&gt; is one of the possible labels, and &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; the logits (the output score of our model). And we use the cross entropy loss as shown below for one example (&lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;) and for all of them (&lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;):&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;l = H(q,p) = - \sum_{y=1}^K q(y|x) \log p(y|x)\\\implies L = - \sum_{i=1}^n \sum_{y=1}^K q(y|x_i) \log p(y|x_i)&lt;/script&gt;
+
+&lt;p&gt;When we take the ground truth distribution discrete, that is &lt;script type=&quot;math/tex&quot;&gt;\delta_{y,y_i}&lt;/script&gt; (see definition above of &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt;), then &lt;script type=&quot;math/tex&quot;&gt;q=0&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; different than &lt;script type=&quot;math/tex&quot;&gt;y_i&lt;/script&gt; (the correct label for element &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;), then:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;l = - \log p(y_i|x_i)\\&lt;/script&gt;
+
+&lt;p&gt;Let’s now calculate the derivative of this to find the minimum of the loss,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial l}{\partial z_k} = \frac{\partial}{\partial z_k}\bigg(-\log \Big(\frac{\exp(z_i)}{\sum_j \exp(z_j)}\Big) \bigg)\\\iff \frac{\partial}{\partial z_k} \bigg( \log \Big(\sum_j \exp(z_j)\Big) - z_i \bigg)\\\iff \frac{1}{\sum_j \exp(z_j)}\frac{\partial}{\partial z_k}\Big(\sum_j \exp(z_j)\Big) - \frac{\partial z_i}{\partial z_k}\\\iff \frac{\exp(z_k)}{\sum_j \exp(z_j)} - \delta_{z_i=z_k}\\\iff p(y_k) - q(y_k)&lt;/script&gt;
+
+&lt;p&gt;Thus,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial l}{\partial z_k} = p(y_k) - q(y_k) \in [-1, 1]\\&lt;/script&gt;
+
+&lt;p&gt;Then the function is minimized (it’s derivative is zero) when &lt;script type=&quot;math/tex&quot;&gt;p(y_k) = q(y_k)&lt;/script&gt;. Which is approachable if &lt;script type=&quot;math/tex&quot;&gt;z_i &gt;&gt; z_k \; \forall i \ne k&lt;/script&gt;, in words having the correct logit way bigger than the rest. Because with these values the softmax &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; would output 1 for the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; index and zero elsewhere. This can cause two problems:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If the model learns to output &lt;script type=&quot;math/tex&quot;&gt;z_i &gt;&gt; z_k&lt;/script&gt;, then it will be overfitting the groundtruth data and it’s not guaranteed to generalize.&lt;/li&gt;
+  &lt;li&gt;It encourages the differences between the largest logit and all others to become large, and this, combined with the fact that the gradient is between -1 and 1 , reduces the ability of the model to adapt. In other words, the model becomes too confident of its predictions.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;proposed-solution&quot;&gt;Proposed solution&lt;/h3&gt;
+
+&lt;p&gt;Instead of using a one hot vector, we introduce a noise distribution &lt;script type=&quot;math/tex&quot;&gt;u(y)&lt;/script&gt; on the following way:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;q'(y|x_i) = (1-\epsilon)\delta_{y,y_i} + \epsilon u(y)&lt;/script&gt;
+
+&lt;p&gt;Thus we have a mixture between the old distribution &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; and the fixed distribution &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;, with weights &lt;script type=&quot;math/tex&quot;&gt;(1-\epsilon)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;. We can see this as in, for a &lt;script type=&quot;math/tex&quot;&gt;y_j&lt;/script&gt; label we first set it to the ground truth label  &lt;script type=&quot;math/tex&quot;&gt;\delta_{y_j,y_i}&lt;/script&gt; and then with probability &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; we replace the label with the distribution &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;https://arxiv.org/pdf/1512.00567&quot;&gt;paper&lt;/a&gt; where this regularization was proposed they used the uniform distribution &lt;script type=&quot;math/tex&quot;&gt;u(y) = 1/K&lt;/script&gt;. If we look at the cross entropy now, it would be:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;H(q', p) = - \sum_{y=1}^K q'(y|x) \log p(y|x)\\= (1-\epsilon)H(q,p) + \epsilon H(u, p)&lt;/script&gt;
+
+&lt;p&gt;Where the term &lt;script type=&quot;math/tex&quot;&gt;\epsilon H(u, p)&lt;/script&gt; is penalising the deviation of &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; from the prior &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;, because if these two are too alike, then its cross entropy (&lt;script type=&quot;math/tex&quot;&gt;H(u, p)&lt;/script&gt;) will be bigger and therefore the loss will be bigger.&lt;/p&gt;
+
+&lt;h2 id=&quot;dropout&quot;&gt;Dropout&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://jmlr.org/papers/v15/srivastava14a.html&quot;&gt;(Srivastava et. al)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is another regularization technique that is pretty simple but highly effective. It turns off neurons with a probability &lt;script type=&quot;math/tex&quot;&gt;(1-p)&lt;/script&gt;, or in other words it keeps neurons with a probability &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt;. Doing this the model can learn more relevant patterns and is less prone to overfit, therefore it can achieve better performance.&lt;/p&gt;
+
+&lt;p&gt;The intuition behind dropout is that when we delete random neurons, we’re potentially training exponential sub neural networks at the same time! And then at prediction time, we will be averaging each of those predictions.&lt;/p&gt;
+
+&lt;p&gt;In test time we don’t drop (turn off) neurons, and since it is not feasible to explicitly average the predictions from exponentially many thinned models, we approximate this by multiplying by &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; the output of the hidden unit. So in this way the expected output of a hidden unit is the same during training and testing.&lt;/p&gt;
+
+&lt;h2 id=&quot;layer-normalization&quot;&gt;Layer Normalization&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1607.06450.pdf&quot;&gt;(Lei Ba et. al 2016)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Motivation: During training neural networks converge faster if the input is whitened, that is, linearly transformed to have zero mean and unit variance and decorrelated (&lt;a href=&quot;http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf&quot;&gt;LeCun et. al 1998&lt;/a&gt;). So we can see the output of one layer as the input of another network, therefore it’s clear that normalizing the intermediate values in the network could be beneficial.  The main problem is that each layer has to readjust to the changes in the distribution of the input.&lt;/p&gt;
+
+&lt;p&gt;This problem was presented by &lt;a href=&quot;https://arxiv.org/pdf/1502.03167&quot;&gt;Ioffe et. al 2015&lt;/a&gt;, where they proposed Batch Normalization to overcome this issue, as a way to normalize the inputs of each layer in the network.&lt;/p&gt;
+
+&lt;h3 id=&quot;batch-normalization&quot;&gt;Batch Normalization&lt;/h3&gt;
+
+&lt;p&gt;In a nutshell, we can think of Batch Normalization as an extra layer after each hidden layer, that transforms the inputs for the next layer from &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;. If we consider &lt;script type=&quot;math/tex&quot;&gt;\mathcal{B} = \{x_1...x_m\}&lt;/script&gt; to be the mini batch where each &lt;script type=&quot;math/tex&quot;&gt;x_j = (x_j^{(1)}...x_j^{(H)})&lt;/script&gt; is an input vector of a hidden layer, then the normalization of each dimension is the following:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{x}^{(k)} = \frac{x^{(k)} - \text{E}[x^{(k)}]}{\sqrt{\text{Var}(x^{(k)})}}&lt;/script&gt;
+
+&lt;p&gt;We’ll approximate the expectation ($\mu$) and the variance (&lt;script type=&quot;math/tex&quot;&gt;\sigma^2&lt;/script&gt;) calculating them at the mini batch level. Then the batch normalization will be:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_\mathcal{B} = \frac{1}{m} \sum_{i=1}^m x_i\\\sigma_\mathcal{B}^2 = \frac{1}{m} \sum_{i=1}^m (x_i - \mu_\mathcal{B})\\\hat{x}_i = \frac{x_i - \mu_\mathcal{B}}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}\\y_i = \gamma \hat{x}_i + \beta \equiv \text{BN}_{\gamma,\beta} (x_i)&lt;/script&gt;
+
+&lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is a constant added for numerical stability, and &lt;script type=&quot;math/tex&quot;&gt;\gamma&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt; are parameters of this “layer”, learnt through backpropagation. These parameters are used to be able to keep the representational power of the layer, so by setting &lt;script type=&quot;math/tex&quot;&gt;\gamma = \sqrt{\sigma^2_\mathcal{B}}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta = \mu&lt;/script&gt; we can recover the original output, if it were to be the optimal one.&lt;/p&gt;
+
+&lt;p&gt;Additionally, during inference we’ll use &lt;script type=&quot;math/tex&quot;&gt;\gamma&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt; fixed and the expectation and variance will be computed over the entire population (using the first equation).&lt;/p&gt;
+
+&lt;h3 id=&quot;back-to-layer-normalization&quot;&gt;Back to Layer Normalization&lt;/h3&gt;
+
+&lt;p&gt;Batch normalization is not easily extendable to Recurrent Neural Networks (RNN), because it requires running averages of the summed input statistics, to compute &lt;script type=&quot;math/tex&quot;&gt;\mu_\mathcal{B}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\sigma^2_\mathcal{B}&lt;/script&gt;. However, the summed inputs in a RNN often vary with the length of the sequence, so applying batch normalization to RNNs appears to require different statistics for different time-steps. Moreover it cannot be applied to online learning tasks (with batch size = 1).&lt;/p&gt;
+
+&lt;p&gt;So they proposed layer normalization, that normalises the layers as follows:&lt;/p&gt;
+
+&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;a^l&lt;/script&gt; be the vector of outputs of the &lt;script type=&quot;math/tex&quot;&gt;l^{\text{th}}&lt;/script&gt; hidden layer, and &lt;script type=&quot;math/tex&quot;&gt;a^l \in R^H&lt;/script&gt; (each hidden layer has &lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt; hidden units), then:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu^l = \frac{1}{H} \sum_{i=1}^H a_i^l \qquad \sigma^l = \sqrt{\frac{1}{H}\sum_{i=1}^H (a_i^l - \mu^l)^2}&lt;/script&gt;
+
+&lt;p&gt;This looks really similar to the above equations for &lt;script type=&quot;math/tex&quot;&gt;\mu_\mathcal{B}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\sigma^2_\mathcal{B}&lt;/script&gt;, however the equations here use only the hidden layer output whereas the ones above use the whole batch.&lt;/p&gt;
+
+&lt;p&gt;Similarly as BN, we’ll learn a linear function (&lt;script type=&quot;math/tex&quot;&gt;\gamma&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;) or as they call it in the paper, a gain function &lt;script type=&quot;math/tex&quot;&gt;g&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Unlike BN, LN is used the same way in training and test times.&lt;/p&gt;
+
+&lt;h4 id=&quot;comparison-to-bn&quot;&gt;Comparison to BN&lt;/h4&gt;
+
+&lt;p&gt;In the paper they showed that LN works better (converges faster and it’s robust to changes in the batch size) for RNNs and feed-forward networks. However BN outperforms LN when applied to CNNs.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Summary: Attention is all you need, the transformer architecture.</title><link href="http://localhost:4000/nlp-summaries/attention-is-all-you-need" rel="alternate" type="text/html" title="Summary: Attention is all you need, the transformer architecture." /><published>2020-04-18T20:00:00+02:00</published><updated>2020-04-18T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/attention-is-all-you-need">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;blockquote&gt;
@@ -34,6 +196,8 @@
   &lt;/li&gt;
   &lt;li&gt;Beam search is used to generate the text.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;(for further explanations in these concepts you can check my &lt;a href=&quot;https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need&quot;&gt;deep dive of this paper&lt;/a&gt;)&lt;/p&gt;
 
 &lt;figure&gt;
 &lt;img src=&quot;../assets/img/nlp-summary-01/architecture.png&quot; alt=&quot;Figure 1. The Transformer architecture.&quot; style=&quot;width:60%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;

@@ -1,4 +1,4 @@
-I" 
+I"� 
 <script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
@@ -36,6 +36,8 @@
   <li>Beam search is used to generate the text.</li>
 </ul>
 
+<p>(for further explanations in these concepts you can check my <a href="https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need">deep dive of this paper</a>)</p>
+
 <figure>
 <img src="../assets/img/nlp-summary-01/architecture.png" alt="Figure 1. The Transformer architecture." style="width:60%; display: block;margin-left: auto;margin-right: auto;" />
 <figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
@@ -62,7 +64,7 @@ PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) & \text{if} \quad i=2j \\  
 
 <p>Instead of just having one attention layer the authors found beneficial to linearly project the attention mechanism, thus performing multiple attentions in parallel (Figure 2). Each of the attention mechanisms is a scaled dot-product attention (explained below).</p>
 
-<p>The intuition behind is that having just one attention will lead to average all the different aspects of the text, whereas when we do parallel attentions we are able to look at each of This details separately.</p>
+<p>The intuition behind is that having just one attention will lead to average all the different aspects of the text, whereas when we do parallel attention we are able to look at each of these details separately (the subject, the intention, the action, etc).</p>
 
 <figure>
 <img src="../assets/img/nlp-summary-01/attentions.png" alt="Figure 2. Attention mechanisms of the Transformer." style="width:70%; display: block;margin-left: auto;margin-right: auto;" />
@@ -81,7 +83,7 @@ PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) & \text{if} \quad i=2j \\  
 
 <h4 id="masked-multi-head-self-attention">Masked Multi-Head Self-Attention</h4>
 
-<p>In training we don’t want to show the complete output sentence to our model, but instead we want to present the words one by one, to not let extra information flow in the decoder. That’s why in Image 2 we see a “Mask opt.” which refers to setting those vectors to -inf, making them 0 after the softmax. Image 3 can help to understand how this affects the architecture overall.</p>
+<p>In training we don’t want to show the complete output sentence to our model, but instead we want to present the words one by one to not let extra information flow in the decoder. That’s why in Figure 2 we see a “Mask opt.” which refers to setting those vectors to -inf, making them 0 after the softmax. Figure 3 can help to understand how this affects the architecture overall.</p>
 
 <figure>
 <img src="../assets/img/nlp-summary-01/mask-transformer.png" alt="Figure 3. The Transformer architecture masking the output." style="width:70%; display: block;margin-left: auto;margin-right: auto;" />

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Attention is all you need, the transformer architecture."
+title:  "Summary: Attention is all you need, the transformer architecture."
 date:   2020-04-18 20:00:00 +0200
 categories: nlp-summaries
 permalink : "nlp-summaries/attention-is-all-you-need"
@@ -34,6 +34,8 @@ Some extra details:
   - Dropout on the output of each sub-layer (before it's added and normalized).
   - Label smoothing.
 - Beam search is used to generate the text.
+
+(for further explanations in these concepts you can check my [deep dive of this paper](https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need))
 
 {% include image.html file="../assets/img/nlp-summary-01/architecture.png"
 description="Figure 1. The Transformer architecture." zoom=60 %}
