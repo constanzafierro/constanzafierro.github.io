@@ -10,4 +10,7 @@ Paris in the Youtube Classification team.
 Here you can find posts that I do randomly to hopefully contribute to our
 community.
 
-You can find me on twitter and github with the links below.
+I'm interested in grounding and reasoning NLP, in representation learning,
+and I enjoy learning about cognitive sciences.
+
+Here's my [resume](../assets/files/Resume_Constanza_Fierro.pdf) if you want to know more about me.

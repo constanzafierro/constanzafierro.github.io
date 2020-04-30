@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Catching NLP
+title: Constanza's blog
 email: constanza.fierro94@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Website to host my posts about NLP and other topics that may emerge in the
