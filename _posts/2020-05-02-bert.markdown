@@ -48,7 +48,7 @@ The input is composed of two sentences, which are not actual linguistic sentence
 
 #### BERT input
 
-As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial "clasification token" [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the *positional encoding* in the Transformer paper). All these embeddings are then summed up for each token.
+As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial "classification token" [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the *positional encoding* in the Transformer paper). All these embeddings are then summed up for each token.
 
 {% include image.html file="../assets/img/nlp-summary-02/input.png"
 description="Figure 1. Input construction." zoom=55 %}
@@ -66,7 +66,7 @@ $$
 So the pair that will increase the most this likelihood will be the $$t_it_j$$ such that:
 
 $$
-\max_{t_i,t_j}\,\big\{\text{LM}^*(t_kt_d) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}
+\max_{t_i,t_j}\,\big\{\text{LM}^*(t_it_j) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}
 $$
 
 For the LM* that will include that pair in its vocabulary.
