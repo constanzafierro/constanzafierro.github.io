@@ -91,6 +91,7 @@ In general, the **input** of a NLP task is either a text pair (Q&A) that can be 
 2. Fed the [CLS] representation $$C$$ into an output layer for <u>classification</u>, such as sentiment analysis.
 
    This output layer can be basically a softmax over a transformation matrix $$W$$ that takes the output $$C$$ to the labels dimension ($$K$$), i.e.:
+
    $$
    \text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H
    $$
@@ -101,4 +102,4 @@ For more examples on how to define the output of BERT for a specific task you ca
 
 ## What’s next!
 
-Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&As setup to encode the question and the paragraph separetely and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.
+Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&As setup to encode the question and the paragraph separately and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.

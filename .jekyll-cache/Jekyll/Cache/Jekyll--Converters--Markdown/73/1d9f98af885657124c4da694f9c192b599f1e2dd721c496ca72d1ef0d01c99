@@ -1,4 +1,4 @@
-I"�#<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+I"�#<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
 <blockquote>
@@ -50,11 +50,11 @@
 
 <h4 id="bert-input">BERT input</h4>
 
-<p>As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “clasification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the <em>positional encoding</em> in the Transformer paper). All these embeddings are then summed up for each token.</p>
+<p>As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “classification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the <em>positional encoding</em> in the Transformer paper). All these embeddings are then summed up for each token.</p>
 
 <figure>
-<img src="../assets/img/nlp-summary-02/input.png" alt="Figure 1. The Transformer architecture." style="width:55%; display: block;margin-left: auto;margin-right: auto;" />
-<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+<img src="../assets/img/nlp-summary-02/input.png" alt="Figure 1. Input construction." style="width:55%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. Input construction.</figcaption>
 </figure>
 
 <p>The datasets used were: BooksCorpus (800M words) (<a href="https://arxiv.org/abs/1506.06724">Zhu et al., 2015</a>) and English Wikipedia (2,500M words).</p>
@@ -67,7 +67,7 @@
 
 <p>So the pair that will increase the most this likelihood will be the <script type="math/tex">t_it_j</script> such that:</p>
 
-<script type="math/tex; mode=display">\max_{t_i,t_j}\,\big\{\text{LM}^*(t_kt_d) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}</script>
+<script type="math/tex; mode=display">\max_{t_i,t_j}\,\big\{\text{LM}^*(t_it_j) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}</script>
 
 <p>For the LM* that will include that pair in its vocabulary.</p>
 
@@ -76,8 +76,8 @@
 <p>The final layer of BERT contains a token representation <script type="math/tex">T_i</script> and the classifier embedding <script type="math/tex">C</script>, then each <script type="math/tex">T_i</script> is used to predict whether the token was masked or not and the <script type="math/tex">C</script> representation to predict if the two sentences were contiguous or not.</p>
 
 <figure>
-<img src="../assets/img/nlp-summary-02/architecture.png" alt="Figure 1. The Transformer architecture." style="width:40%; display: block;margin-left: auto;margin-right: auto;" />
-<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+<img src="../assets/img/nlp-summary-02/architecture.png" alt="Figure 2. The BERT architecture." style="width:40%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 2. The BERT architecture.</figcaption>
 </figure>
 
 <h3 id="bert-in-some-nlp-tasks">BERT in some NLP tasks</h3>
@@ -95,8 +95,9 @@
   <li>
     <p>Fed the [CLS] representation <script type="math/tex">C</script> into an output layer for <u>classification</u>, such as sentiment analysis.</p>
 
-    <p>This output layer can be basically a softmax over a transformation matrix <script type="math/tex">W</script> that takes the output <script type="math/tex">C</script> to the labels dimension (<script type="math/tex">K</script>), i.e.:
-<script type="math/tex">\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H</script></p>
+    <p>This output layer can be basically a softmax over a transformation matrix <script type="math/tex">W</script> that takes the output <script type="math/tex">C</script> to the labels dimension (<script type="math/tex">K</script>), i.e.:</p>
+
+    <script type="math/tex; mode=display">\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H</script>
 
     <p>And then we can use as loss the logarithm of that softmax.</p>
   </li>

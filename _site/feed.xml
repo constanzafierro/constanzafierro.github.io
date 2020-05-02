@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-02T13:23:56+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><subtitle>Website to host my posts about NLP and other topics that may emerge in the future.</subtitle><entry><title type="html">Summary: BERT</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Summary: BERT" /><published>2020-05-02T13:00:00+02:00</published><updated>2020-05-02T13:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-02T13:43:09+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><subtitle>Website to host my posts about NLP and other topics that may emerge in the future.</subtitle><entry><title type="html">Summary: BERT</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Summary: BERT" /><published>2020-05-02T13:00:00+02:00</published><updated>2020-05-02T13:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;blockquote&gt;
@@ -50,11 +50,11 @@
 
 &lt;h4 id=&quot;bert-input&quot;&gt;BERT input&lt;/h4&gt;
 
-&lt;p&gt;As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “clasification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the &lt;em&gt;positional encoding&lt;/em&gt; in the Transformer paper). All these embeddings are then summed up for each token.&lt;/p&gt;
+&lt;p&gt;As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “classification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the &lt;em&gt;positional encoding&lt;/em&gt; in the Transformer paper). All these embeddings are then summed up for each token.&lt;/p&gt;
 
 &lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-02/input.png&quot; alt=&quot;Figure 1. The Transformer architecture.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1. The Transformer architecture.&lt;/figcaption&gt;
+&lt;img src=&quot;../assets/img/nlp-summary-02/input.png&quot; alt=&quot;Figure 1. Input construction.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
+&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1. Input construction.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;p&gt;The datasets used were: BooksCorpus (800M words) (&lt;a href=&quot;https://arxiv.org/abs/1506.06724&quot;&gt;Zhu et al., 2015&lt;/a&gt;) and English Wikipedia (2,500M words).&lt;/p&gt;
@@ -67,7 +67,7 @@
 
 &lt;p&gt;So the pair that will increase the most this likelihood will be the &lt;script type=&quot;math/tex&quot;&gt;t_it_j&lt;/script&gt; such that:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max_{t_i,t_j}\,\big\{\text{LM}^*(t_kt_d) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max_{t_i,t_j}\,\big\{\text{LM}^*(t_it_j) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}&lt;/script&gt;
 
 &lt;p&gt;For the LM* that will include that pair in its vocabulary.&lt;/p&gt;
 
@@ -76,8 +76,8 @@
 &lt;p&gt;The final layer of BERT contains a token representation &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; and the classifier embedding &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;, then each &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; is used to predict whether the token was masked or not and the &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; representation to predict if the two sentences were contiguous or not.&lt;/p&gt;
 
 &lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-02/architecture.png&quot; alt=&quot;Figure 1. The Transformer architecture.&quot; style=&quot;width:40%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1. The Transformer architecture.&lt;/figcaption&gt;
+&lt;img src=&quot;../assets/img/nlp-summary-02/architecture.png&quot; alt=&quot;Figure 2. The BERT architecture.&quot; style=&quot;width:40%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
+&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 2. The BERT architecture.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;h3 id=&quot;bert-in-some-nlp-tasks&quot;&gt;BERT in some NLP tasks&lt;/h3&gt;
@@ -95,8 +95,9 @@
   &lt;li&gt;
     &lt;p&gt;Fed the [CLS] representation &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; into an output layer for &lt;u&gt;classification&lt;/u&gt;, such as sentiment analysis.&lt;/p&gt;
 
-    &lt;p&gt;This output layer can be basically a softmax over a transformation matrix &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; that takes the output &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; to the labels dimension (&lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;), i.e.:
-&lt;script type=&quot;math/tex&quot;&gt;\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H&lt;/script&gt;&lt;/p&gt;
+    &lt;p&gt;This output layer can be basically a softmax over a transformation matrix &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; that takes the output &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; to the labels dimension (&lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;), i.e.:&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H&lt;/script&gt;
 
     &lt;p&gt;And then we can use as loss the logarithm of that softmax.&lt;/p&gt;
   &lt;/li&gt;
@@ -106,7 +107,7 @@
 
 &lt;h2 id=&quot;whats-next&quot;&gt;What’s next!&lt;/h2&gt;
 
-&lt;p&gt;Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&amp;amp;As setup to encode the question and the paragraph separetely and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Deep dive: Attention is all you need.</title><link href="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need" rel="alternate" type="text/html" title="Deep dive: Attention is all you need." /><published>2020-04-25T18:00:00+02:00</published><updated>2020-04-25T18:00:00+02:00</updated><id>http://localhost:4000/nlp-deep-dive/deep-dive-attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;p&gt;Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&amp;amp;As setup to encode the question and the paragraph separately and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Deep dive: Attention is all you need.</title><link href="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need" rel="alternate" type="text/html" title="Deep dive: Attention is all you need." /><published>2020-04-25T18:00:00+02:00</published><updated>2020-04-25T18:00:00+02:00</updated><id>http://localhost:4000/nlp-deep-dive/deep-dive-attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;blockquote&gt;
