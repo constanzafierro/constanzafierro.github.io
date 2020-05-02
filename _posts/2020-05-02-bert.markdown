@@ -51,7 +51,7 @@ The input is composed of two sentences, which are not actual linguistic sentence
 As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial "clasification token" [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the *positional encoding* in the Transformer paper). All these embeddings are then summed up for each token.
 
 {% include image.html file="../assets/img/nlp-summary-02/input.png"
-description="Figure 1. The Transformer architecture." zoom=55 %}
+description="Figure 1. Input construction." zoom=55 %}
 
 The datasets used were: BooksCorpus (800M words) ([Zhu et al., 2015](https://arxiv.org/abs/1506.06724)) and English Wikipedia (2,500M words).
 
@@ -76,7 +76,7 @@ For the LM* that will include that pair in its vocabulary.
 The final layer of BERT contains a token representation $$T_i$$ and the classifier embedding $$C$$, then each $$T_i$$ is used to predict whether the token was masked or not and the $$C$$ representation to predict if the two sentences were contiguous or not.
 
 {% include image.html file="../assets/img/nlp-summary-02/architecture.png"
-description="Figure 1. The Transformer architecture." zoom=40 %}
+description="Figure 2. The BERT architecture." zoom=40 %}
 
 ### BERT in some NLP tasks
 

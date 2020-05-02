@@ -1,4 +1,4 @@
-I"�#<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+I"�#<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
 <blockquote>
@@ -17,11 +17,11 @@
 
 <h2 id="what-does-it-propose">What does it propose?</h2>
 
-<p>This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT tokens representations outperform others because are learnt using both sides of the sentence.</p>
+<p>This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT token representations outperform others because they are learnt using both sides of the sentence.</p>
 
 <h2 id="how-does-it-work">How does it work?</h2>
 
-<p>BERT is basically the transformer arquitecture (<a href="https://arxiv.org/abs/1706.03762">Vaswani et. al 2017</a>, <a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need">summary here</a>) trained to learn language representations, and concived to be used as the main arquitecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left an right from the word itself). Let’s now understand the training proposed to learn these language representations and then how is directly used.</p>
+<p>BERT is basically the transformer architecture (<a href="https://arxiv.org/abs/1706.03762">Vaswani et. al 2017</a>, <a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need">summary here</a>) trained to learn language representations, and conceived to be used as the main architecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left and right from the word itself). Let’s now understand the training proposed to learn these language representations and then how is directly used.</p>
 
 <h3 id="bert-training">BERT training</h3>
 
@@ -42,11 +42,11 @@
   <li>with 0.1 probability the token is unchanged</li>
 </ul>
 
-<p>The motivation of this setup is that if we always replace 15% of the input sequence with [MASK] then the model will be learning just to detect the masked word and not actual words representations, besides the downstream tasks won’t have [MASK] tokens.</p>
+<p>The motivation of this setup is that if we always replace 15% of the input sequence with [MASK] then the model will be learning just to detect the masked word and not actual word representations, besides the downstream tasks won’t have [MASK] tokens.</p>
 
 <h4 id="next-sentence-prediction">Next sentence prediction</h4>
 
-<p>The input is composed by two sentences, which are not actual linguistic sentences but are spans of contiguous text. These two sentences A and B are separated with the special token [SEP], and are formed in such a way that 50% of the time B is the actual next sentence and 50% of the time is a random sentence.</p>
+<p>The input is composed of two sentences, which are not actual linguistic sentences but are spans of contiguous text. These two sentences A and B are separated with the special token [SEP], and are formed in such a way that 50% of the time B is the actual next sentence and 50% of the time is a random sentence.</p>
 
 <h4 id="bert-input">BERT input</h4>
 
@@ -57,14 +57,15 @@
 <figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
 </figure>
 
-<p>They datasets used were: BooksCorpus (800M words) (<a href="https://arxiv.org/abs/1506.06724">Zhu et al., 2015</a>) and English Wikipedia (2,500M words).</p>
+<p>The datasets used were: BooksCorpus (800M words) (<a href="https://arxiv.org/abs/1506.06724">Zhu et al., 2015</a>) and English Wikipedia (2,500M words).</p>
 
 <h4 id="tokens-construction">Tokens construction</h4>
 
 <p>The tokens are defined using the Wordpiece model (<a href="https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf">Schuster et al., 2012</a>). This is similar to BPE (<a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding">summary here</a>) but instead of adding the concatenated pair the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:</p>
 
-<p><script type="math/tex">\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)</script>
-So the pair that will increase the most this likelihood will be the <script type="math/tex">t_it_j</script> such that:</p>
+<script type="math/tex; mode=display">\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)</script>
+
+<p>So the pair that will increase the most this likelihood will be the <script type="math/tex">t_it_j</script> such that:</p>
 
 <script type="math/tex; mode=display">\max_{t_i,t_j}\,\big\{\text{LM}^*(t_kt_d) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}</script>
 
@@ -72,7 +73,7 @@ So the pair that will increase the most this likelihood will be the <script type
 
 <h4 id="bert-output">BERT output</h4>
 
-<p>The final layer of BERT contains a token representation <script type="math/tex">T_i</script> and the classifier embedding <script type="math/tex">C</script>, then each <script type="math/tex">T_i</script> is used to predict wether the token was masked or not and the <script type="math/tex">C</script> representation to predict if the two sentences were contiguous or not.</p>
+<p>The final layer of BERT contains a token representation <script type="math/tex">T_i</script> and the classifier embedding <script type="math/tex">C</script>, then each <script type="math/tex">T_i</script> is used to predict whether the token was masked or not and the <script type="math/tex">C</script> representation to predict if the two sentences were contiguous or not.</p>
 
 <figure>
 <img src="../assets/img/nlp-summary-02/architecture.png" alt="Figure 1. The Transformer architecture." style="width:40%; display: block;margin-left: auto;margin-right: auto;" />
@@ -81,11 +82,9 @@ So the pair that will increase the most this likelihood will be the <script type
 
 <h3 id="bert-in-some-nlp-tasks">BERT in some NLP tasks</h3>
 
-<p>BERT was concived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific arquitecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is is relatively inexpensive (1hr on a TPU, couple of hours on a GPU).</p>
+<p>BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).</p>
 
-<p>For the <strong>input</strong> part, in general the input of a NLP task is either a text pair (Q&amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-<script type="math/tex">\empty</script>.</p>
-
-<p>At the <strong>output</strong>, we used the last layer representations to either:</p>
+<p>In general, the <strong>input</strong> of a NLP task is either a text pair (Q&amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-<script type="math/tex">\emptyset</script>. At the <strong>output</strong>, we used the last layer representations to either:</p>
 
 <ol>
   <li>
