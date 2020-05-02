@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Summary: BERT | Constanza’s blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Summary: BERT" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Website to host my posts about NLP and other topics that may emerge in the future." />
+<meta property="og:description" content="Website to host my posts about NLP and other topics that may emerge in the future." />
+<link rel="canonical" href="http://localhost:4000/nlp-summaries/bert" />
+<meta property="og:url" content="http://localhost:4000/nlp-summaries/bert" />
+<meta property="og:site_name" content="Constanza’s blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-02T13:00:00+02:00" />
+<script type="application/ld+json">
+{"headline":"Summary: BERT","dateModified":"2020-05-02T13:00:00+02:00","datePublished":"2020-05-02T13:00:00+02:00","url":"http://localhost:4000/nlp-summaries/bert","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nlp-summaries/bert"},"description":"Website to host my posts about NLP and other topics that may emerge in the future.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Constanza's blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Constanza&#39;s blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Summary: BERT</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-02T13:00:00+02:00" itemprop="datePublished">May 2, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<blockquote>
+  <p>Pre-training of Deep Bidirectional Transformers for Language Understanding (<a href="https://arxiv.org/abs/1810.04805">link</a>)</p>
+</blockquote>
+
+<h2 id="why-is-it-important">Why is it important?</h2>
+
+<ol>
+  <li>BERT is a language model that can be used directly to other NLP tasks (summarization, question answering, etc.).</li>
+  <li>It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times).</li>
+  <li>It has been shown that it’s capable of learning actual linguistic notions (<a href="https://arxiv.org/pdf/1906.04341v1.pdf">Clark et., al 2019</a>, <a href="https://dair.ai/Aspects-of-language-captured-by-BERT/">summary here</a>).</li>
+</ol>
+
+<p>It achieves this with just a couple of changes to the transformer arquitecture but with new tasks for pre training.</p>
+
+<h2 id="what-does-it-propose">What does it propose?</h2>
+
+<p>This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT tokens representations outperform others because are learnt using both sides of the sentence.</p>
+
+<h2 id="how-does-it-work">How does it work?</h2>
+
+<p>BERT is basically the transformer arquitecture (<a href="https://arxiv.org/abs/1706.03762">Vaswani et. al 2017</a>, <a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need">summary here</a>) trained to learn language representations, and concived to be used as the main arquitecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left an right from the word itself). Let’s now understand the training proposed to learn these language representations and then how is directly used.</p>
+
+<h3 id="bert-training">BERT training</h3>
+
+<p>BERT is trained using two objectives:</p>
+
+<ol>
+  <li>Some tokens from the input sequence are masked and the model is trained to learn to predict these words (Masked language model).</li>
+  <li>Two “sentences” are fed as input and the model is trained to predict if one sentence follows the other one or not (Next sentence prediction).</li>
+</ol>
+
+<h4 id="masked-language-model">Masked language model</h4>
+
+<p>From each input sequence 15% of the tokens are processed as follows:</p>
+
+<ul>
+  <li>with 0.8 probability the token is replaced by [MASK]</li>
+  <li>with 0.1 probability the token is replaced by other random token</li>
+  <li>with 0.1 probability the token is unchanged</li>
+</ul>
+
+<p>The motivation of this setup is that if we always replace 15% of the input sequence with [MASK] then the model will be learning just to detect the masked word and not actual words representations, besides the downstream tasks won’t have [MASK] tokens.</p>
+
+<h4 id="next-sentence-prediction">Next sentence prediction</h4>
+
+<p>The input is composed by two sentences, which are not actual linguistic sentences but are spans of contiguous text. These two sentences A and B are separated with the special token [SEP], and are formed in such a way that 50% of the time B is the actual next sentence and 50% of the time is a random sentence.</p>
+
+<h4 id="bert-input">BERT input</h4>
+
+<p>As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “clasification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the <em>positional encoding</em> in the Transformer paper). All these embeddings are then summed up for each token.</p>
+
+<figure>
+<img src="../assets/img/nlp-summary-02/input.png" alt="Figure 1. The Transformer architecture." style="width:55%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+</figure>
+
+<p>They datasets used were: BooksCorpus (800M words) (<a href="https://arxiv.org/abs/1506.06724">Zhu et al., 2015</a>) and English Wikipedia (2,500M words).</p>
+
+<h4 id="tokens-construction">Tokens construction</h4>
+
+<p>The tokens are defined using the Wordpiece model (<a href="https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf">Schuster et al., 2012</a>). This is similar to BPE (<a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding">summary here</a>) but instead of adding the concatenated pair the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:</p>
+
+<script type="math/tex; mode=display">\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)</script>
+
+<p>So the pair that will increase the most this likelihood will be the <script type="math/tex">t_it_j</script> such that:</p>
+
+<script type="math/tex; mode=display">\max_{t_i,t_j}\,\big\{\text{LM}^*(t_kt_d) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}</script>
+
+<p>For the LM* that will include that pair in its vocabulary.</p>
+
+<h4 id="bert-output">BERT output</h4>
+
+<p>The final layer of BERT contains a token representation <script type="math/tex">T_i</script> and the classifier embedding <script type="math/tex">C</script>, then each <script type="math/tex">T_i</script> is used to predict wether the token was masked or not and the <script type="math/tex">C</script> representation to predict if the two sentences were contiguous or not.</p>
+
+<figure>
+<img src="../assets/img/nlp-summary-02/architecture.png" alt="Figure 1. The Transformer architecture." style="width:40%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+</figure>
+
+<h3 id="bert-in-some-nlp-tasks">BERT in some NLP tasks</h3>
+
+<p>BERT was concived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific arquitecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is is relatively inexpensive (1hr on a TPU, couple of hours on a GPU).</p>
+
+<p>For the <strong>input</strong> part, in general the input of a NLP task is either a text pair (Q&amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-<script type="math/tex">\emptyset</script>.</p>
+
+<p>At the <strong>output</strong>, we used the last layer representations to either:</p>
+
+<ol>
+  <li>
+    <p>Fed the token representations <script type="math/tex">T_i</script> into an output layer for <u>token-level tasks</u>, such as sequence tagging or question answering:</p>
+
+    <p>This output layer can differ from task to task, but in general it’ll be a computation from one/more added vectors and each <script type="math/tex">T_i</script>. For example for a Q&amp;A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors <script type="math/tex">S</script> and <script type="math/tex">E</script> (<em>start</em> and <em>end</em> embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with <script type="math/tex">S \cdot T_j + E \cdot T_{j+t}</script>. Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.</p>
+  </li>
+  <li>
+    <p>Fed the [CLS] representation <script type="math/tex">C</script> into an output layer for <u>classification</u>, such as sentiment analysis.</p>
+
+    <p>This output layer can be basically a softmax over a transformation matrix <script type="math/tex">W</script> that takes the output <script type="math/tex">C</script> to the labels dimension (<script type="math/tex">K</script>), i.e.:
+<script type="math/tex">\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H</script></p>
+
+    <p>And then we can use as loss the logarithm of that softmax.</p>
+  </li>
+</ol>
+
+<p>For more examples on how to define the output of BERT for a specific task you can check the paper!</p>
+
+<h2 id="whats-next">What’s next!</h2>
+
+<p>Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&amp;As setup to encode the question and the paragraph separetely and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.</p>
+
+  </div><a class="u-url" href="/nlp-summaries/bert" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Constanza&#39;s blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li><a class="u-email" href="mailto:constanza.fierro94@gmail.com">constanza.fierro94@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/cfierro94"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">cfierro94</span></a></li><li><a href="https://www.twitter.com/constanzafierro"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">constanzafierro</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Website to host my posts about NLP and other topics that may emerge in the future.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

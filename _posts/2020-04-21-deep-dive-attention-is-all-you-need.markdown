@@ -11,15 +11,15 @@ mathjax : true
 {% include scripts.html %}
 
 > The objective of this article is to understand the concepts on which the transformer architecture ([Vaswani et. al](https://arxiv.org/abs/1706.03762)) is based on.<br>
-> If you want a general overview of the paper you can check the [summary](https://cfierro94.github.io/blog_posts/nlp-summaries/attention-is-all-you-need).
+> If you want a general overview of the paper you can check the [summary](https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need).
 
 Here I'm going to present a summary of:
 
-- [Byte pair encoding](https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding)
-- [Beam search](https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#beam-search)
-- [Label smoothing](https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#label-smoothing)
-- [Dropout](https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#dropout)
-- [Layer Normalization](https://cfierro94.github.io/blog_posts/nlp-deep-dive/attention-is-all-you-need#layer-normalization)
+- [Byte pair encoding](https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding)
+- [Beam search](https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#beam-search)
+- [Label smoothing](https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#label-smoothing)
+- [Dropout](https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#dropout)
+- [Layer Normalization](https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#layer-normalization)
 
 ## Byte Pair Encoding
 

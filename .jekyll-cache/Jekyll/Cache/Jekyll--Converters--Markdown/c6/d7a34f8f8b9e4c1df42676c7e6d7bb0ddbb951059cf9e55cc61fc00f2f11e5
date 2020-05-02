@@ -1,0 +1,108 @@
+I"�#<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<blockquote>
+  <p>Pre-training of Deep Bidirectional Transformers for Language Understanding ([link][https://arxiv.org/abs/1810.04805])</p>
+</blockquote>
+
+<h2 id="why-is-it-important">Why is it important?</h2>
+
+<ol>
+  <li>BERT is a language model that can be used directly to other NLP tasks (summarization, question answering, etc.).</li>
+  <li>It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times).</li>
+  <li>It has been shown that it’s capable of learning actual linguistic notions (<a href="https://arxiv.org/pdf/1906.04341v1.pdf">Clark et., al 2019</a>, [summary here][https://dair.ai/Aspects-of-language-captured-by-BERT/]).</li>
+</ol>
+
+<p>It achieves this with just a couple of changes to the transformer arquitecture but with new tasks for pre training.</p>
+
+<h2 id="what-does-it-propose">What does it propose?</h2>
+
+<p>This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT tokens representations outperform others because are learnt using both sides of the sentence.</p>
+
+<h2 id="how-does-it-work">How does it work?</h2>
+
+<p>BERT is basically the transformer arquitecture (<a href="https://arxiv.org/abs/1706.03762">Vaswani et. al 2017</a>, <a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need">summary here</a>) trained to learn language representations, and concived to be used as the main arquitecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left an right from the word itself). Let’s now understand the training proposed to learn these language representations and then how is directly used.</p>
+
+<h3 id="bert-training">BERT training</h3>
+
+<p>BERT is trained using two objectives:</p>
+
+<ol>
+  <li>Some tokens from the input sequence are masked and the model is trained to learn to predict these words (Masked language model).</li>
+  <li>Two “sentences” are fed as input and the model is trained to predict if one sentence follows the other one or not (Next sentence prediction).</li>
+</ol>
+
+<h4 id="masked-language-model">Masked language model</h4>
+
+<p>From each input sequence 15% of the tokens are processed as follows:</p>
+
+<ul>
+  <li>with 0.8 probability the token is replaced by [MASK]</li>
+  <li>with 0.1 probability the token is replaced by other random token</li>
+  <li>with 0.1 probability the token is unchanged</li>
+</ul>
+
+<p>The motivation of this setup is that if we always replace 15% of the input sequence with [MASK] then the model will be learning just to detect the masked word and not actual words representations, besides the downstream tasks won’t have [MASK] tokens.</p>
+
+<h4 id="next-sentence-prediction">Next sentence prediction</h4>
+
+<p>The input is composed by two sentences, which are not actual linguistic sentences but are spans of contiguous text. These two sentences A and B are separated with the special token [SEP], and are formed in such a way that 50% of the time B is the actual next sentence and 50% of the time is a random sentence.</p>
+
+<h4 id="bert-input">BERT input</h4>
+
+<p>As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “clasification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the <em>positional encoding</em> in the Transformer paper). All these embeddings are then summed up for each token.</p>
+
+<figure>
+<img src="../assets/img/nlp-summary-02/input.png" alt="Figure 1. The Transformer architecture." style="width:40%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+</figure>
+
+<p>They datasets used were: BooksCorpus (800M words) ([Zhu et al., 2015][]) and English Wikipedia (2,500M words).</p>
+
+<h5 id="tokens-construction">Tokens construction</h5>
+
+<p>The tokens are defined using the Wordpiece model ([Schuster et al., 2012][https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf]). This is similar to BPE (<a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding">summary here</a>) but instead of adding the concatenated pair the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:
+<script type="math/tex">\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)</script>
+So the pair that will increase the most this likelihood will be the <script type="math/tex">t_it_j</script> such that:
+<script type="math/tex">\max_{t_i,t_j}\,\big\{\text{LM}^*(t_kt_d) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}</script>
+For the LM* that will include that pair in its vocabulary.</p>
+
+<h4 id="bert-output">BERT output</h4>
+
+<p>The final layer of BERT contains a token representation <script type="math/tex">T_i</script> and the classifier embedding <script type="math/tex">C</script>, then each <script type="math/tex">T_i</script> is used to predict wether the token was masked or not and the <script type="math/tex">C</script> representation to predict if the two sentences were contiguous or not.</p>
+
+<figure>
+<img src="../assets/img/nlp-summary-02/architecture.png" alt="Figure 1. The Transformer architecture." style="width:40%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+</figure>
+
+<h3 id="bert-in-some-nlp-tasks">BERT in some NLP tasks</h3>
+
+<p>BERT was concived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific arquitecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is is relatively inexpensive (1hr on a TPU, couple of hours on a GPU).</p>
+
+<p>For the <strong>input</strong> part, in general the input of a NLP task is either a text pair (Q&amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-<script type="math/tex">\empty</script>.</p>
+
+<p>At the <strong>output</strong>, we used the last layer representations to either:</p>
+
+<ol>
+  <li>
+    <p>Fed the token representations <script type="math/tex">T_i</script> into an output layer for <u>token-level tasks</u>, such as sequence tagging or question answering:</p>
+
+    <p>This output layer can differ from task to task, but in general it’ll be a computation from one/more added vectors and each <script type="math/tex">T_i</script>. For example for a Q&amp;A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors <script type="math/tex">S</script> and <script type="math/tex">E</script> (<em>start</em> and <em>end</em> embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with <script type="math/tex">S \cdot T_j + E \cdot T_{j+t}</script>. Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.</p>
+  </li>
+  <li>
+    <p>Fed the [CLS] representation <script type="math/tex">C</script> into an output layer for <u>classification</u>, such as sentiment analysis.</p>
+
+    <p>This output layer can be basically a softmax over a transformation matrix <script type="math/tex">W</script> that takes the output <script type="math/tex">C</script> to the labels dimension (<script type="math/tex">K</script>), i.e.:
+<script type="math/tex">\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H</script></p>
+
+    <p>And then we can use as loss the logarithm of that softmax.</p>
+  </li>
+</ol>
+
+<p>For more examples on how to define the output of BERT for a specific task you can check the paper!</p>
+
+<h2 id="whats-next">What’s next!</h2>
+
+<p>Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&amp;As setup to encode the question and the paragraph separetely and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.</p>
+:ET
