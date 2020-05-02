@@ -80,9 +80,9 @@ description="Figure 1. The Transformer architecture." zoom=40 %}
 
 ### BERT in some NLP tasks
 
-BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, couple of hours on a GPU).
+BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).
 
-In general the **input** of a NLP task is either a text pair (Q&A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-$$\emptyset$$. At the **output**, we used the last layer representations to either:
+In general, the **input** of a NLP task is either a text pair (Q&A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-$$\emptyset$$. At the **output**, we used the last layer representations to either:
 
 1. Fed the token representations $$T_i$$ into an output layer for <u>token-level tasks</u>, such as sequence tagging or question answering:
 
