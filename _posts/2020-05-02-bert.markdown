@@ -15,11 +15,11 @@ permalink : "nlp-summaries/bert"
 2. It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times).
 3. It has been shown that it's capable of learning actual linguistic notions ([Clark et., al 2019](https://arxiv.org/pdf/1906.04341v1.pdf), [summary here](https://dair.ai/Aspects-of-language-captured-by-BERT/)).
 
- It achieves this with just a couple of changes to the transformer arquitecture but with new tasks for pre training.
+ It achieves this with just a couple of changes to the transformer architecture together with new tasks for pre training.
 
 ## What does it propose?
 
-This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT token representations outperform others because they are learnt using both sides of the sentence.
+This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT token representations outperform others because they are learnt using both left and right context of the sentence.
 
 ## How does it work?
 
@@ -29,7 +29,7 @@ BERT is basically the transformer architecture ([Vaswani et. al 2017](https://ar
 
 BERT is trained using two objectives:
 
-1. Some tokens from the input sequence are masked and the model is trained to learn to predict these words (Masked language model).
+1. Some tokens from the input sequence are masked and the model learns to to predict these words (Masked language model).
 2. Two "sentences" are fed as input and the model is trained to predict if one sentence follows the other one or not (Next sentence prediction).
 
 #### Masked language model
@@ -80,15 +80,15 @@ description="Figure 2. The BERT architecture." zoom=40 %}
 
 ### BERT in some NLP tasks
 
-BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).
+BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to be the architecture of the task. In general, we feed the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).
 
-In general, the **input** of a NLP task is either a text pair (Q&A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-$$\emptyset$$. At the **output**, we used the last layer representations to either:
+In general, the **input** of a NLP task is either a text pair (Q&A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-$$\emptyset$$. At the **output**, we use the last layer representations to either:
 
-1. Fed the token representations $$T_i$$ into an output layer for <u>token-level tasks</u>, such as sequence tagging or question answering:
+1. Feed the token representations $$T_i$$ into an output layer for <u>token-level tasks</u>, such as sequence tagging or question answering:
 
    This output layer can differ from task to task, but in general it'll be a computation from one/more added vectors and each $$T_i$$. For example for a Q&A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors $$S$$ and $$E$$ (*start* and *end* embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with $$S \cdot T_j + E \cdot T_{j+t}$$. Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.
 
-2. Fed the [CLS] representation $$C$$ into an output layer for <u>classification</u>, such as sentiment analysis.
+2. Feed the [CLS] representation $$C$$ into an output layer for <u>classification</u>, such as sentiment analysis.
 
    This output layer can be basically a softmax over a transformation matrix $$W$$ that takes the output $$C$$ to the labels dimension ($$K$$), i.e.:
 
