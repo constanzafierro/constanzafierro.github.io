@@ -12,5 +12,3 @@ community.
 
 I'm interested in grounding and reasoning NLP, in representation learning,
 and I enjoy learning about cognitive sciences.
-
-Here's my [resume](../assets/files/Resume_Constanza_Fierro.pdf) if you want to know more about me.
