@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-02T13:43:09+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><subtitle>Website to host my posts about NLP and other topics that may emerge in the future.</subtitle><entry><title type="html">Summary: BERT</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Summary: BERT" /><published>2020-05-02T13:00:00+02:00</published><updated>2020-05-02T13:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-08T12:15:56+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><subtitle>Website to host my posts about NLP and other topics that may emerge in the future.</subtitle><entry><title type="html">Summary: BERT</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Summary: BERT" /><published>2020-05-02T13:00:00+02:00</published><updated>2020-05-02T13:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;blockquote&gt;
@@ -8,29 +8,36 @@
 &lt;h2 id=&quot;why-is-it-important&quot;&gt;Why is it important?&lt;/h2&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;BERT is a language model that can be used directly to other NLP tasks (summarization, question answering, etc.).&lt;/li&gt;
-  &lt;li&gt;It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times).&lt;/li&gt;
+  &lt;li&gt;BERT is a language model that can be used directly to approach other NLP tasks (summarization, question answering, etc.).&lt;/li&gt;
+  &lt;li&gt;It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times as of today).&lt;/li&gt;
   &lt;li&gt;It has been shown that it’s capable of learning actual linguistic notions (&lt;a href=&quot;https://arxiv.org/pdf/1906.04341v1.pdf&quot;&gt;Clark et., al 2019&lt;/a&gt;, &lt;a href=&quot;https://dair.ai/Aspects-of-language-captured-by-BERT/&quot;&gt;summary here&lt;/a&gt;).&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;It achieves this with just a couple of changes to the transformer arquitecture but with new tasks for pre training.&lt;/p&gt;
+&lt;p&gt;It achieves this with just a couple of changes to the transformer architecture together with new tasks for pre training.&lt;/p&gt;
 
 &lt;h2 id=&quot;what-does-it-propose&quot;&gt;What does it propose?&lt;/h2&gt;
 
-&lt;p&gt;This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT token representations outperform others because they are learnt using both sides of the sentence.&lt;/p&gt;
+&lt;p&gt;This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT token representations outperform others because they are learnt using both left and right context of the sentence.&lt;/p&gt;
 
 &lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
 
-&lt;p&gt;BERT is basically the transformer architecture (&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;Vaswani et. al 2017&lt;/a&gt;, &lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need&quot;&gt;summary here&lt;/a&gt;) trained to learn language representations, and conceived to be used as the main architecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left and right from the word itself). Let’s now understand the training proposed to learn these language representations and then how is directly used.&lt;/p&gt;
+&lt;p&gt;BERT is basically the transformer architecture (&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;Vaswani et. al 2017&lt;/a&gt;, &lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need&quot;&gt;summary here&lt;/a&gt;) trained to learn language representations, and conceived to be used as the main architecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left and right from the word itself). Let’s now understand the training proposed to learn these language representations and then how they are directly used for other NLP tasks.&lt;/p&gt;
 
 &lt;h3 id=&quot;bert-training&quot;&gt;BERT training&lt;/h3&gt;
 
 &lt;p&gt;BERT is trained using two objectives:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Some tokens from the input sequence are masked and the model is trained to learn to predict these words (Masked language model).&lt;/li&gt;
-  &lt;li&gt;Two “sentences” are fed as input and the model is trained to predict if one sentence follows the other one or not (Next sentence prediction).&lt;/li&gt;
+  &lt;li&gt;Some tokens from the input sequence are masked and the model learns to predict these words (Masked language model).&lt;/li&gt;
+  &lt;li&gt;Two “sentences” are fed as input and the model is trained to predict if one sentence follows the other one or not (next sentence prediction NSP).&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;So we’ll feed BERT with two sentences masked, and we’ll obtain the prediction whether they’re subsequent or not, and the sentences without masked words, as Figure 1 shows.&lt;/p&gt;
+
+&lt;figure&gt;
+&lt;img src=&quot;../assets/img/nlp-summary-02/masked.png&quot; alt=&quot;Figure 1: Example of input and output for two masked sentences.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
+&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1: Example of input and output for two masked sentences.&lt;/figcaption&gt;
+&lt;/figure&gt;
 
 &lt;h4 id=&quot;masked-language-model&quot;&gt;Masked language model&lt;/h4&gt;
 
@@ -50,18 +57,18 @@
 
 &lt;h4 id=&quot;bert-input&quot;&gt;BERT input&lt;/h4&gt;
 
-&lt;p&gt;As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “classification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the &lt;em&gt;positional encoding&lt;/em&gt; in the Transformer paper). All these embeddings are then summed up for each token.&lt;/p&gt;
+&lt;p&gt;As the Figure 2 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “classification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the &lt;em&gt;positional encoding&lt;/em&gt; in the Transformer paper). All these embeddings are then summed up for each token.&lt;/p&gt;
 
 &lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-02/input.png&quot; alt=&quot;Figure 1. Input construction.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1. Input construction.&lt;/figcaption&gt;
+&lt;img src=&quot;../assets/img/nlp-summary-02/input.png&quot; alt=&quot;Figure 2: Input construction.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
+&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 2: Input construction.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;p&gt;The datasets used were: BooksCorpus (800M words) (&lt;a href=&quot;https://arxiv.org/abs/1506.06724&quot;&gt;Zhu et al., 2015&lt;/a&gt;) and English Wikipedia (2,500M words).&lt;/p&gt;
 
 &lt;h4 id=&quot;tokens-construction&quot;&gt;Tokens construction&lt;/h4&gt;
 
-&lt;p&gt;The tokens are defined using the Wordpiece model (&lt;a href=&quot;https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf&quot;&gt;Schuster et al., 2012&lt;/a&gt;). This is similar to BPE (&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding&quot;&gt;summary here&lt;/a&gt;) but instead of adding the concatenated pair the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:&lt;/p&gt;
+&lt;p&gt;The tokens are defined using the Wordpiece model (&lt;a href=&quot;https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf&quot;&gt;Schuster et al., 2012&lt;/a&gt;). This is similar to BPE (&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding&quot;&gt;summary here&lt;/a&gt;) but instead of adding the pair of tokens that’s the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)&lt;/script&gt;
 
@@ -76,24 +83,24 @@
 &lt;p&gt;The final layer of BERT contains a token representation &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; and the classifier embedding &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;, then each &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; is used to predict whether the token was masked or not and the &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; representation to predict if the two sentences were contiguous or not.&lt;/p&gt;
 
 &lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-02/architecture.png&quot; alt=&quot;Figure 2. The BERT architecture.&quot; style=&quot;width:40%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 2. The BERT architecture.&lt;/figcaption&gt;
+&lt;img src=&quot;../assets/img/nlp-summary-02/architecture.png&quot; alt=&quot;Figure 3: The BERT architecture.&quot; style=&quot;width:40%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
+&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 3: The BERT architecture.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;h3 id=&quot;bert-in-some-nlp-tasks&quot;&gt;BERT in some NLP tasks&lt;/h3&gt;
 
-&lt;p&gt;BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to just put the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).&lt;/p&gt;
+&lt;p&gt;BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to be the architecture of the task. In general, we feed the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).&lt;/p&gt;
 
-&lt;p&gt;In general, the &lt;strong&gt;input&lt;/strong&gt; of a NLP task is either a text pair (Q&amp;amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-&lt;script type=&quot;math/tex&quot;&gt;\emptyset&lt;/script&gt;. At the &lt;strong&gt;output&lt;/strong&gt;, we used the last layer representations to either:&lt;/p&gt;
+&lt;p&gt;In general, the &lt;strong&gt;input&lt;/strong&gt; of a NLP task is either a text pair (Q&amp;amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-&lt;script type=&quot;math/tex&quot;&gt;\emptyset&lt;/script&gt;. At the &lt;strong&gt;output&lt;/strong&gt;, we use the last layer representations to either:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;p&gt;Fed the token representations &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; into an output layer for &lt;u&gt;token-level tasks&lt;/u&gt;, such as sequence tagging or question answering:&lt;/p&gt;
+    &lt;p&gt;Feed the token representations &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; into an output layer for &lt;u&gt;token-level tasks&lt;/u&gt;, such as sequence tagging or question answering:&lt;/p&gt;
 
     &lt;p&gt;This output layer can differ from task to task, but in general it’ll be a computation from one/more added vectors and each &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt;. For example for a Q&amp;amp;A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt; (&lt;em&gt;start&lt;/em&gt; and &lt;em&gt;end&lt;/em&gt; embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with &lt;script type=&quot;math/tex&quot;&gt;S \cdot T_j + E \cdot T_{j+t}&lt;/script&gt;. Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Fed the [CLS] representation &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; into an output layer for &lt;u&gt;classification&lt;/u&gt;, such as sentiment analysis.&lt;/p&gt;
+    &lt;p&gt;Feed the [CLS] representation &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; into an output layer for &lt;u&gt;classification&lt;/u&gt;, such as sentiment analysis.&lt;/p&gt;
 
     &lt;p&gt;This output layer can be basically a softmax over a transformation matrix &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; that takes the output &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; to the labels dimension (&lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;), i.e.:&lt;/p&gt;
 

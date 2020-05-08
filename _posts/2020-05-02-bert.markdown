@@ -11,8 +11,8 @@ permalink : "nlp-summaries/bert"
 
 ## Why is it important?
 
-1. BERT is a language model that can be used directly to other NLP tasks (summarization, question answering, etc.).
-2. It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times).
+1. BERT is a language model that can be used directly to approach other NLP tasks (summarization, question answering, etc.).
+2. It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times as of today).
 3. It has been shown that it's capable of learning actual linguistic notions ([Clark et., al 2019](https://arxiv.org/pdf/1906.04341v1.pdf), [summary here](https://dair.ai/Aspects-of-language-captured-by-BERT/)).
 
  It achieves this with just a couple of changes to the transformer architecture together with new tasks for pre training.
@@ -23,14 +23,19 @@ This paper proposed a new way of thinking about language models presenting 2 new
 
 ## How does it work?
 
-BERT is basically the transformer architecture ([Vaswani et. al 2017](https://arxiv.org/abs/1706.03762), [summary here](https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need)) trained to learn language representations, and conceived to be used as the main architecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left and right from the word itself). Let's now understand the training proposed to learn these language representations and then how is directly used.
+BERT is basically the transformer architecture ([Vaswani et. al 2017](https://arxiv.org/abs/1706.03762), [summary here](https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need)) trained to learn language representations, and conceived to be used as the main architecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left and right from the word itself). Let's now understand the training proposed to learn these language representations and then how they are directly used for other NLP tasks.
 
 ### BERT training
 
 BERT is trained using two objectives:
 
-1. Some tokens from the input sequence are masked and the model learns to to predict these words (Masked language model).
-2. Two "sentences" are fed as input and the model is trained to predict if one sentence follows the other one or not (Next sentence prediction).
+1. Some tokens from the input sequence are masked and the model learns to predict these words (Masked language model).
+2. Two "sentences" are fed as input and the model is trained to predict if one sentence follows the other one or not (next sentence prediction NSP).
+
+So we'll feed BERT with two sentences masked, and we'll obtain the prediction whether they're subsequent or not, and the sentences without masked words, as Figure 1 shows.
+
+{% include image.html file="../assets/img/nlp-summary-02/masked.png"
+description="Figure 1: Example of input and output for two masked sentences." zoom=55 %}
 
 #### Masked language model
 
@@ -48,16 +53,16 @@ The input is composed of two sentences, which are not actual linguistic sentence
 
 #### BERT input
 
-As the Figure 1 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial "classification token" [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the *positional encoding* in the Transformer paper). All these embeddings are then summed up for each token.
+As the Figure 2 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial "classification token" [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the *positional encoding* in the Transformer paper). All these embeddings are then summed up for each token.
 
 {% include image.html file="../assets/img/nlp-summary-02/input.png"
-description="Figure 1. Input construction." zoom=55 %}
+description="Figure 2: Input construction." zoom=55 %}
 
 The datasets used were: BooksCorpus (800M words) ([Zhu et al., 2015](https://arxiv.org/abs/1506.06724)) and English Wikipedia (2,500M words).
 
 #### Tokens construction
 
-The tokens are defined using the Wordpiece model ([Schuster et al., 2012](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf)). This is similar to BPE ([summary here](https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding)) but instead of adding the concatenated pair the most frequent in the corpus, we'll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:
+The tokens are defined using the Wordpiece model ([Schuster et al., 2012](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf)). This is similar to BPE ([summary here](https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding)) but instead of adding the pair of tokens that's the most frequent in the corpus, we'll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:
 
 $$
 \prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)
@@ -76,11 +81,11 @@ For the LM* that will include that pair in its vocabulary.
 The final layer of BERT contains a token representation $$T_i$$ and the classifier embedding $$C$$, then each $$T_i$$ is used to predict whether the token was masked or not and the $$C$$ representation to predict if the two sentences were contiguous or not.
 
 {% include image.html file="../assets/img/nlp-summary-02/architecture.png"
-description="Figure 2. The BERT architecture." zoom=40 %}
+description="Figure 3: The BERT architecture." zoom=40 %}
 
 ### BERT in some NLP tasks
 
-BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to be the architecture of the task. In general, we feed the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then and fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).
+BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to be the architecture of the task. In general, we feed the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).
 
 In general, the **input** of a NLP task is either a text pair (Q&A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-$$\emptyset$$. At the **output**, we use the last layer representations to either:
 
