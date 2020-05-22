@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-08T22:07:53+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><subtitle>Website to host my posts about NLP and other topics that may emerge in the future.</subtitle><entry><title type="html">Summary: BERT</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Summary: BERT" /><published>2020-05-02T13:00:00+02:00</published><updated>2020-05-02T13:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-22T22:37:35+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><entry><title type="html">Summary: BERT</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Summary: BERT" /><published>2020-05-02T13:00:00+02:00</published><updated>2020-05-02T13:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;blockquote&gt;
@@ -70,17 +70,17 @@
 
 &lt;p&gt;The tokens are defined using the Wordpiece model (&lt;a href=&quot;https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf&quot;&gt;Schuster et al., 2012&lt;/a&gt;). This is similar to BPE (&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding&quot;&gt;summary here&lt;/a&gt;) but instead of adding the pair of tokens that’s the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)&lt;/script&gt;
+\[\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)\]
 
-&lt;p&gt;So the pair that will increase the most this likelihood will be the &lt;script type=&quot;math/tex&quot;&gt;t_it_j&lt;/script&gt; such that:&lt;/p&gt;
+&lt;p&gt;So the pair that will increase the most this likelihood will be the \(t_it_j\) such that:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\max_{t_i,t_j}\,\big\{\text{LM}^*(t_it_j) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}&lt;/script&gt;
+\[\max_{t_i,t_j}\,\big\{\text{LM}^*(t_it_j) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}\]
 
 &lt;p&gt;For the LM* that will include that pair in its vocabulary.&lt;/p&gt;
 
 &lt;h4 id=&quot;bert-output&quot;&gt;BERT output&lt;/h4&gt;
 
-&lt;p&gt;The final layer of BERT contains a token representation &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; and the classifier embedding &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;, then each &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; is used to predict whether the token was masked or not and the &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; representation to predict if the two sentences were contiguous or not.&lt;/p&gt;
+&lt;p&gt;The final layer of BERT contains a token representation \(T_i\) and the classifier embedding \(C\), then each \(T_i\) is used to predict whether the token was masked or not and the \(C\) representation to predict if the two sentences were contiguous or not.&lt;/p&gt;
 
 &lt;figure&gt;
 &lt;img src=&quot;../assets/img/nlp-summary-02/architecture.png&quot; alt=&quot;Figure 3: The BERT architecture.&quot; style=&quot;width:40%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
@@ -91,20 +91,20 @@
 
 &lt;p&gt;BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to be the architecture of the task. In general, we feed the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).&lt;/p&gt;
 
-&lt;p&gt;In general, the &lt;strong&gt;input&lt;/strong&gt; of a NLP task is either a text pair (Q&amp;amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-&lt;script type=&quot;math/tex&quot;&gt;\emptyset&lt;/script&gt;. At the &lt;strong&gt;output&lt;/strong&gt;, we use the last layer representations to either:&lt;/p&gt;
+&lt;p&gt;In general, the &lt;strong&gt;input&lt;/strong&gt; of a NLP task is either a text pair (Q&amp;amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-\(\emptyset\). At the &lt;strong&gt;output&lt;/strong&gt;, we use the last layer representations to either:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;p&gt;Feed the token representations &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt; into an output layer for &lt;u&gt;token-level tasks&lt;/u&gt;, such as sequence tagging or question answering:&lt;/p&gt;
+    &lt;p&gt;Feed the token representations \(T_i\) into an output layer for &lt;u&gt;token-level tasks&lt;/u&gt;, such as sequence tagging or question answering:&lt;/p&gt;
 
-    &lt;p&gt;This output layer can differ from task to task, but in general it’ll be a computation from one/more added vectors and each &lt;script type=&quot;math/tex&quot;&gt;T_i&lt;/script&gt;. For example for a Q&amp;amp;A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt; (&lt;em&gt;start&lt;/em&gt; and &lt;em&gt;end&lt;/em&gt; embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with &lt;script type=&quot;math/tex&quot;&gt;S \cdot T_j + E \cdot T_{j+t}&lt;/script&gt;. Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.&lt;/p&gt;
+    &lt;p&gt;This output layer can differ from task to task, but in general it’ll be a computation from one/more added vectors and each \(T_i\). For example for a Q&amp;amp;A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors \(S\) and \(E\) (&lt;em&gt;start&lt;/em&gt; and &lt;em&gt;end&lt;/em&gt; embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with \(S \cdot T_j + E \cdot T_{j+t}\). Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Feed the [CLS] representation &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; into an output layer for &lt;u&gt;classification&lt;/u&gt;, such as sentiment analysis.&lt;/p&gt;
+    &lt;p&gt;Feed the [CLS] representation \(C\) into an output layer for &lt;u&gt;classification&lt;/u&gt;, such as sentiment analysis.&lt;/p&gt;
 
-    &lt;p&gt;This output layer can be basically a softmax over a transformation matrix &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; that takes the output &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; to the labels dimension (&lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;), i.e.:&lt;/p&gt;
+    &lt;p&gt;This output layer can be basically a softmax over a transformation matrix \(W\) that takes the output \(C\) to the labels dimension (\(K\)), i.e.:&lt;/p&gt;
 
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H&lt;/script&gt;
+\[\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H\]
 
     &lt;p&gt;And then we can use as loss the logarithm of that softmax.&lt;/p&gt;
   &lt;/li&gt;
@@ -148,7 +148,7 @@ If you want a general overview of the paper you can check the &lt;a href=&quot;h
   &lt;li&gt;For every merge, we will count the occurences of each pair of tokens in our corpus, and we’re going to add as a string the pair (the concatenation) the most frequent. Therefore, adding 1 new token to our set.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;With this, the size of the vocabulary = the number of merges + the number of different characters + 1 (the end-word character). So if we define the number of merges as &lt;script type=&quot;math/tex&quot;&gt;\inf&lt;/script&gt; then the vocabulary is all the possible characters and all the different words.&lt;/p&gt;
+&lt;p&gt;With this, the size of the vocabulary = the number of merges + the number of different characters + 1 (the end-word character). So if we define the number of merges as \(\inf\) then the vocabulary is all the possible characters and all the different words.&lt;/p&gt;
 
 &lt;h2 id=&quot;beam-search&quot;&gt;Beam Search&lt;/h2&gt;
 
@@ -156,8 +156,8 @@ If you want a general overview of the paper you can check the &lt;a href=&quot;h
 
 &lt;p&gt;There are different algorithms to decode the final output sequence. This is because our model outputs a probability distribution over our vocabulary, and then we need to choose one word each time until we arrived at the end character. One option (&lt;em&gt;greddy decoding&lt;/em&gt;) would be to choose at each step the word with the highest probability, but the problem is that this may not lead to the highest probability sentence because it’s calculated as:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(w_0...w_n) = \prod_i P(w_i) \\
-\iff \log(P(w_0...w_n)) = \sum_i \log(w_i)&lt;/script&gt;
+\[P(w_0...w_n) = \prod_i P(w_i) \\
+\iff \log(P(w_0...w_n)) = \sum_i \log(w_i)\]
 
 &lt;h4 id=&quot;the-algorithm-1&quot;&gt;The algorithm&lt;/h4&gt;
 
@@ -168,7 +168,7 @@ If you want a general overview of the paper you can check the &lt;a href=&quot;h
   &lt;li&gt;From all those possible sentences we take the &lt;code class=&quot;highlighter-rouge&quot;&gt;beam_size&lt;/code&gt; most probable hypothesis.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;We can stop when we complete &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; sentences (arrived at the end character), or after &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; steps. Additionally, they propose to normalize (to divide) the sentence probability by &lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt;, so longer sentences are not less probable.&lt;/p&gt;
+&lt;p&gt;We can stop when we complete \(n\) sentences (arrived at the end character), or after \(t\) steps. Additionally, they propose to normalize (to divide) the sentence probability by \(\alpha\), so longer sentences are not less probable.&lt;/p&gt;
 
 &lt;h2 id=&quot;label-smoothing&quot;&gt;Label smoothing&lt;/h2&gt;
 
@@ -176,10 +176,9 @@ If you want a general overview of the paper you can check the &lt;a href=&quot;h
 
 &lt;p&gt;This is a regularization technique that encourages the model to be less confident, therefore more adaptable.&lt;/p&gt;
 
-&lt;p&gt;In classifications problems we have ground truth data that follows a distribution &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; that we usually define as a one hot vector:&lt;/p&gt;
+&lt;p&gt;In classifications problems we have ground truth data that follows a distribution \(q\) that we usually define as a one hot vector:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp; \text{if} \quad y=y_i \\0 &amp; \text{if} \quad \text{otherwise} \\\end{array} \right. %]]&gt;&lt;/script&gt;
+\[q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp;amp; \text{if} \quad y=y_i \\0 &amp;amp; \text{if} \quad \text{otherwise} \\\end{array} \right.\]
 
 &lt;p&gt;If we use the softmax to calculate the output probabilities and we use cross entropy as the loss, then this labels representation can lead to overfitting, therefore this technique proposes to use smoother labels.&lt;/p&gt;
 
@@ -187,54 +186,54 @@ q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp; \text{if} \quad y=y
 
 &lt;p&gt;In classification problems where we predict the label with a softmax as&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(y_j|z) = \frac{\exp(z_j)}{\sum_i \exp(z_i)}&lt;/script&gt;
+\[p(y_j|z) = \frac{\exp(z_j)}{\sum_i \exp(z_i)}\]
 
-&lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is the input, &lt;script type=&quot;math/tex&quot;&gt;y_j&lt;/script&gt; is one of the possible labels, and &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; the logits (the output score of our model). And we use the cross entropy loss as shown below for one example (&lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;) and for all of them (&lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;):&lt;/p&gt;
+&lt;p&gt;Where \(x\) is the input, \(y_j\) is one of the possible labels, and \(z\) the logits (the output score of our model). And we use the cross entropy loss as shown below for one example (\(l\)) and for all of them (\(L\)):&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;l = H(q,p) = - \sum_{y=1}^K q(y|x) \log p(y|x)\\\implies L = - \sum_{i=1}^n \sum_{y=1}^K q(y|x_i) \log p(y|x_i)&lt;/script&gt;
+\[l = H(q,p) = - \sum_{y=1}^K q(y|x) \log p(y|x)\\\implies L = - \sum_{i=1}^n \sum_{y=1}^K q(y|x_i) \log p(y|x_i)\]
 
-&lt;p&gt;When we take the ground truth distribution discrete, that is &lt;script type=&quot;math/tex&quot;&gt;\delta_{y,y_i}&lt;/script&gt; (see definition above of &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt;), then &lt;script type=&quot;math/tex&quot;&gt;q=0&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; different than &lt;script type=&quot;math/tex&quot;&gt;y_i&lt;/script&gt; (the correct label for element &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;), then:&lt;/p&gt;
+&lt;p&gt;When we take the ground truth distribution discrete, that is \(\delta_{y,y_i}\) (see definition above of \(q\)), then \(q=0\) for all \(y\) different than \(y_i\) (the correct label for element \(i\)), then:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;l = - \log p(y_i|x_i)\\&lt;/script&gt;
+\[l = - \log p(y_i|x_i)\\\]
 
 &lt;p&gt;Let’s now calculate the derivative of this to find the minimum of the loss,&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial l}{\partial z_k} = \frac{\partial}{\partial z_k}\bigg(-\log \Big(\frac{\exp(z_i)}{\sum_j \exp(z_j)}\Big) \bigg)\\\iff \frac{\partial}{\partial z_k} \bigg( \log \Big(\sum_j \exp(z_j)\Big) - z_i \bigg)\\\iff \frac{1}{\sum_j \exp(z_j)}\frac{\partial}{\partial z_k}\Big(\sum_j \exp(z_j)\Big) - \frac{\partial z_i}{\partial z_k}\\\iff \frac{\exp(z_k)}{\sum_j \exp(z_j)} - \delta_{z_i=z_k}\\\iff p(y_k) - q(y_k)&lt;/script&gt;
+\[\frac{\partial l}{\partial z_k} = \frac{\partial}{\partial z_k}\bigg(-\log \Big(\frac{\exp(z_i)}{\sum_j \exp(z_j)}\Big) \bigg)\\\iff \frac{\partial}{\partial z_k} \bigg( \log \Big(\sum_j \exp(z_j)\Big) - z_i \bigg)\\\iff \frac{1}{\sum_j \exp(z_j)}\frac{\partial}{\partial z_k}\Big(\sum_j \exp(z_j)\Big) - \frac{\partial z_i}{\partial z_k}\\\iff \frac{\exp(z_k)}{\sum_j \exp(z_j)} - \delta_{z_i=z_k}\\\iff p(y_k) - q(y_k)\]
 
 &lt;p&gt;Thus,&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial l}{\partial z_k} = p(y_k) - q(y_k) \in [-1, 1]\\&lt;/script&gt;
+\[\frac{\partial l}{\partial z_k} = p(y_k) - q(y_k) \in [-1, 1]\\\]
 
-&lt;p&gt;Then the function is minimized (it’s derivative is zero) when &lt;script type=&quot;math/tex&quot;&gt;p(y_k) = q(y_k)&lt;/script&gt;. Which is approachable if &lt;script type=&quot;math/tex&quot;&gt;z_i &gt;&gt; z_k \; \forall i \ne k&lt;/script&gt;, in words having the correct logit way bigger than the rest. Because with these values the softmax &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; would output 1 for the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; index and zero elsewhere. This can cause two problems:&lt;/p&gt;
+&lt;p&gt;Then the function is minimized (it’s derivative is zero) when \(p(y_k) = q(y_k)\). Which is approachable if \(z_i &amp;gt;&amp;gt; z_k \; \forall i \ne k\), in words having the correct logit way bigger than the rest. Because with these values the softmax \(p\) would output 1 for the \(i\) index and zero elsewhere. This can cause two problems:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;If the model learns to output &lt;script type=&quot;math/tex&quot;&gt;z_i &gt;&gt; z_k&lt;/script&gt;, then it will be overfitting the groundtruth data and it’s not guaranteed to generalize.&lt;/li&gt;
+  &lt;li&gt;If the model learns to output \(z_i &amp;gt;&amp;gt; z_k\), then it will be overfitting the groundtruth data and it’s not guaranteed to generalize.&lt;/li&gt;
   &lt;li&gt;It encourages the differences between the largest logit and all others to become large, and this, combined with the fact that the gradient is between -1 and 1 , reduces the ability of the model to adapt. In other words, the model becomes too confident of its predictions.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h3 id=&quot;proposed-solution&quot;&gt;Proposed solution&lt;/h3&gt;
 
-&lt;p&gt;Instead of using a one hot vector, we introduce a noise distribution &lt;script type=&quot;math/tex&quot;&gt;u(y)&lt;/script&gt; on the following way:&lt;/p&gt;
+&lt;p&gt;Instead of using a one hot vector, we introduce a noise distribution \(u(y)\) on the following way:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;q'(y|x_i) = (1-\epsilon)\delta_{y,y_i} + \epsilon u(y)&lt;/script&gt;
+\[q'(y|x_i) = (1-\epsilon)\delta_{y,y_i} + \epsilon u(y)\]
 
-&lt;p&gt;Thus we have a mixture between the old distribution &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; and the fixed distribution &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;, with weights &lt;script type=&quot;math/tex&quot;&gt;(1-\epsilon)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;. We can see this as in, for a &lt;script type=&quot;math/tex&quot;&gt;y_j&lt;/script&gt; label we first set it to the ground truth label  &lt;script type=&quot;math/tex&quot;&gt;\delta_{y_j,y_i}&lt;/script&gt; and then with probability &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; we replace the label with the distribution &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Thus we have a mixture between the old distribution \(q\) and the fixed distribution \(u\), with weights \((1-\epsilon)\) and \(\epsilon\). We can see this as in, for a \(y_j\) label we first set it to the ground truth label  \(\delta_{y_j,y_i}\) and then with probability \(\epsilon\) we replace the label with the distribution \(u\).&lt;/p&gt;
 
-&lt;p&gt;In the &lt;a href=&quot;https://arxiv.org/pdf/1512.00567&quot;&gt;paper&lt;/a&gt; where this regularization was proposed they used the uniform distribution &lt;script type=&quot;math/tex&quot;&gt;u(y) = 1/K&lt;/script&gt;. If we look at the cross entropy now, it would be:&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&quot;https://arxiv.org/pdf/1512.00567&quot;&gt;paper&lt;/a&gt; where this regularization was proposed they used the uniform distribution \(u(y) = 1/K\). If we look at the cross entropy now, it would be:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;H(q', p) = - \sum_{y=1}^K q'(y|x) \log p(y|x)\\= (1-\epsilon)H(q,p) + \epsilon H(u, p)&lt;/script&gt;
+\[H(q', p) = - \sum_{y=1}^K q'(y|x) \log p(y|x)\\= (1-\epsilon)H(q,p) + \epsilon H(u, p)\]
 
-&lt;p&gt;Where the term &lt;script type=&quot;math/tex&quot;&gt;\epsilon H(u, p)&lt;/script&gt; is penalising the deviation of &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; from the prior &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;, because if these two are too alike, then its cross entropy (&lt;script type=&quot;math/tex&quot;&gt;H(u, p)&lt;/script&gt;) will be bigger and therefore the loss will be bigger.&lt;/p&gt;
+&lt;p&gt;Where the term \(\epsilon H(u, p)\) is penalising the deviation of \(p\) from the prior \(u\), because if these two are too alike, then its cross entropy (\(H(u, p)\)) will be bigger and therefore the loss will be bigger.&lt;/p&gt;
 
 &lt;h2 id=&quot;dropout&quot;&gt;Dropout&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://jmlr.org/papers/v15/srivastava14a.html&quot;&gt;(Srivastava et. al)&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;This is another regularization technique that is pretty simple but highly effective. It turns off neurons with a probability &lt;script type=&quot;math/tex&quot;&gt;(1-p)&lt;/script&gt;, or in other words it keeps neurons with a probability &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt;. Doing this the model can learn more relevant patterns and is less prone to overfit, therefore it can achieve better performance.&lt;/p&gt;
+&lt;p&gt;This is another regularization technique that is pretty simple but highly effective. It turns off neurons with a probability \((1-p)\), or in other words it keeps neurons with a probability \(p\). Doing this the model can learn more relevant patterns and is less prone to overfit, therefore it can achieve better performance.&lt;/p&gt;
 
 &lt;p&gt;The intuition behind dropout is that when we delete random neurons, we’re potentially training exponential sub neural networks at the same time! And then at prediction time, we will be averaging each of those predictions.&lt;/p&gt;
 
-&lt;p&gt;In test time we don’t drop (turn off) neurons, and since it is not feasible to explicitly average the predictions from exponentially many thinned models, we approximate this by multiplying by &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; the output of the hidden unit. So in this way the expected output of a hidden unit is the same during training and testing.&lt;/p&gt;
+&lt;p&gt;In test time we don’t drop (turn off) neurons, and since it is not feasible to explicitly average the predictions from exponentially many thinned models, we approximate this by multiplying by \(p\) the output of the hidden unit. So in this way the expected output of a hidden unit is the same during training and testing.&lt;/p&gt;
 
 &lt;h2 id=&quot;layer-normalization&quot;&gt;Layer Normalization&lt;/h2&gt;
 
@@ -246,31 +245,31 @@ q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp; \text{if} \quad y=y
 
 &lt;h3 id=&quot;batch-normalization&quot;&gt;Batch Normalization&lt;/h3&gt;
 
-&lt;p&gt;In a nutshell, we can think of Batch Normalization as an extra layer after each hidden layer, that transforms the inputs for the next layer from &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;. If we consider &lt;script type=&quot;math/tex&quot;&gt;\mathcal{B} = \{x_1...x_m\}&lt;/script&gt; to be the mini batch where each &lt;script type=&quot;math/tex&quot;&gt;x_j = (x_j^{(1)}...x_j^{(H)})&lt;/script&gt; is an input vector of a hidden layer, then the normalization of each dimension is the following:&lt;/p&gt;
+&lt;p&gt;In a nutshell, we can think of Batch Normalization as an extra layer after each hidden layer, that transforms the inputs for the next layer from \(x\) to \(y\). If we consider \(\mathcal{B} = \{x_1...x_m\}\) to be the mini batch where each \(x_j = (x_j^{(1)}...x_j^{(H)})\) is an input vector of a hidden layer, then the normalization of each dimension is the following:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{x}^{(k)} = \frac{x^{(k)} - \text{E}[x^{(k)}]}{\sqrt{\text{Var}(x^{(k)})}}&lt;/script&gt;
+\[\hat{x}^{(k)} = \frac{x^{(k)} - \text{E}[x^{(k)}]}{\sqrt{\text{Var}(x^{(k)})}}\]
 
-&lt;p&gt;We’ll approximate the expectation ($\mu$) and the variance (&lt;script type=&quot;math/tex&quot;&gt;\sigma^2&lt;/script&gt;) calculating them at the mini batch level. Then the batch normalization will be:&lt;/p&gt;
+&lt;p&gt;We’ll approximate the expectation ($\mu$) and the variance (\(\sigma^2\)) calculating them at the mini batch level. Then the batch normalization will be:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_\mathcal{B} = \frac{1}{m} \sum_{i=1}^m x_i\\\sigma_\mathcal{B}^2 = \frac{1}{m} \sum_{i=1}^m (x_i - \mu_\mathcal{B})\\\hat{x}_i = \frac{x_i - \mu_\mathcal{B}}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}\\y_i = \gamma \hat{x}_i + \beta \equiv \text{BN}_{\gamma,\beta} (x_i)&lt;/script&gt;
+\[\mu_\mathcal{B} = \frac{1}{m} \sum_{i=1}^m x_i\\\sigma_\mathcal{B}^2 = \frac{1}{m} \sum_{i=1}^m (x_i - \mu_\mathcal{B})\\\hat{x}_i = \frac{x_i - \mu_\mathcal{B}}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}\\y_i = \gamma \hat{x}_i + \beta \equiv \text{BN}_{\gamma,\beta} (x_i)\]
 
-&lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is a constant added for numerical stability, and &lt;script type=&quot;math/tex&quot;&gt;\gamma&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt; are parameters of this “layer”, learnt through backpropagation. These parameters are used to be able to keep the representational power of the layer, so by setting &lt;script type=&quot;math/tex&quot;&gt;\gamma = \sqrt{\sigma^2_\mathcal{B}}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta = \mu&lt;/script&gt; we can recover the original output, if it were to be the optimal one.&lt;/p&gt;
+&lt;p&gt;Where \(\epsilon\) is a constant added for numerical stability, and \(\gamma\) and \(\beta\) are parameters of this “layer”, learnt through backpropagation. These parameters are used to be able to keep the representational power of the layer, so by setting \(\gamma = \sqrt{\sigma^2_\mathcal{B}}\) and \(\beta = \mu\) we can recover the original output, if it were to be the optimal one.&lt;/p&gt;
 
-&lt;p&gt;Additionally, during inference we’ll use &lt;script type=&quot;math/tex&quot;&gt;\gamma&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt; fixed and the expectation and variance will be computed over the entire population (using the first equation).&lt;/p&gt;
+&lt;p&gt;Additionally, during inference we’ll use \(\gamma\) and \(\beta\) fixed and the expectation and variance will be computed over the entire population (using the first equation).&lt;/p&gt;
 
 &lt;h3 id=&quot;back-to-layer-normalization&quot;&gt;Back to Layer Normalization&lt;/h3&gt;
 
-&lt;p&gt;Batch normalization is not easily extendable to Recurrent Neural Networks (RNN), because it requires running averages of the summed input statistics, to compute &lt;script type=&quot;math/tex&quot;&gt;\mu_\mathcal{B}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\sigma^2_\mathcal{B}&lt;/script&gt;. However, the summed inputs in a RNN often vary with the length of the sequence, so applying batch normalization to RNNs appears to require different statistics for different time-steps. Moreover it cannot be applied to online learning tasks (with batch size = 1).&lt;/p&gt;
+&lt;p&gt;Batch normalization is not easily extendable to Recurrent Neural Networks (RNN), because it requires running averages of the summed input statistics, to compute \(\mu_\mathcal{B}\) and \(\sigma^2_\mathcal{B}\). However, the summed inputs in a RNN often vary with the length of the sequence, so applying batch normalization to RNNs appears to require different statistics for different time-steps. Moreover it cannot be applied to online learning tasks (with batch size = 1).&lt;/p&gt;
 
 &lt;p&gt;So they proposed layer normalization, that normalises the layers as follows:&lt;/p&gt;
 
-&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;a^l&lt;/script&gt; be the vector of outputs of the &lt;script type=&quot;math/tex&quot;&gt;l^{\text{th}}&lt;/script&gt; hidden layer, and &lt;script type=&quot;math/tex&quot;&gt;a^l \in R^H&lt;/script&gt; (each hidden layer has &lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt; hidden units), then:&lt;/p&gt;
+&lt;p&gt;Let \(a^l\) be the vector of outputs of the \(l^{\text{th}}\) hidden layer, and \(a^l \in R^H\) (each hidden layer has \(H\) hidden units), then:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu^l = \frac{1}{H} \sum_{i=1}^H a_i^l \qquad \sigma^l = \sqrt{\frac{1}{H}\sum_{i=1}^H (a_i^l - \mu^l)^2}&lt;/script&gt;
+\[\mu^l = \frac{1}{H} \sum_{i=1}^H a_i^l \qquad \sigma^l = \sqrt{\frac{1}{H}\sum_{i=1}^H (a_i^l - \mu^l)^2}\]
 
-&lt;p&gt;This looks really similar to the above equations for &lt;script type=&quot;math/tex&quot;&gt;\mu_\mathcal{B}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\sigma^2_\mathcal{B}&lt;/script&gt;, however the equations here use only the hidden layer output whereas the ones above use the whole batch.&lt;/p&gt;
+&lt;p&gt;This looks really similar to the above equations for \(\mu_\mathcal{B}\) and \(\sigma^2_\mathcal{B}\), however the equations here use only the hidden layer output whereas the ones above use the whole batch.&lt;/p&gt;
 
-&lt;p&gt;Similarly as BN, we’ll learn a linear function (&lt;script type=&quot;math/tex&quot;&gt;\gamma&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;) or as they call it in the paper, a gain function &lt;script type=&quot;math/tex&quot;&gt;g&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Similarly as BN, we’ll learn a linear function (\(\gamma\) and \(\beta\)) or as they call it in the paper, a gain function \(g\).&lt;/p&gt;
 
 &lt;p&gt;Unlike BN, LN is used the same way in training and test times.&lt;/p&gt;
 
@@ -297,7 +296,7 @@ q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp; \text{if} \quad y=y
 
 &lt;p&gt;The Transformer is an encoder-decoder architecture, the encoder corresponds to the left side of the image below (Figure 1) and the decoder to the right one. In this paper the authors introduced the multi-head self-attention layer and the positional encodings used in the architecture (details in the next 2 sections).&lt;/p&gt;
 
-&lt;p&gt;Essentially, token embeddings are added with their positional encoding and used as inputs in the encoder and decoder. The encoder is composed of a stack of N=6 layers, we can see one of such layers in Figure 1. The decoder is also composed of a stack of N=6 identical layers, which has the two sub-layers of the encoder but it inserts a third sub-layer first that performs a multi-head attention over the output. Each feed-forward and multi-head self-attention layer is followed by a residual connection and a layer normalization, thus the output of each sub-layer is &lt;script type=&quot;math/tex&quot;&gt;\text{LayerNorm}(x+\text{SubLayer}(x))&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Essentially, token embeddings are added with their positional encoding and used as inputs in the encoder and decoder. The encoder is composed of a stack of N=6 layers, we can see one of such layers in Figure 1. The decoder is also composed of a stack of N=6 identical layers, which has the two sub-layers of the encoder but it inserts a third sub-layer first that performs a multi-head attention over the output. Each feed-forward and multi-head self-attention layer is followed by a residual connection and a layer normalization, thus the output of each sub-layer is \(\text{LayerNorm}(x+\text{SubLayer}(x))\).&lt;/p&gt;
 
 &lt;p&gt;Some extra details:&lt;/p&gt;
 
@@ -324,14 +323,13 @@ q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp; \text{if} \quad y=y
 
 &lt;p&gt;&lt;strong&gt;Motivation&lt;/strong&gt;: Since there’s no recurrence, a positional encoding vector is added to the token embedding to inject information about its position in the text.&lt;/p&gt;
 
-&lt;p&gt;The &lt;script type=&quot;math/tex&quot;&gt;PE(w_t)&lt;/script&gt;, the positional encoding for the word &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; at position &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;, is a vector of dimension &lt;script type=&quot;math/tex&quot;&gt;d_{model}&lt;/script&gt; equal to the embedding dimension. We compute each dimension &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; of this vector as follows:&lt;/p&gt;
+&lt;p&gt;The \(PE(w_t)\), the positional encoding for the word \(w\) at position \(t\), is a vector of dimension \(d_{model}\) equal to the embedding dimension. We compute each dimension \(i\) of this vector as follows:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) &amp; \text{if} \quad i=2j \\      cos(k_j* t) &amp; \text{if} \quad i=2j+1 \\\end{array} \right. \\[20pt]\text{where,} \quad k_j = \frac{1}{10000^{2i/d_{model}}} %]]&gt;&lt;/script&gt;
+\[PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) &amp;amp; \text{if} \quad i=2j \\      cos(k_j* t) &amp;amp; \text{if} \quad i=2j+1 \\\end{array} \right. \\[20pt]\text{where,} \quad k_j = \frac{1}{10000^{2i/d_{model}}}\]
 
 &lt;p&gt;Which give as,&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;PE(w_t) = \begin{bmatrix}sin(k_0t)\\cos(k_0t)\\... \\sin(k_{d/2}t)\\cos(k_{d/2}t)\end{bmatrix}&lt;/script&gt;
+\[PE(w_t) = \begin{bmatrix}sin(k_0t)\\cos(k_0t)\\... \\sin(k_{d/2}t)\\cos(k_{d/2}t)\end{bmatrix}\]
 
 &lt;p&gt;We can think of this as a bit representation of numbers, with each dimension of the vector as a bit, since each bit changes periodically and we can tell that one number is bigger than another because of the bits activated and their order. More of this intuition in &lt;a href=&quot;https://kazemnejad.com/blog/transformer_architecture_positional_encoding/&quot;&gt;this blog post&lt;/a&gt;.&lt;/p&gt;
 
@@ -354,9 +352,9 @@ PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) &amp; \text{if} \quad i=2j 
 
 &lt;p&gt;The specific attention used here, is called &lt;em&gt;scaled dot-product&lt;/em&gt; because the compatibility function used is:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\text{weight}(q,k_i) =\text{softmax}(\frac{q\cdot k_i}{\sqrt{d_k}}) \quad \text{where} \, q,k_i \in \!R^{d_k}&lt;/script&gt;
+\[\text{weight}(q,k_i) =\text{softmax}(\frac{q\cdot k_i}{\sqrt{d_k}}) \quad \text{where} \, q,k_i \in \!R^{d_k}\]
 
-&lt;p&gt;The authors decided to use a dot-product attention over an additive attention because it is faster to compute and more space-efficient. But it has been shown to perform worse for larger dimensions of the input (&lt;script type=&quot;math/tex&quot;&gt;d_k&lt;/script&gt;), thus they added the scaling factor &lt;script type=&quot;math/tex&quot;&gt;\sqrt{d_k}&lt;/script&gt; to counteract the effect of the dot product getting too large (which they suspect is the problem).&lt;/p&gt;
+&lt;p&gt;The authors decided to use a dot-product attention over an additive attention because it is faster to compute and more space-efficient. But it has been shown to perform worse for larger dimensions of the input (\(d_k\)), thus they added the scaling factor \(\sqrt{d_k}\) to counteract the effect of the dot product getting too large (which they suspect is the problem).&lt;/p&gt;
 
 &lt;h4 id=&quot;masked-multi-head-self-attention&quot;&gt;Masked Multi-Head Self-Attention&lt;/h4&gt;
 

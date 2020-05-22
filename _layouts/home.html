@@ -3,31 +3,30 @@ layout: default
 ---
 
 <div class="home">
-  {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-  {%- endif -%}
 
-  {{ content }}
+    {% for post in site.posts %}
+    {% unless post.next %}
+      <h2 class="code">{{ post.date | date: '%b %Y' }}</h2>
+    {% else %}
+      {% capture year %}{{ post.date | date: '%b %Y' }}{% endcapture %}
+      {% capture nyear %}{{ post.next.date | date: '%b %Y' }}{% endcapture %}
+      {% if year != nyear %}
+        <h2 class="code" style="margin-top: 2em;">{{ post.date | date: '%b %Y' }}</h2>
+      {% endif %}
+    {% endunless %}
 
-  {%- if site.posts.size > 0 -%}
-    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
-    <ul class="post-list">
-      {%- for post in site.posts -%}
+    <ul>
       <li>
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <h3>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
+        <div class="post-date code">
+          <span>{{ post.date | date: "%b %d" }}</span>
+        </div>
+        <div class="title">
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </div>
       </li>
-      {%- endfor -%}
     </ul>
 
-  {%- endif -%}
+  {% endfor %}
+
 
 </div>

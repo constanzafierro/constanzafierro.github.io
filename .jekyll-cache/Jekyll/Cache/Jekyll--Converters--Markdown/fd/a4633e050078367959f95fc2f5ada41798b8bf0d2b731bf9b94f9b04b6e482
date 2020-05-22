@@ -1,4 +1,4 @@
-I"ò <script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+I"€<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
 <blockquote>
@@ -19,7 +19,7 @@
 
 <p>The Transformer is an encoder-decoder architecture, the encoder corresponds to the left side of the image below (Figure 1) and the decoder to the right one. In this paper the authors introduced the multi-head self-attention layer and the positional encodings used in the architecture (details in the next 2 sections).</p>
 
-<p>Essentially, token embeddings are added with their positional encoding and used as inputs in the encoder and decoder. The encoder is composed of a stack of N=6 layers, we can see one of such layers in Figure 1. The decoder is also composed of a stack of N=6 identical layers, which has the two sub-layers of the encoder but it inserts a third sub-layer first that performs a multi-head attention over the output. Each feed-forward and multi-head self-attention layer is followed by a residual connection and a layer normalization, thus the output of each sub-layer is <script type="math/tex">\text{LayerNorm}(x+\text{SubLayer}(x))</script>.</p>
+<p>Essentially, token embeddings are added with their positional encoding and used as inputs in the encoder and decoder. The encoder is composed of a stack of N=6 layers, we can see one of such layers in Figure 1. The decoder is also composed of a stack of N=6 identical layers, which has the two sub-layers of the encoder but it inserts a third sub-layer first that performs a multi-head attention over the output. Each feed-forward and multi-head self-attention layer is followed by a residual connection and a layer normalization, thus the output of each sub-layer is \(\text{LayerNorm}(x+\text{SubLayer}(x))\).</p>
 
 <p>Some extra details:</p>
 
@@ -46,14 +46,13 @@
 
 <p><strong>Motivation</strong>: Since thereâ€™s no recurrence, a positional encoding vector is added to the token embedding to inject information about its position in the text.</p>
 
-<p>The <script type="math/tex">PE(w_t)</script>, the positional encoding for the word <script type="math/tex">w</script> at position <script type="math/tex">t</script>, is a vector of dimension <script type="math/tex">d_{model}</script> equal to the embedding dimension. We compute each dimension <script type="math/tex">i</script> of this vector as follows:</p>
+<p>The \(PE(w_t)\), the positional encoding for the word \(w\) at position \(t\), is a vector of dimension \(d_{model}\) equal to the embedding dimension. We compute each dimension \(i\) of this vector as follows:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) & \text{if} \quad i=2j \\      cos(k_j* t) & \text{if} \quad i=2j+1 \\\end{array} \right. \\[20pt]\text{where,} \quad k_j = \frac{1}{10000^{2i/d_{model}}} %]]></script>
+\[PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) &amp; \text{if} \quad i=2j \\      cos(k_j* t) &amp; \text{if} \quad i=2j+1 \\\end{array} \right. \\[20pt]\text{where,} \quad k_j = \frac{1}{10000^{2i/d_{model}}}\]
 
 <p>Which give as,</p>
 
-<script type="math/tex; mode=display">PE(w_t) = \begin{bmatrix}sin(k_0t)\\cos(k_0t)\\... \\sin(k_{d/2}t)\\cos(k_{d/2}t)\end{bmatrix}</script>
+\[PE(w_t) = \begin{bmatrix}sin(k_0t)\\cos(k_0t)\\... \\sin(k_{d/2}t)\\cos(k_{d/2}t)\end{bmatrix}\]
 
 <p>We can think of this as a bit representation of numbers, with each dimension of the vector as a bit, since each bit changes periodically and we can tell that one number is bigger than another because of the bits activated and their order. More of this intuition in <a href="https://kazemnejad.com/blog/transformer_architecture_positional_encoding/">this blog post</a>.</p>
 
@@ -76,9 +75,9 @@ PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) & \text{if} \quad i=2j \\  
 
 <p>The specific attention used here, is called <em>scaled dot-product</em> because the compatibility function used is:</p>
 
-<script type="math/tex; mode=display">\text{weight}(q,k_i) =\text{softmax}(\frac{q\cdot k_i}{\sqrt{d_k}}) \quad \text{where} \, q,k_i \in \!R^{d_k}</script>
+\[\text{weight}(q,k_i) =\text{softmax}(\frac{q\cdot k_i}{\sqrt{d_k}}) \quad \text{where} \, q,k_i \in \!R^{d_k}\]
 
-<p>The authors decided to use a dot-product attention over an additive attention because it is faster to compute and more space-efficient. But it has been shown to perform worse for larger dimensions of the input (<script type="math/tex">d_k</script>), thus they added the scaling factor <script type="math/tex">\sqrt{d_k}</script> to counteract the effect of the dot product getting too large (which they suspect is the problem).</p>
+<p>The authors decided to use a dot-product attention over an additive attention because it is faster to compute and more space-efficient. But it has been shown to perform worse for larger dimensions of the input (\(d_k\)), thus they added the scaling factor \(\sqrt{d_k}\) to counteract the effect of the dot product getting too large (which they suspect is the problem).</p>
 
 <h4 id="masked-multi-head-self-attention">Masked Multi-Head Self-Attention</h4>
 
