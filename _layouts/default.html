@@ -10,6 +10,11 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
+        {%- if page.layout == 'post' -%}
+        <div class="top-page-navigation code">
+          <a class="home" href="{{ "/" | prepend: site.baseurl | prepend: site.url }}" title="Back to Index">&lt;&lt Index</a>
+        </div>
+      {% endif %}
         {{ content }}
       </div>
       {%- if page.layout == 'post' -%}

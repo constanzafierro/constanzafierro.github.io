@@ -6,12 +6,12 @@ layout: default
 
     {% for post in site.posts %}
     {% unless post.next %}
-      <h2 class="code">{{ post.date | date: '%b %Y' }}</h2>
+      <h3 class="code">{{ post.date | date: '%b %Y' }}</h3>
     {% else %}
       {% capture year %}{{ post.date | date: '%b %Y' }}{% endcapture %}
       {% capture nyear %}{{ post.next.date | date: '%b %Y' }}{% endcapture %}
       {% if year != nyear %}
-        <h2 class="code" style="margin-top: 2em;">{{ post.date | date: '%b %Y' }}</h2>
+        <h3 class="code" style="margin-top: 2em;">{{ post.date | date: '%b %Y' }}</h3>
       {% endif %}
     {% endunless %}
 
