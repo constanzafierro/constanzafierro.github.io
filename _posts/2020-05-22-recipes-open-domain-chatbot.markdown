@@ -34,9 +34,17 @@ description="Figure 1. Poly encoder architecture." zoom=45 %}
 2.  Left side of Figure 1: It encodes the context using another transformer and then performing $$m$$ attentions (with $$m$$ a hyper parameter). Each attention (see the definition [here](https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need#scaled-dot-product-attention)) uses as keys and values the transformer output and as query a learned code $$c_i$$ unique for each attention. It then computes another attention on top of those embeddings, where the query is the $$y_{cand_i}$$ and the keys and values are the output from the other attention $$y^i_{ctxt}$$. In equations:
 
 $$
-\text{Transformer output} \qquad T(x) = (h_1, ..., h_N)\\
-y^i_{ctxt} = \sum_jw_j^{c_i}h_j \qquad \text{where} \; (w_1^{c_i}, ..., w_N^{c_i}) = \text{softmax}(c_i\cdot h_1, ..., c_i\cdot h_N) \\
-y_{ctxt} = \sum_iw_i y^i_{ctxt} \qquad \text{where} \; (w_1, ..., w_m) = \text{softmax}(y_{cand_i}\cdot y_{ctxt}^1, ..., y_{cand_i}\cdot y_{ctxt}^m)
+T(x) = (h_1, ..., h_N) \qquad \text{(Transformer output)}\\
+$$
+
+$$
+y^i_{ctxt} = \sum_jw_j^{c_i}h_j \qquad  \text{, where:} \\
+(w_1^{c_i}, ..., w_N^{c_i}) = \text{softmax}(c_i\cdot h_1, ..., c_i\cdot h_N) \\
+$$
+
+$$
+y_{ctxt} = \sum_iw_i y^i_{ctxt} \qquad \text{, where:}\\
+(w_1, ..., w_m) = \text{softmax}(y_{cand_i}\cdot y_{ctxt}^1, ..., y_{cand_i}\cdot y_{ctxt}^m)
 $$
 
 ### Generator 

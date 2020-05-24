@@ -284,7 +284,7 @@ body { border-top: 5px solid #424242; border-bottom: 5px solid #424242; font-fam
 
 h1, h2, h3, h4, h5, h6 { font-family: 'Proxima-Nova-Bold',sans-serif; font-weight: bold; margin: 1em 0 0.3em; }
 
-blockquote { letter-spacing: -0.5px; font-family: 'Proxima-Nova-Thin',sans-serif; }
+blockquote { letter-spacing: -0.5px; font-family: 'Proxima-Nova-Thin',sans-serif; font-weight: bold; }
 
 /** Links */
 a { color: #12bd90; text-decoration: none; }
