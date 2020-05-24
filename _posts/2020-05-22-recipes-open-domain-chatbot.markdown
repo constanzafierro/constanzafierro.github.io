@@ -7,13 +7,13 @@ permalink : "nlp-summaries/recipes-open-domain-chatbot"
 ---
 {% include scripts.html %}
 
-> ([Roller et. al, 2020](https://arxiv.org/abs/2004.13637)). This paper studies in depth the performance of a chatbot based in the Transformer. It shows that it's able to respond in a really human way, and it's able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other locutor is saying.
+> ([Roller et. al, 2020](https://arxiv.org/abs/2004.13637)). This paper studies in depth the performance of a chatbot based on the Transformer. It shows that it's able to respond in a really human way, and it's able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other locutor is saying.
 
 ### What does it propose?
 
 It constructs different chatbots based on the Transformer, and it analyses different axes of developing a chatbot. It finds that:
 
-- Fine tuning in datasets that focus on personality, empathy, knowledge, etc. Makes the chatbot more human (even when using smaller models).
+- Fine tuning on datasets that focus on personality, empathy, knowledge, etc. Makes the chatbot more human (even when using smaller models).
 - It tries different decoding strategies, showing that beam search can be as good or better than  sampling.
 - It presents the flaws of the developed models.
 
@@ -67,9 +67,9 @@ description="Figure 2. Retrieve and Refine architecture." zoom=55 %}
 
 ## Training objectives 
 
-- <u>Retriever</u>: cross entropy over the $$y_{cand_i}$$ where $$y_{cand_1}$$ is the score of the correct reponse and the rest are negatives.
+- <u>Retriever</u>: cross entropy over the $$y_{cand_i}$$ where $$y_{cand_1}$$ is the score of the correct response and the rest are negatives.
 - <u>Generator</u>: standard maximum likelihood estimation (MLE)
-- <u>Dialogue retrieval</u>: with MLE is not clear the relation between the retrieval response and the gold label (the correct answer), it has been proven that just using MLE makes the model ignore the retrieved utterance. Thus, here they replace the gold label with the retrieved utterance $$\alpha \%$$ of the times.
+- <u>Dialogue retrieval</u>: with MLE is not clear the relation between the retrieval response and the gold label (the correct answer). It has been proven that just using MLE makes the model ignore completely the retrieved utterance. Thus, here they replace the gold label with the retrieved utterance $$\alpha \%$$ of the times.
 - <u>Knowledge retrieval</u>: here we can simply use MLE because the fine-tuning datasets used have a clear correspondence between the correct knowledge retrieval and response.
 
 ### Unlikelihood training
@@ -78,13 +78,13 @@ description="Figure 2. Retrieve and Refine architecture." zoom=55 %}
 
 They also tried this objective because it was created to mitigate problems of MLE when training language models, such as repetition: using the same tokens more frequently than a human, and token distribution mismatch: using low frequency tokens (more specific tokens) too rarely compared to humans.
 
-<u>Main idea:</u> to decrease the model’s probability of certain tokens, called negative candidates $$C_t$$. To do this, we'll add an expression to the MLE loss that we'll take these candidates into account, this is what we call unlikelihood loss:
+<u>Main idea:</u> to decrease the model’s probability of certain tokens, called negative candidates $$C_t$$. To do this, will add an expression to the MLE loss that we'll take these candidates into account, this is what we call unlikelihood loss:
 
 $$
 -\sum_{c\in C_t}\log(1-p_\theta(c|x_{< t}))
 $$
 
-Where $$p_\theta$$ is our language model predictions, and $$x_{< t}$$ is a sequence of $$t$$ tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximize the logarithm, therefore we'll be maximizing whatever is inside it. Since in this case we don't want the negative candidates ($$c$$) to be highly probable, we'll maximize the likelihood of not having them, so we'll maximize $$ 1-p_\theta(...) $$.
+Where $$p_\theta$$ is our language model predictions, and $$x_{< t}$$ is a sequence of $$t$$ tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximizing the logarithm, therefore we'll be maximizing whatever is inside it. Since in this case we don't want the negative candidates ($$c$$) to be highly probable, we'll maximize the likelihood of not having them, so we'll maximize $$ 1-p_\theta(...) $$.
 
 Thus, the actual training objective will be a mixture (gated by $$\alpha$$ hyper parameter) of the unlikelihood of bad candidates and the likelihood of the next token:
 
