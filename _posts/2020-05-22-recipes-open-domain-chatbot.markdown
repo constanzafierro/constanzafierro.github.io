@@ -7,19 +7,21 @@ permalink : "nlp-summaries/recipes-open-domain-chatbot"
 ---
 {% include scripts.html %}
 
-> ([Roller et. al, 2020](https://arxiv.org/abs/2004.13637)). This paper studies in depth the performance of a chatbot based on the Transformer. It shows that it's able to respond in a really human way, and it's able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other locutor is saying.
+> ([Roller et. al, 2020](https://arxiv.org/abs/2004.13637)). This paper studies in depth the performance of a chatbot based on the Transformer. It shows that it's able to respond in a really human way, and it's able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other speaker is saying.
 
 ### What does it propose?
 
-It constructs different chatbots based on the Transformer, and it analyses different axes of developing a chatbot. It finds that:
+The paper constructs different chatbots based on the Transformer, and it analyses different axes of developing a chatbot. It finds that:
 
-- Fine tuning on datasets that focus on personality, empathy, knowledge, etc. Makes the chatbot more human (even when using smaller models).
+- Fine tuning on datasets that focus on personality, empathy, knowledge, etc. makes the chatbot more human (even when using smaller models).
 - It tries different decoding strategies, showing that beam search can be as good or better than  sampling.
-- It presents the flaws of the developed models.
+- It presents some of the the flaws of the developed models.
 
-## Models
+To construct a chatbot we need to build a system that generates text answers given a previous dialogue. To achieve this we need: a model, training data, a way to train this model (a loss function), a decoder (or simply an algorithm) to produce an answer given the model output, and finally evaluation metrics. In the following sections (1–5), we'll go through the different strategies tested in this paper for each of those steps, and then we'll look at the results obtained (Section 6).
 
-### Retriever 
+## 1. Models
+
+### 1.1 Retriever 
 
 ([Humeau et al., 2019](https://arxiv.org/pdf/1905.01969))
 
@@ -47,13 +49,13 @@ y_{ctxt} = \sum_iw_i y^i_{ctxt} \qquad \text{, where:}\\
 (w_1, ..., w_m) = \text{softmax}(y_{cand_i}\cdot y_{ctxt}^1, ..., y_{cand_i}\cdot y_{ctxt}^m)
 $$
 
-### Generator 
+### 1.2 Generator 
 
 ([Aswani et. al, 2017](https://arxiv.org/abs/1706.03762))
 
 Standard Seq2seq model, like the transformer of "Attention is all you need" ([summary here](https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need)) but way bigger (90M, 2.7B, 9.4B). In comparison, Meena Google's chatbot ([Adiwardana et. al, 2020](https://arxiv.org/abs/2001.09977)) has 2.7B parameters.
 
-### Retrieve and refine
+### 1.3 Retrieve and refine
 
 ([Weston et al., 2018](https://arxiv.org/abs/1808.04776))
 
@@ -65,18 +67,18 @@ Trying to solve the problems of generator models (hallucinate knowledge, unable 
 {% include image.html file="../assets/img/nlp-summary-03/retnrefine.png"
 description="Figure 2. Retrieve and Refine architecture." zoom=55 %}
 
-## Training objectives 
+## 2. Training objectives 
 
 - <u>Retriever</u>: cross entropy over the $$y_{cand_i}$$ where $$y_{cand_1}$$ is the score of the correct response and the rest are negatives.
 - <u>Generator</u>: standard maximum likelihood estimation (MLE)
-- <u>Dialogue retrieval</u>: with MLE is not clear the relation between the retrieval response and the gold label (the correct answer). It has been proven that just using MLE makes the model ignore completely the retrieved utterance. Thus, here they replace the gold label with the retrieved utterance $$\alpha \%$$ of the times.
+- <u>Dialogue retrieval</u>: it has been proven that simply using MLE makes the model ignore completely the retrieved utterance. This probably happens because the relation between the retrieval response and the gold label (the correct final answer) is not clear. Thus, here they replace the gold label with the retrieved utterance α% of the times.
 - <u>Knowledge retrieval</u>: here we can simply use MLE because the fine-tuning datasets used have a clear correspondence between the correct knowledge retrieval and response.
 
-### Unlikelihood training
+### 2.1 Unlikelihood training
 
 ([Welleck et al., 2020](https://arxiv.org/pdf/1908.04319))
 
-They also tried this objective because it was created to mitigate problems of MLE when training language models, such as repetition: using the same tokens more frequently than a human, and token distribution mismatch: using low frequency tokens (more specific tokens) too rarely compared to humans.
+They also tried this objective because it was created to mitigate problems of MLE when training language models, such as repetition (using the same tokens more frequently than a human), and token distribution mismatch (using specific tokens that have  low frequency too rarely compared to humans).
 
 <u>Main idea:</u> to decrease the model’s probability of certain tokens, called negative candidates $$C_t$$. To do this, will add an expression to the MLE loss that we'll take these candidates into account, this is what we call unlikelihood loss:
 
@@ -84,7 +86,7 @@ $$
 -\sum_{c\in C_t}\log(1-p_\theta(c|x_{< t}))
 $$
 
-Where $$p_\theta$$ is our language model predictions, and $$x_{< t}$$ is a sequence of $$t$$ tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximizing the logarithm, therefore we'll be maximizing whatever is inside it. Since in this case we don't want the negative candidates ($$c$$) to be highly probable, we'll maximize the likelihood of not having them, so we'll maximize $$ 1-p_\theta(...) $$.
+Where $$p_\theta$$ is our language model predictions, and $$x_{< t}$$ is the sequence of $$t$$ preceding tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximizing the logarithm, therefore we'll be maximizing whatever is inside it. Since in this case we don't want the negative candidates ($$c$$) to be highly probable, we'll maximize the likelihood of not having them, so we'll maximize $$ 1-p_\theta(...) $$.
 
 Thus, the actual training objective will be a mixture (gated by $$\alpha$$ hyper parameter) of the unlikelihood of bad candidates and the likelihood of the next token:
 
@@ -94,7 +96,7 @@ $$
 
  In the paper they defined the set of bad candidates as the tokens that were generated more frequently by the model than by humans. To measure these frequencies they kept a running count of the distribution of the tokens generated by the model and they compared it to the distribution of the gold responses.
 
-## Decoding
+## 3. Decoding
 
 They tried different decoding strategies:
 
@@ -108,7 +110,7 @@ They also tried additional constraints for the decoding process:
 2. **Predictive length**: Predict (with a retriever model) the minimum length of the answer (e.g., <10, <20, <30, >30 tokens). And then we do the same as in 1.
 3. **Beam blocking**: Force the model to not produce in the next utterance a trigram (group of 3 words) that's in the input or in the utterance itself. That can be achieved by setting to 0 the probability of the words that would create a trigram that already exists.
 
-## Training data
+## 4. Training data
 
 Train:
 
@@ -121,24 +123,26 @@ Two-way conversational data to fine tune the models:
 - Wizard of Wikipedia ([Dinan et al., 2018](https://arxiv.org/abs/1811.01241)) focuses on **knowledge**. 
 - Blended Skill Talk ([Smith et al., 2020](https://arxiv.org/pdf/2004.08449)) provides a dataset that focuses on blending all the previous skills. This is constructed with one human speaking freely (using its persona) and the other one guided, that is he/she has to choose an utterance response from 3 different possibilities constructed by a model trained in each of the three previous datasets.
 
-## Evaluation methods
+## 5. Evaluation methods
 
-#### ACUTE-eval
+#### 5.1 ACUTE-eval
 
-This is a manual evaluation where two different dialogues (between a model an a human) are presented to a person that needs to answer:
+This is a manual evaluation where two different dialogues (between a model and a human) are presented to a person that needs to choose one of the conversations, that is to choose one of the two models, for each following question:
 
 - “Who would you prefer to talk to for a long conversation?” (Engagingness)
 -  “Which speaker sounds more human?” (Humanness)
 
-#### Self-Chat ACUTE-Eval
+So, we send the two dialogues to several raters and we count the votes given to each model.
+
+#### 5.2 Self-Chat ACUTE-Eval
 
 Same as ACUTE-eval but we the dialogues are generated by the model talking to itself instead of a human.
 
-## Results
+## 6. Results
 
 The results are comparisons in the votes given for each question presented above. In the paper they say that some results are "not significant", which basically means that given the amount of answers collected and the votes in each side, is not certain if one is better than the other, as in the difference could be noise of the measure.
 
-### Results of Self-Chat ACUTE-Eval
+### 6.1 Results of Self-Chat ACUTE-Eval
 
 - When comparing the **3 models** using standard beam search (beam size 10, no minimum beam decoding constraint, but with context and response 3-gram blocking), the results are Retriever > RetNRef > Generator.
 - When comparing <u>decoding choices</u>: 
@@ -150,7 +154,7 @@ The results are comparisons in the votes given for each question presented above
 - Using the persona context (description about a specific persona) after having fine tuning gives a little improvement compared to not using them.
 - Unlikelihood training has a small gain (although it's not statistically significant). Notice that the conversations in these experiments are short so maybe the advantages of this training objective are not totally exploited.
 
-### Results of ACUTE-eval
+### 6.2 Results of ACUTE-eval
 
 Results of conversations of 14 turns between humans-chatbot.
 
@@ -161,7 +165,7 @@ Results of conversations of 14 turns between humans-chatbot.
 
 When comparing one human-chatbot dialogue to a human-human dialogue: the results that are statistically significant show that the models in this paper are 37% of the times better than human-human dialogues in the engagingness question. Additionally, the generative model is 49% of the times better in the same question, but this is not statistically significant. Even though this result sounds promising, the model is not this close to a human dialogue, below we can see the flaws that the authors presented and that are not really measured by this evaluation.
 
-### Failure cases
+### 6.3 Failure cases
 
 - **Words repetition.** The minimum length helps to create more detailed messages, but the core problem still remains. Some 3-grams were over-expressed compared to human-human conversations, such as: “do you like”, “lot of fun”, “have any hobbies”.
   - Evaluation problem: the current evaluation does not seem to expose this as boring because the conversations are short and are evaluated separately.

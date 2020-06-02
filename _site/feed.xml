@@ -1,23 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-24T20:27:30+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><entry><title type="html">Summary: Recipes for building an open-domain chatbot</title><link href="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" rel="alternate" type="text/html" title="Summary: Recipes for building an open-domain chatbot" /><published>2020-05-23T20:00:00+02:00</published><updated>2020-05-23T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-02T21:01:34+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza’s blog</title><entry><title type="html">Summary: Recipes for building an open-domain chatbot</title><link href="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" rel="alternate" type="text/html" title="Summary: Recipes for building an open-domain chatbot" /><published>2020-05-23T20:00:00+02:00</published><updated>2020-05-23T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;(&lt;a href=&quot;https://arxiv.org/abs/2004.13637&quot;&gt;Roller et. al, 2020&lt;/a&gt;). This paper studies in depth the performance of a chatbot based in the Transformer. It shows that it’s able to respond in a really human way, and it’s able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other locutor is saying.&lt;/p&gt;
+  &lt;p&gt;(&lt;a href=&quot;https://arxiv.org/abs/2004.13637&quot;&gt;Roller et. al, 2020&lt;/a&gt;). This paper studies in depth the performance of a chatbot based on the Transformer. It shows that it’s able to respond in a really human way, and it’s able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other speaker is saying.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;what-does-it-propose&quot;&gt;What does it propose?&lt;/h3&gt;
 
-&lt;p&gt;It constructs different chatbots based on the Transformer, and it analyses different axes of developing a chatbot. It finds that:&lt;/p&gt;
+&lt;p&gt;The paper constructs different chatbots based on the Transformer, and it analyses different axes of developing a chatbot. It finds that:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Fine tuning in datasets that focus on personality, empathy, knowledge, etc. Makes the chatbot more human (even when using smaller models).&lt;/li&gt;
+  &lt;li&gt;Fine tuning on datasets that focus on personality, empathy, knowledge, etc. makes the chatbot more human (even when using smaller models).&lt;/li&gt;
   &lt;li&gt;It tries different decoding strategies, showing that beam search can be as good or better than  sampling.&lt;/li&gt;
-  &lt;li&gt;It presents the flaws of the developed models.&lt;/li&gt;
+  &lt;li&gt;It presents some of the the flaws of the developed models.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;models&quot;&gt;Models&lt;/h2&gt;
+&lt;p&gt;To construct a chatbot we need to build a system that generates text answers given a previous dialogue. To achieve this we need: a model, training data, a way to train this model (a loss function), a decoder (or simply an algorithm) to produce an answer given the model output, and finally evaluation metrics. In the following sections (1–5), we’ll go through the different strategies tested in this paper for each of those steps, and then we’ll look at the results obtained (Section 6).&lt;/p&gt;
 
-&lt;h3 id=&quot;retriever&quot;&gt;Retriever&lt;/h3&gt;
+&lt;h2 id=&quot;1-models&quot;&gt;1. Models&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-retriever&quot;&gt;1.1 Retriever&lt;/h3&gt;
 
 &lt;p&gt;(&lt;a href=&quot;https://arxiv.org/pdf/1905.01969&quot;&gt;Humeau et al., 2019&lt;/a&gt;)&lt;/p&gt;
 
@@ -43,13 +45,13 @@
 \[y_{ctxt} = \sum_iw_i y^i_{ctxt} \qquad \text{, where:}\\
 (w_1, ..., w_m) = \text{softmax}(y_{cand_i}\cdot y_{ctxt}^1, ..., y_{cand_i}\cdot y_{ctxt}^m)\]
 
-&lt;h3 id=&quot;generator&quot;&gt;Generator&lt;/h3&gt;
+&lt;h3 id=&quot;12-generator&quot;&gt;1.2 Generator&lt;/h3&gt;
 
 &lt;p&gt;(&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;Aswani et. al, 2017&lt;/a&gt;)&lt;/p&gt;
 
 &lt;p&gt;Standard Seq2seq model, like the transformer of “Attention is all you need” (&lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need&quot;&gt;summary here&lt;/a&gt;) but way bigger (90M, 2.7B, 9.4B). In comparison, Meena Google’s chatbot (&lt;a href=&quot;https://arxiv.org/abs/2001.09977&quot;&gt;Adiwardana et. al, 2020&lt;/a&gt;) has 2.7B parameters.&lt;/p&gt;
 
-&lt;h3 id=&quot;retrieve-and-refine&quot;&gt;Retrieve and refine&lt;/h3&gt;
+&lt;h3 id=&quot;13-retrieve-and-refine&quot;&gt;1.3 Retrieve and refine&lt;/h3&gt;
 
 &lt;p&gt;(&lt;a href=&quot;https://arxiv.org/abs/1808.04776&quot;&gt;Weston et al., 2018&lt;/a&gt;)&lt;/p&gt;
 
@@ -65,26 +67,26 @@
 &lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 2. Retrieve and Refine architecture.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
-&lt;h2 id=&quot;training-objectives&quot;&gt;Training objectives&lt;/h2&gt;
+&lt;h2 id=&quot;2-training-objectives&quot;&gt;2. Training objectives&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;u&gt;Retriever&lt;/u&gt;: cross entropy over the \(y_{cand_i}\) where \(y_{cand_1}\) is the score of the correct reponse and the rest are negatives.&lt;/li&gt;
+  &lt;li&gt;&lt;u&gt;Retriever&lt;/u&gt;: cross entropy over the \(y_{cand_i}\) where \(y_{cand_1}\) is the score of the correct response and the rest are negatives.&lt;/li&gt;
   &lt;li&gt;&lt;u&gt;Generator&lt;/u&gt;: standard maximum likelihood estimation (MLE)&lt;/li&gt;
-  &lt;li&gt;&lt;u&gt;Dialogue retrieval&lt;/u&gt;: with MLE is not clear the relation between the retrieval response and the gold label (the correct answer), it has been proven that just using MLE makes the model ignore the retrieved utterance. Thus, here they replace the gold label with the retrieved utterance \(\alpha \%\) of the times.&lt;/li&gt;
+  &lt;li&gt;&lt;u&gt;Dialogue retrieval&lt;/u&gt;: it has been proven that simply using MLE makes the model ignore completely the retrieved utterance. This probably happens because the relation between the retrieval response and the gold label (the correct final answer) is not clear. Thus, here they replace the gold label with the retrieved utterance α% of the times.&lt;/li&gt;
   &lt;li&gt;&lt;u&gt;Knowledge retrieval&lt;/u&gt;: here we can simply use MLE because the fine-tuning datasets used have a clear correspondence between the correct knowledge retrieval and response.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;unlikelihood-training&quot;&gt;Unlikelihood training&lt;/h3&gt;
+&lt;h3 id=&quot;21-unlikelihood-training&quot;&gt;2.1 Unlikelihood training&lt;/h3&gt;
 
 &lt;p&gt;(&lt;a href=&quot;https://arxiv.org/pdf/1908.04319&quot;&gt;Welleck et al., 2020&lt;/a&gt;)&lt;/p&gt;
 
-&lt;p&gt;They also tried this objective because it was created to mitigate problems of MLE when training language models, such as repetition: using the same tokens more frequently than a human, and token distribution mismatch: using low frequency tokens (more specific tokens) too rarely compared to humans.&lt;/p&gt;
+&lt;p&gt;They also tried this objective because it was created to mitigate problems of MLE when training language models, such as repetition (using the same tokens more frequently than a human), and token distribution mismatch (using specific tokens that have  low frequency too rarely compared to humans).&lt;/p&gt;
 
-&lt;p&gt;&lt;u&gt;Main idea:&lt;/u&gt; to decrease the model’s probability of certain tokens, called negative candidates \(C_t\). To do this, we’ll add an expression to the MLE loss that we’ll take these candidates into account, this is what we call unlikelihood loss:&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Main idea:&lt;/u&gt; to decrease the model’s probability of certain tokens, called negative candidates \(C_t\). To do this, will add an expression to the MLE loss that we’ll take these candidates into account, this is what we call unlikelihood loss:&lt;/p&gt;
 
 \[-\sum_{c\in C_t}\log(1-p_\theta(c|x_{&amp;lt; t}))\]
 
-&lt;p&gt;Where \(p_\theta\) is our language model predictions, and \(x_{&amp;lt; t}\) is a sequence of \(t\) tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximize the logarithm, therefore we’ll be maximizing whatever is inside it. Since in this case we don’t want the negative candidates (\(c\)) to be highly probable, we’ll maximize the likelihood of not having them, so we’ll maximize \(1-p_\theta(...)\).&lt;/p&gt;
+&lt;p&gt;Where \(p_\theta\) is our language model predictions, and \(x_{&amp;lt; t}\) is the sequence of \(t\) preceding tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximizing the logarithm, therefore we’ll be maximizing whatever is inside it. Since in this case we don’t want the negative candidates (\(c\)) to be highly probable, we’ll maximize the likelihood of not having them, so we’ll maximize \(1-p_\theta(...)\).&lt;/p&gt;
 
 &lt;p&gt;Thus, the actual training objective will be a mixture (gated by \(\alpha\) hyper parameter) of the unlikelihood of bad candidates and the likelihood of the next token:&lt;/p&gt;
 
@@ -92,7 +94,7 @@
 
 &lt;p&gt;In the paper they defined the set of bad candidates as the tokens that were generated more frequently by the model than by humans. To measure these frequencies they kept a running count of the distribution of the tokens generated by the model and they compared it to the distribution of the gold responses.&lt;/p&gt;
 
-&lt;h2 id=&quot;decoding&quot;&gt;Decoding&lt;/h2&gt;
+&lt;h2 id=&quot;3-decoding&quot;&gt;3. Decoding&lt;/h2&gt;
 
 &lt;p&gt;They tried different decoding strategies:&lt;/p&gt;
 
@@ -110,7 +112,7 @@
   &lt;li&gt;&lt;strong&gt;Beam blocking&lt;/strong&gt;: Force the model to not produce in the next utterance a trigram (group of 3 words) that’s in the input or in the utterance itself. That can be achieved by setting to 0 the probability of the words that would create a trigram that already exists.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;training-data&quot;&gt;Training data&lt;/h2&gt;
+&lt;h2 id=&quot;4-training-data&quot;&gt;4. Training data&lt;/h2&gt;
 
 &lt;p&gt;Train:&lt;/p&gt;
 
@@ -127,26 +129,28 @@
   &lt;li&gt;Blended Skill Talk (&lt;a href=&quot;https://arxiv.org/pdf/2004.08449&quot;&gt;Smith et al., 2020&lt;/a&gt;) provides a dataset that focuses on blending all the previous skills. This is constructed with one human speaking freely (using its persona) and the other one guided, that is he/she has to choose an utterance response from 3 different possibilities constructed by a model trained in each of the three previous datasets.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;evaluation-methods&quot;&gt;Evaluation methods&lt;/h2&gt;
+&lt;h2 id=&quot;5-evaluation-methods&quot;&gt;5. Evaluation methods&lt;/h2&gt;
 
-&lt;h4 id=&quot;acute-eval&quot;&gt;ACUTE-eval&lt;/h4&gt;
+&lt;h4 id=&quot;51-acute-eval&quot;&gt;5.1 ACUTE-eval&lt;/h4&gt;
 
-&lt;p&gt;This is a manual evaluation where two different dialogues (between a model an a human) are presented to a person that needs to answer:&lt;/p&gt;
+&lt;p&gt;This is a manual evaluation where two different dialogues (between a model and a human) are presented to a person that needs to choose one of the conversations, that is to choose one of the two models, for each following question:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;“Who would you prefer to talk to for a long conversation?” (Engagingness)&lt;/li&gt;
   &lt;li&gt;“Which speaker sounds more human?” (Humanness)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&quot;self-chat-acute-eval&quot;&gt;Self-Chat ACUTE-Eval&lt;/h4&gt;
+&lt;p&gt;So, we send the two dialogues to several raters and we count the votes given to each model.&lt;/p&gt;
+
+&lt;h4 id=&quot;52-self-chat-acute-eval&quot;&gt;5.2 Self-Chat ACUTE-Eval&lt;/h4&gt;
 
 &lt;p&gt;Same as ACUTE-eval but we the dialogues are generated by the model talking to itself instead of a human.&lt;/p&gt;
 
-&lt;h2 id=&quot;results&quot;&gt;Results&lt;/h2&gt;
+&lt;h2 id=&quot;6-results&quot;&gt;6. Results&lt;/h2&gt;
 
 &lt;p&gt;The results are comparisons in the votes given for each question presented above. In the paper they say that some results are “not significant”, which basically means that given the amount of answers collected and the votes in each side, is not certain if one is better than the other, as in the difference could be noise of the measure.&lt;/p&gt;
 
-&lt;h3 id=&quot;results-of-self-chat-acute-eval&quot;&gt;Results of Self-Chat ACUTE-Eval&lt;/h3&gt;
+&lt;h3 id=&quot;61-results-of-self-chat-acute-eval&quot;&gt;6.1 Results of Self-Chat ACUTE-Eval&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;When comparing the &lt;strong&gt;3 models&lt;/strong&gt; using standard beam search (beam size 10, no minimum beam decoding constraint, but with context and response 3-gram blocking), the results are Retriever &amp;gt; RetNRef &amp;gt; Generator.&lt;/li&gt;
@@ -163,7 +167,7 @@
   &lt;li&gt;Unlikelihood training has a small gain (although it’s not statistically significant). Notice that the conversations in these experiments are short so maybe the advantages of this training objective are not totally exploited.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;results-of-acute-eval&quot;&gt;Results of ACUTE-eval&lt;/h3&gt;
+&lt;h3 id=&quot;62-results-of-acute-eval&quot;&gt;6.2 Results of ACUTE-eval&lt;/h3&gt;
 
 &lt;p&gt;Results of conversations of 14 turns between humans-chatbot.&lt;/p&gt;
 
@@ -179,7 +183,7 @@
 
 &lt;p&gt;When comparing one human-chatbot dialogue to a human-human dialogue: the results that are statistically significant show that the models in this paper are 37% of the times better than human-human dialogues in the engagingness question. Additionally, the generative model is 49% of the times better in the same question, but this is not statistically significant. Even though this result sounds promising, the model is not this close to a human dialogue, below we can see the flaws that the authors presented and that are not really measured by this evaluation.&lt;/p&gt;
 
-&lt;h3 id=&quot;failure-cases&quot;&gt;Failure cases&lt;/h3&gt;
+&lt;h3 id=&quot;63-failure-cases&quot;&gt;6.3 Failure cases&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Words repetition.&lt;/strong&gt; The minimum length helps to create more detailed messages, but the core problem still remains. Some 3-grams were over-expressed compared to human-human conversations, such as: “do you like”, “lot of fun”, “have any hobbies”.
