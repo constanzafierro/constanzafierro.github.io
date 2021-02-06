@@ -83,6 +83,27 @@ blockquote {
   font-weight: 600;
 }
 
+// tags
+.post_tags {
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 0;
+}
+
+.post_tags > div {
+  margin: 5px;
+  margin-left: 0;
+}
+
+.post_tags p {
+  background-color: #daeaff;
+  border-radius: 11px;
+  padding: 5px;
+  margin-bottom: 0;
+  font-size: smaller;
+}
+
 // about
 
 .avatar {
@@ -175,6 +196,7 @@ blockquote {
 .home ul li .title {
   max-width: 100%;
   word-wrap: normal !important;
+  margin-bottom: 3px;
 }
 
 .home ul li .post-date {

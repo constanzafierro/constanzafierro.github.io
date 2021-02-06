@@ -1,38 +1,4 @@
-<!DOCTYPE html>
-<html lang="en"><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Recipes for building an open-domain chatbot | Constanza Fierro</title>
-<meta name="generator" content="Jekyll v4.0.1" />
-<meta property="og:title" content="Recipes for building an open-domain chatbot" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" />
-<meta property="og:url" content="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" />
-<meta property="og:site_name" content="Constanza Fierro" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-05-23T20:00:00+02:00" />
-<script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot"},"url":"http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot","@type":"BlogPosting","headline":"Recipes for building an open-domain chatbot","dateModified":"2020-05-23T20:00:00+02:00","datePublished":"2020-05-23T20:00:00+02:00","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Constanza Fierro" /></head>
-<body><main class="page-content" aria-label="Content">
-      <div class="wrapper"><div class="top-page-navigation code">
-          <a class="home" href="http://localhost:4000/" title="Back to Index">&lt;&lt Index</a>
-        </div>
-      
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline"><span>Recipes for building an open-domain chatbot</span></h1>
-    <p class="post-meta"><span>
-      <time class="dt-published" datetime="2020-05-23T20:00:00+02:00" itemprop="datePublished">May 23, 2020
-      </time></span></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+I"�D<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
 <blockquote>
@@ -246,36 +212,4 @@
 <h2 id="whats-next">What’s next!</h2>
 
 <p>This paper shows a really robust and advanced chatbot, however it also presented a lot of remaining challenges to really be near a human-like bot. If you’re interested in one of the challenges presented in this summary go and read the paper! 😀 Because it cites work that is trying to overcome these issues.</p>
-
-  </div><a class="u-url" href="/nlp-summaries/recipes-open-domain-chatbot" hidden></a>
-</article>
-
-      </div><div class="page-navigation code">
-        
-          <a class="home" href="http://localhost:4000/" title="Back to Index">&lt;&lt Index</a>
-        
-          <span> &middot; </span>
-          <a class="prev" href="http://localhost:4000/nlp-summaries/bert" title="PREV: Pre-training of Deep Bidirectional Transformers for Language Understanding">Pre-training of Deep Bidirectional Transformers for Language Understanding &gt;&gt</a>
-        
-      </div>
-      
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading"></h2>
-
-    <div class="footer-col-wrapper">
-      <ul class="flex-container">
-        <li class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/cfierro94"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username"></span></a></li><li><a href="https://www.twitter.com/constanzafierro"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username"></span></a></li></ul>
-</li>
-      </ul>
-    </div>
-
-  </div>
-
-</footer>
-</body>
-
-</html>
+:ET

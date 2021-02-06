@@ -1,9 +1,10 @@
 ---
 layout: post
-title:  "Summary: Recipes for building an open-domain chatbot"
+title:  "Recipes for building an open-domain chatbot"
 date:   2020-05-23 20:00:00 +0200
 categories: nlp-summaries
 permalink : "nlp-summaries/recipes-open-domain-chatbot"
+tags: ["Depth: 5","chatbot", "generation"]
 ---
 {% include scripts.html %}
 
@@ -21,18 +22,18 @@ To construct a chatbot we need to build a system that generates text answers giv
 
 ## 1. Models
 
-### 1.1 Retriever 
+### 1.1 Retriever
 
 ([Humeau et al., 2019](https://arxiv.org/pdf/1905.01969))
 
 {% include image.html file="../assets/img/nlp-summary-03/poly_encoder.png"
 description="Figure 1. Poly encoder architecture." zoom=45 %}
 
-<u>The idea</u>: given a dialogue history (context), it retrieves the next dialogue utterance by scoring a large set of candidate responses (typically all possible training responses). 
+<u>The idea</u>: given a dialogue history (context), it retrieves the next dialogue utterance by scoring a large set of candidate responses (typically all possible training responses).
 
 <u>How</u>: It constructs an embedding of the context ($$y_{ctxt}$$) and one for each response candidate ($$y_{cand_i}$$), to then calculate the score of each with the dot product: $$y_{cand_i}\cdot y_{ctxt}$$. These embeddings representations are constructed as follows:
 
-1.  Right side of Figure 1: It obtains the candidates embeddings  using a transformer encoder (BERT) and an aggregator function, that can be simply taking the classifier embedding $$C$$ of the output, or the average of the tokens. 
+1.  Right side of Figure 1: It obtains the candidates embeddings  using a transformer encoder (BERT) and an aggregator function, that can be simply taking the classifier embedding $$C$$ of the output, or the average of the tokens.
 2.  Left side of Figure 1: It encodes the context using another transformer and then performing $$m$$ attentions (with $$m$$ a hyper parameter). Each attention (see the definition [here](https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need#scaled-dot-product-attention)) uses as keys and values the transformer output and as query a learned code $$c_i$$ unique for each attention. It then computes another attention on top of those embeddings, where the query is the $$y_{cand_i}$$ and the keys and values are the output from the other attention $$y^i_{ctxt}$$. In equations:
 
 $$
@@ -49,7 +50,7 @@ y_{ctxt} = \sum_iw_i y^i_{ctxt} \qquad \text{, where:}\\
 (w_1, ..., w_m) = \text{softmax}(y_{cand_i}\cdot y_{ctxt}^1, ..., y_{cand_i}\cdot y_{ctxt}^m)
 $$
 
-### 1.2 Generator 
+### 1.2 Generator
 
 ([Aswani et. al, 2017](https://arxiv.org/abs/1706.03762))
 
@@ -67,7 +68,7 @@ Trying to solve the problems of generator models (hallucinate knowledge, unable 
 {% include image.html file="../assets/img/nlp-summary-03/retnrefine.png"
 description="Figure 2. Retrieve and Refine architecture." zoom=55 %}
 
-## 2. Training objectives 
+## 2. Training objectives
 
 - <u>Retriever</u>: cross entropy over the $$y_{cand_i}$$ where $$y_{cand_1}$$ is the score of the correct response and the rest are negatives.
 - <u>Generator</u>: standard maximum likelihood estimation (MLE)
@@ -120,7 +121,7 @@ Two-way conversational data to fine tune the models:
 
 - ConvAI2 dataset ([Zhang et al., 2018](https://arxiv.org/abs/1801.07243)) focuses on **personality** and engaging the other speaker. It gives a persona description to the speaker (which is concatenated to the history to use it as input in the model).
 -  Empathetic Dialogues ([Rashkin et al., 2018](https://arxiv.org/abs/1811.00207)) focuses on **empathy**.
-- Wizard of Wikipedia ([Dinan et al., 2018](https://arxiv.org/abs/1811.01241)) focuses on **knowledge**. 
+- Wizard of Wikipedia ([Dinan et al., 2018](https://arxiv.org/abs/1811.01241)) focuses on **knowledge**.
 - Blended Skill Talk ([Smith et al., 2020](https://arxiv.org/pdf/2004.08449)) provides a dataset that focuses on blending all the previous skills. This is constructed with one human speaking freely (using its persona) and the other one guided, that is he/she has to choose an utterance response from 3 different possibilities constructed by a model trained in each of the three previous datasets.
 
 ## 5. Evaluation methods
@@ -145,7 +146,7 @@ The results are comparisons in the votes given for each question presented above
 ### 6.1 Results of Self-Chat ACUTE-Eval
 
 - When comparing the **3 models** using standard beam search (beam size 10, no minimum beam decoding constraint, but with context and response 3-gram blocking), the results are Retriever > RetNRef > Generator.
-- When comparing <u>decoding choices</u>: 
+- When comparing <u>decoding choices</u>:
   - In terms of **minimum length**: The best results were encountered when setting a minimum length of 20 or 40, or when predicting the minimum length using the buckets 10,20,30,40.
   - In terms of **beam blocking**: Blocking both context and response 3-grams during generation gives highest scores, however, the differences were not significant.
   - Comparing different **beam sizes and sampling methods**, it appears that a beam value of 10 is superior to 1 or 30, and a 10 size beam is on par with sampling methods.
