@@ -287,10 +287,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Proxima-Nova-Bold',sans-serif; font-weigh
 blockquote { letter-spacing: -0.5px; font-family: 'Proxima-Nova-Thin',sans-serif; font-weight: bold; }
 
 /** Links */
-a { color: #12bd90; text-decoration: none; }
-
-a:visited { color: #0a5e48; }
-
 .page-navigation { padding-top: 4em; padding-bottom: 2em; }
 
 .top-page-navigation { font-size: 0.8rem; }
@@ -300,7 +296,7 @@ a:visited { color: #0a5e48; }
 
 .flex-between-wrap { justify-content: space-between; flex-wrap: wrap; }
 
-.site-header { background-color: #84DCC6; border-top: 0; }
+.site-header { border-top: 0; }
 
 .flex-around-wrap-center { justify-content: space-around; flex-wrap: wrap; align-items: center; }
 
@@ -308,13 +304,19 @@ a:visited { color: #0a5e48; }
 
 .svg-icon { fill: #3f3f3f; }
 
-header > .wrapper { padding-top: 3em; padding-bottom: 2.5em; }
-
 .main-description { font-family: 'Roboto Mono', monospace !important; font-size: 14px; font-weight: 600; }
 
-.avatar { width: 100%; display: block; margin-left: auto; margin-right: auto; border-radius: 50%; }
+.avatar { width: 100%; display: block; margin-left: auto; margin-right: auto; border-radius: 50%; margin-bottom: 1em; }
 
 @media screen and (max-width: 800px) { .avatar { width: 40%; margin-bottom: 3em; } .main-description { font-size: 14px; font-weight: 800; } .flex-social { justify-content: center; } }
+
+/******************/
+/* Footer */
+.footer-col-wrapper > .flex-container { display: flex; justify-content: center; }
+
+.social-media-list { display: flex; }
+
+.social-media-list > li { padding-top: 0 !important; padding-left: 0.5em; padding-right: 0.5em; }
 
 /******************/
 /* Post */
@@ -324,7 +326,7 @@ header > .wrapper { padding-top: 3em; padding-bottom: 2.5em; }
 
 .page-navigation { text-align: center; max-width: 500px; margin: 0 auto; font-size: 0.8rem; }
 
-.post-title span, .post-meta span { background-color: #12bd90; color: #fff; }
+.post-title span, .post-meta span { background-color: #3d9cdf; color: #fff; }
 
 .post-header h1 { line-height: 1.4; }
 

@@ -36,9 +36,6 @@ blockquote {
 }
 
 /** Links */
-a { color: #12bd90; text-decoration: none; }
-
-a:visited { color: #0a5e48; }
 
 .page-navigation {
   padding-top: 4em;
@@ -63,7 +60,6 @@ a:visited { color: #0a5e48; }
 }
 
 .site-header {
-  background-color: #84DCC6;
   border-top: 0;
 }
 
@@ -81,16 +77,13 @@ a:visited { color: #0a5e48; }
   fill: #3f3f3f;
 }
 
-header > .wrapper {
-  padding-top: 3em;
-  padding-bottom: 2.5em;
-}
-
 .main-description {
   font-family: 'Roboto Mono', monospace !important;
   font-size: 14px;
   font-weight: 600;
 }
+
+// about
 
 .avatar {
   width: 100%;
@@ -98,6 +91,7 @@ header > .wrapper {
   margin-left: auto;
   margin-right: auto;
   border-radius: 50%;
+  margin-bottom: 1em;
 }
 
 @media screen and (max-width: 800px) {
@@ -114,6 +108,23 @@ header > .wrapper {
     justify-content: center
   }
 }
+
+/******************/
+/* Footer */
+.footer-col-wrapper > .flex-container {
+  display: flex;
+  justify-content: center;
+}
+.social-media-list {
+  display: flex;
+}
+
+.social-media-list > li{
+  padding-top: 0 !important;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
 
 /******************/
 /* Post */
@@ -133,7 +144,7 @@ header > .wrapper {
 }
 
 .post-title span, .post-meta span {
-  background-color: #12bd90;
+  background-color: #3d9cdf;
   color: #fff;
 }
 .post-header h1 {
