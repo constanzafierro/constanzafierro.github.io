@@ -1,0 +1,74 @@
+I"c<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<blockquote>
+  <p>(<a href="https://arxiv.org/abs/1810.04805">Link</a>)</p>
+</blockquote>
+
+<blockquote>
+  <p>Small and carefully designed synthetic benchmarks (not created through crowdsourcing 💸) may be useful for driving the development of new modeling approaches, instead of needing large and naturally created datasets.</p>
+</blockquote>
+
+<h2 id="main-idea">Main idea</h2>
+<p>We do need natural and big datasets for models that will be used in production, but for making modeling progress (i.e. to compare if an arquitecture is better than other) we could maybe use automatically generated datasets (through a database, or using some big text corpora).</p>
+
+<p>They constructed synthetic benchmarks that do not resemble natural language, yet have high concurrence with SQuAD, demonstrating that <u>naturalness</u> and <u>size</u> are not necessary for reflecting historical modeling improvements on SQuAD.</p>
+
+<h2 id="concurrence">Concurrence</h2>
+<p>Concurrence is used in the paper to compare datasets and to be able to say: if two datasets have high concurrence then we could compare modeling decision with either of them, e.g. SQuAD has high concurrence with X, and X is way cheaper to produce so we might have achieved similar progress using dataset X as benchmark.</p>
+
+<h4 id="definition">Definition</h4>
+<p>Two datasets have high concurrence if they rank a set of models similarly, when train on the dataset train set and evaluated on the dataset test set.</p>
+
+<p>Mathematically, concurrence is the correlation between the evaluations obtained in two different datasets for the same model.</p>
+
+<p>They used 2 correlation functions:</p>
+<ol>
+  <li>Measures that both evaluations have a linear relation ($\implies$ ideally, if one model is $k$ times better than other in dataset 1 it should be $m*k$ better in dataset 2, with $m$ a constant for all the model evaluations).</li>
+  <li>Measures that both rankings (order) are similar.</li>
+</ol>
+
+<h2 id="synthetic-datasets">Synthetic datasets</h2>
+<h3 id="fuzzysyntheticqa">FuzzySyntheticQA</h3>
+<ul>
+  <li>Passage: random 150 tokens (from a token vocabulary).</li>
+  <li>Answer: random token from the passage.</li>
+  <li>Question: noisy cloze generation of the 10 token window of the answer token. Cloze means that the answer token is masked out, and it’s noisy because they applied noisy “operations” to  the window: token replacement + token permutation + word dropout.</li>
+</ul>
+
+<p><strong>Results.</strong> It has high concurrence with SQuAD on non-pretrained modeling approaches. This is non trivial, since existing synthetic benchmarks (<a href="https://arxiv.org/abs/1502.05698">bAbI task suite</a>) have low concurrence with SQuAD.</p>
+
+<h3 id="wikidatasyntheticqa">WikidataSyntheticQA</h3>
+<p>Motivation: build synthetic cloze benchmarks that do not resemble natural language, yet require some of the reasoning capabilities necessary to handle complex natural language phenomena in SQuAD.</p>
+
+<p>Derived from Wikidata triples ([subject, predicate, object]). Wikidata contains entities (subject/object) that relate to each other (predicate). Each entity has a label (its main name) and aliases (alternative names). They picked one entity and all the entities related to that one, then they sampled 50 triples to use.</p>
+<ul>
+  <li>Passage: It’s the concatenation of all 50 triples (separated by “.”) replacing the entity with the label or an alias. So to have a “text” version of the triple.</li>
+  <li>Answer: Random element of a triple.</li>
+  <li>Question: the triple that contains the answer, with the answer element masked and randomly transforming it by:
+    <ul>
+      <li>Replacing the predicate with the inverse and then inverting the subject and the object, e.g.: <code class="highlighter-rouge">(Mae_C._Jemison, employer, [MASK])</code> $\rightarrow$ <code class="highlighter-rouge">([MASK], employee, Mae_C._Jemison)</code>.</li>
+      <li>Replace the unmasked entity with its hypernyms (e.g. NASA $\rightarrow$ spce agency).</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="results">Results</h4>
+<ul>
+  <li>It has high concurrence with SQuAD.
+-This result indicates that naturalness is not a necessary quality of benchmarks with high concurrence with SQuAD.</li>
+  <li>They think that this high correlation may be caused by  the fact that a model needs to reason about.</li>
+  <li>The Wikidata aliases provides great lexical complexity  to the benchmark, such that the benchmark is not trivially solvable through string pattern-matching (removing aliases from the generation procedure results in near-perfect performance from all modeling approaches).</li>
+</ul>
+
+<h1 id="questionsthoughts">Questions/Thoughts</h1>
+<ul>
+  <li>Did their synthetic benchmarks worked well because they knew the SQuAD dataset and knew which capacities they needed to measure?
+    <ul>
+      <li>Do we generally know which capabilities we want to measure?</li>
+    </ul>
+  </li>
+  <li>I think this is an interesting idea to directly prove capabilities of a model. E.g. if I want to prove that my model understands antonyms I can build a synthetic dataset that contains that and test it. It’s good because it’d be more specific and more controlled, I’m sure at what level the model is good. Naturally generated datasets are created by humans, from whatever they thought at the moment or  understood from the task that was asked from them.</li>
+  <li>It’s important (and maybe difficult to measure) to create a dataset that contains the lexical properties that one wants, while not being trivially solvable.</li>
+</ul>
+:ET

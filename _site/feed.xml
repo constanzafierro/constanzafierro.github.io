@@ -1,4 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-06T18:52:50+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza Fierro</title><entry><title type="html">Recipes for building an open-domain chatbot</title><link href="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" rel="alternate" type="text/html" title="Recipes for building an open-domain chatbot" /><published>2020-05-23T20:00:00+02:00</published><updated>2020-05-23T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-07T21:45:51+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza Fierro</title><entry><title type="html">Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches</title><link href="http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation" rel="alternate" type="text/html" title="Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches" /><published>2021-02-07T19:00:00+01:00</published><updated>2021-02-07T19:00:00+01:00</updated><id>http://localhost:4000/nlp-summaries/arxiv-2102.01065</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1810.04805&quot;&gt;LINK TO THE PAPER&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Small and carefully designed synthetic benchmarks (not created through crowdsourcing 💸) may be useful as benchmarks for driving the development of new modeling approaches, instead of needing large and naturally created datasets.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;main-idea&quot;&gt;Main idea&lt;/h2&gt;
+&lt;p&gt;We do need natural and big datasets for models that will be used in production, but for making modeling progress (i.e. to compare if an arquitecture is better than other) we could maybe use automatically generated datasets (through a database, or using some big text corpora).&lt;/p&gt;
+
+&lt;p&gt;They constructed synthetic benchmarks that do not resemble natural language, yet have high concurrence with SQuAD, demonstrating that &lt;u&gt;naturalness&lt;/u&gt; and &lt;u&gt;size&lt;/u&gt; are not necessary for reflecting historical modeling improvements on SQuAD.&lt;/p&gt;
+
+&lt;h2 id=&quot;concurrence&quot;&gt;Concurrence&lt;/h2&gt;
+&lt;p&gt;Concurrence is used in the paper to compare datasets and to be able to say: if two datasets have high concurrence then we could compare modeling decision with either of them, e.g. SQuAD has high concurrence with \(X\), and \(X\) is way cheaper to produce so we might have achieved similar progress using dataset \(X\) as benchmark.&lt;/p&gt;
+
+&lt;h4 id=&quot;definition&quot;&gt;Definition&lt;/h4&gt;
+&lt;p&gt;Two datasets have high concurrence if they rank a set of models similarly, when train on the dataset train set and evaluated on the dataset test set.&lt;/p&gt;
+
+&lt;p&gt;Mathematically, concurrence is the correlation between the evaluations obtained in two different datasets for the same model.&lt;/p&gt;
+
+&lt;p&gt;They used 2 correlation functions:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Measures that both evaluations have a linear relation (\(\implies\) ideally, if one model is \(k\) times better than other in dataset 1 it should be \(m*k\) better in dataset 2, with \(m\) a constant for all the model evaluations).&lt;/li&gt;
+  &lt;li&gt;Measures that both rankings (order) are similar.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;synthetic-datasets&quot;&gt;Synthetic datasets&lt;/h2&gt;
+&lt;h3 id=&quot;fuzzysyntheticqa&quot;&gt;FuzzySyntheticQA&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Passage: random 150 tokens (from a token vocabulary).&lt;/li&gt;
+  &lt;li&gt;Answer: random token from the passage.&lt;/li&gt;
+  &lt;li&gt;Question: noisy cloze generation of the 10 token window of the answer token. Cloze means that the answer token is masked out, and it’s noisy because they applied noisy “operations” to  the window: token replacement + token permutation + word dropout.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Results.&lt;/strong&gt; It has high concurrence with SQuAD on non-pretrained modeling approaches. This is non trivial, since existing synthetic benchmarks (&lt;a href=&quot;https://arxiv.org/abs/1502.05698&quot;&gt;bAbI task suite&lt;/a&gt;) have low concurrence with SQuAD.&lt;/p&gt;
+
+&lt;h3 id=&quot;wikidatasyntheticqa&quot;&gt;WikidataSyntheticQA&lt;/h3&gt;
+&lt;p&gt;Motivation: build synthetic cloze benchmarks that do not resemble natural language, yet require some of the reasoning capabilities necessary to handle complex natural language phenomena in SQuAD.&lt;/p&gt;
+
+&lt;p&gt;Derived from Wikidata triples ([subject, predicate, object]). Wikidata contains entities (subject/object) that relate to each other (predicate). Each entity has a label (its main name) and aliases (alternative names). They picked one entity and all the entities related to that one, then they sampled 50 triples to use.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Passage: It’s the concatenation of all 50 triples (separated by “.”) replacing the entity with the label or an alias. So to have a “text” version of the triple.&lt;/li&gt;
+  &lt;li&gt;Answer: Random element of a triple.&lt;/li&gt;
+  &lt;li&gt;Question: the triple that contains the answer, with the answer element masked and randomly transforming it by:
+    &lt;ul&gt;
+      &lt;li&gt;Replacing the predicate with the inverse and then inverting the subject and the object, e.g.: &lt;code class=&quot;highlighter-rouge&quot;&gt;(Mae_C._Jemison, employer, [MASK])&lt;/code&gt; \(\rightarrow\) &lt;code class=&quot;highlighter-rouge&quot;&gt;([MASK], employee, Mae_C._Jemison)&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;Replace the unmasked entity with its hypernyms (e.g. NASA \(\rightarrow\) spce agency).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;results&quot;&gt;Results&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;It has high concurrence with SQuAD.
+-This result indicates that naturalness is not a necessary quality of benchmarks with high concurrence with SQuAD.&lt;/li&gt;
+  &lt;li&gt;They think that this high correlation may be caused by  the fact that a model needs to reason about.&lt;/li&gt;
+  &lt;li&gt;The Wikidata aliases provides great lexical complexity  to the benchmark, such that the benchmark is not trivially solvable through string pattern-matching (removing aliases from the generation procedure results in near-perfect performance from all modeling approaches).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 class=&quot;post-thoughts&quot;&gt;&lt;span&gt;Questions/Thoughts&lt;/span&gt;&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;Did their synthetic benchmarks worked well because they knew the SQuAD dataset and knew which capacities they needed to measure?
+    &lt;ul&gt;
+      &lt;li&gt;Do we generally know which capabilities we want to measure?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;I think this is an interesting idea to directly prove capabilities of a model. E.g. if I want to prove that my model understands antonyms I can build a synthetic dataset that contains that and test it. It’s good because it’d be more specific and more controlled, I’m sure at what level the model is good. Naturally generated datasets are created by humans, from whatever they thought at the moment or  understood from the task that was asked from them.&lt;/li&gt;
+  &lt;li&gt;It’s important (and maybe difficult to measure) to create a dataset that contains the lexical properties that one wants, while not being trivially solvable.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Depth: 4" /><category term="datasets" /><summary type="html"></summary></entry><entry><title type="html">Recipes for building an open-domain chatbot</title><link href="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" rel="alternate" type="text/html" title="Recipes for building an open-domain chatbot" /><published>2020-05-23T20:00:00+02:00</published><updated>2020-05-23T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;blockquote&gt;
