@@ -1,0 +1,57 @@
+I"m<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><a href="https://arxiv.org/pdf/1906.01081.pdf">LINK TO PAPER</a></p>
+
+<blockquote>
+  <p>They proposed a new metric called PARENT that uses a union of the target text and the table, to reward correct information missing from the reference. They showed that this metric correlates better with human judgment compared to BLEU.</p>
+</blockquote>
+
+<p><strong>P</strong>recision <strong>A</strong>nd <strong>R</strong>ecall of <strong>E</strong>ntailed <strong>N</strong>grams from the <strong>T</strong>able.</p>
+
+<h3 id="d2t-task-definition">D2T task definition</h3>
+<p>Given a table \(T = \{r_k\}_{k=1}^K\) with records \(r=(\text{entity, attribute, value})\) we want to generate a text \(G\) that summarizes \(T\). We will evaluate \(G\) by comparing it to a reference text \(R\). Thus, a set of tables to evaluate is the set \(D_M=\{T^i,G^i,R^i\}_{i=1}^N\).</p>
+
+<p>\(G^i_n\) and \(R^i_n\) represent the set of n-grams in \(G^i\) and \(R^i\) respectively, and so \(\#_{R^i_n}(g)\) represents how many n_grams ‘’\(g\)’’ there is in \(R^i_n\).</p>
+
+<h3 id="metric-definition">Metric definition</h3>
+<p>It computes the recall and precision of the generated text \(G\) against both \(T\) and \(R\) (not only the text contrary to BLEU).</p>
+
+<h4 id="entailment-probability-wg">Entailment Probability \(w(g)\)</h4>
+<p>It’s the probability than an n-gram in \(G\) is correct given \(T\). This \(P\) is estimated by:</p>
+<ol>
+  <li>Word overlap: the sum of tokens (\(g_j\)) that are contained in \(T\).</li>
+  <li>Co-ocurrence: the geometric average of the probability that a token was produced by one or more words in \(T\), this probability is estimated using co-occurrence counts from a training set of table-reference pairs. In a formula that is:</li>
+</ol>
+
+\[\begin{align}
+&amp;w(g) = \big(\prod _{j=1}^n P(g_j \Leftarrow T^i)\big)^{1/n} \\[5pt]
+&amp;\text{where} \quad P(g_j \Leftarrow T^i) = \max_{v\in \overline{T}^i} P(g_j \Leftarrow v)\\[5pt]
+&amp;\text{where} \quad P(g_j \Leftarrow v) = \frac{|\{(v \in T \wedge g_j \in R)\}|}{|\{T,R\}|}
+\end{align}\]
+
+<h4 id="entailment-precision">Entailment Precision.</h4>
+<p>It’s the fraction of correct n-grams in \(G^i_n\). An n-gram is correct if it occurs in \(R^i_n\) or if it’s highly probable to be entailed by \(T\), so what we do to compute the entailment precision is to sum the probability of the n-gram being in the reference and the probability of it being entailed by the table (weighted by the probability  of the n-gram not being in \(R^i_n\)), and this sum is weighted by the times \(g\) (this n-gram) appears in \(G^i_n\) and normalized accordingly. In a formula:</p>
+
+\[\begin{align}
+&amp;E_p^n = \frac{\sum_{g\in G_n^i} [P(g \in R^i_n) + P(g \notin R^i_n)w(g)]\#_{G^i_n(g)}}{\sum_{g\in G_i^n}\#_{G^i_n(g)}}\\[5pt]
+&amp;\text{where} \quad P(g \in R^i_n) = \frac{\#_{G^i_n(g),R^i_n(g)}}{\#_{G^i_n(g)}}
+\end{align}\]
+
+<p>Note that \(P(g \in R^i_n)\) rewards the score for each time the n-gram appears in both the reference and the generation.</p>
+
+<p>Then the final entailment precision is the combination of n-grams 1-4 with a geometric average:</p>
+
+\[E_p = \Big(\prod_{n=1}^4 E_p^n\Big)^\frac{1}{4} \iff \exp\Big(\sum_{n=1}^4\log E_p^n\Big)\]
+
+<h4 id="entailment-recall">Entailment Recall.</h4>
+<p>It’s the fraction of n-grams in \(R^i_n\) and in the table that are contained in \(G^i_n\), where the <em>and</em> is trade-off by a \(\lambda\) parameter. Furthermore, we only want to consider as “TP” the n-grams that can be recalled from the table, thus we weigh by \(w(g)\) to force references not grounded in the table to be excluded.</p>
+
+\[\begin{align}
+&amp;E_r = E_r(R^i)^{(\lambda-1)}E_r(T^i)^{(\lambda)}\\[5pt]
+\text{where} \quad &amp;E_r^n(R^i) = \frac{\sum_{g \in R^i_n}\#_{G^i_n(g),R^i_n(g)}w(g)}{\sum_{g \in R^i_n}\#_{R^i_n(g)}w(g)} \quad \text{,}\\[5pt]
+&amp;E_r(T^i) = \frac{1}{K}\sum_{k=1}^K\frac{1}{|\overline{r}_k|}LCS(\overline{r}_k, G^i)
+\end{align}\]
+
+<p>Where \(\overline{r}_k\) is the string value of the records in \(T\), and \(LCS\) is the longest common substring which ensures that entity names appear in the same order in the text as in the table. Finally, \(E_r^n(R^i)\) is combined with a geometric average for n-grams with n=1-4, and precision and recall are combined in an F-score which is the PARENT metric.</p>
+:ET

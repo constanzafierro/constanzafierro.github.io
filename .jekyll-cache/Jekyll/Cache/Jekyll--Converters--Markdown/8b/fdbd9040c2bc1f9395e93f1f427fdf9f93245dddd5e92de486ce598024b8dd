@@ -1,0 +1,48 @@
+I"�<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><a href="https://arxiv.org/pdf/2010.10866.pdf">LINK TO THE PAPER</a></p>
+
+<blockquote>
+  <p>Using Reinforcement Learning optimizing the <a href="https://arxiv.org/pdf/1906.01081.pdf">PARENT metric</a> leads to less omissions and hallucinations.</p>
+</blockquote>
+
+<h2 id="main-idea">Main idea</h2>
+<p>They state that the data contains these two problems (hallucinations and omissions): (1) the target text contains elements that are not grounded in the structured data (due to automatic creation of the datasets), and (2) some datasets expect the text to use all table fields and others to only contain some. So if we train the model by maximizing likelihood, we’re forcing it to mimic the human behaviour and thus to mimic these dataset failures/inconsistencies.</p>
+
+<p>They achieve SOTA in PARENT scores on WebNLG and WikiBio (with BLEU scores on par with previous SOTA).</p>
+
+<h2 id="related-work">Related work</h2>
+<p><a href="https://www.aclweb.org/anthology/W19-8652.pdf">Dusek et al. (2019)</a> showed that cleaned data can significantly improve system ability to produce fact-accurate text.</p>
+
+<h2 id="parent-score">PARENT score</h2>
+<p><strong>P</strong>recision <strong>A</strong>nd <strong>R</strong>ecall of <strong>E</strong>ntailed <strong>N</strong>grams from the <strong>T</strong>able.</p>
+
+<h4 id="d2t-task-definition">D2T task definition</h4>
+<p>Given a table \(T = \{r_k\}_{k=1}^K\) with records \(r=(\text{entity, attribute, value})\) we want to generate a text \(G\) that summarizes \(T\). We will evaluate \(G\) by comparing it to a reference text \(R\). Thus, a set of tables to evaluate is the set \(D_M=\{T^i,G^i,R^i\}_{i=1}^N\).</p>
+
+<p>\(G^i_n\) and \(R^i_n\) represent the set of n-grams in \(G^i\) and \(R^i\) respectively, and so \(\#_{R^i_n}(g)\) represents how many n_grams ‘’\(g\)’’ there is in \(R^i_n\).</p>
+
+<h4 id="metric-definition">Metric definition</h4>
+<p>It computes the recall and precision of the generated text \(G\) against both \(T\) and \(R\) (not only the text contrary to BLEU).</p>
+
+<p><strong>Entailment Probability \(w(g)\).</strong> It’s the probability than an n-gram in \(G\) is correct given \(T\). This \(P\) is estimated by:</p>
+<ol>
+  <li>Word overlap: the sum of tokens (\(g_j\)) that are contained in \(T\).</li>
+  <li>Co-ocurrence: the geometric average of the probability that a token was produced by one or more words in \(T\), this probability is estimated using co-occurrence counts from a training set of table-reference pairs. In a formula that is:</li>
+</ol>
+
+\[w(g) = \big(\prod _{j=1}^n P(g_j \Leftarrow T^i)\big)^{1/n} \\
+\text{where} \quad P(g_j \Leftarrow T^i) = \max_{v\in \overline{T}^i} P(g_j \Leftarrow v)\\
+\text{where} \quad P(g_j \Leftarrow v) = \frac{|\{(v \in T \wedge g_j \in R)\}|}{|\{T,R\}|}\]
+
+<p><strong>Entailment Precision.</strong> It’s the fraction of correct n-grams in \(G^i_n\). An n-gram is correct if it occurs in \(R^i_n\) or if it’s highly probable to be entailed by \(T\), so what we do to compute the entailment precision is to sum the probability of the n-gram being in the reference and the probability of it being entailed by the table (weighted by the probability  of the n-gram not being in \(R^i_n\)), and this sum is weighted by the times \(g\) (this n-gram) appears in \(G^i_n\) and normalized accordingly. In a formula:</p>
+
+\[E_p^n = \frac{\sum_{g\in G_n^i} [P(g \in R^i_n) + P(g \notin R^i_n)w(g)]\#_{G^i_n(g)}}{\sum_{g\in G_i^n}\#_{G^i_n(g)}}\\
+\text{}\]
+
+<h1 class="post-thoughts"><span>Questions/Thoughts</span></h1>
+<ul>
+  <li>Why?</li>
+</ul>
+:ET

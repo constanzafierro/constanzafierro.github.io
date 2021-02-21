@@ -1,0 +1,18 @@
+I"<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><a href="https://arxiv.org/pdf/2010.10866.pdf">LINK TO THE PAPER</a></p>
+
+<blockquote>
+  <p>Using Reinforcement Learning optimizing the <a href="https://arxiv.org/pdf/1906.01081.pdf">PARENT metric</a> leads to less omissions and hallucinations.</p>
+</blockquote>
+
+<p>They state that the data contains these two problems (hallucinations and omissions): (1) the target text contains elements that are not grounded in the structured data, and (2) some datasets expect the text to use all table fields and others to only contain some. So if we train the model by maximizing likelihood, we’re forcing it to mimic the human behaviour and thus to mimic these dataset failures/inconsistencies.</p>
+
+<p>They report SOTA in PARENT scores on WebNLG and WikiBio (with BLEU scores on par with previous SOTA).</p>
+
+<h1 class="post-thoughts"><span>Questions/Thoughts</span></h1>
+<ul>
+  <li>Why?</li>
+</ul>
+:ET

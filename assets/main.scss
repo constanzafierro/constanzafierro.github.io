@@ -83,6 +83,14 @@ blockquote {
   font-weight: 600;
 }
 
+.disclaimer-box {
+  background-color: #e6e6e694;
+  border-radius: 5px;
+  padding: 0.5em;
+  font-size: smaller;
+  letter-spacing: 0.5px;
+}
+
 // tags
 .post_tags {
   list-style: none;
@@ -102,6 +110,7 @@ blockquote {
   padding: 5px;
   margin-bottom: 0;
   font-size: smaller;
+  color: #424242;
 }
 
 // about

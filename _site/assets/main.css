@@ -306,11 +306,13 @@ blockquote { letter-spacing: -0.5px; font-family: 'Proxima-Nova-Thin',sans-serif
 
 .main-description { font-family: 'Roboto Mono', monospace !important; font-size: 14px; font-weight: 600; }
 
+.disclaimer-box { background-color: #e6e6e694; border-radius: 5px; padding: 0.5em; font-size: smaller; letter-spacing: 0.5px; }
+
 .post_tags { list-style: none; display: flex; justify-content: flex-start; margin-left: 0; }
 
 .post_tags > div { margin: 5px; margin-left: 0; }
 
-.post_tags p { background-color: #daeaff; border-radius: 11px; padding: 5px; margin-bottom: 0; font-size: smaller; }
+.post_tags p { background-color: #daeaff; border-radius: 11px; padding: 5px; margin-bottom: 0; font-size: smaller; color: #424242; }
 
 .avatar { width: 100%; display: block; margin-left: auto; margin-right: auto; border-radius: 50%; margin-bottom: 1em; }
 

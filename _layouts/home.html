@@ -4,6 +4,10 @@ layout: default
 
 <div class="home">
 
+  <div class="disclaimer-box">
+    <i><p style="text-decoration: underline; display: inline;">Disclaimer</p>: These posts should be read with a grain of salt since they are more like personal notes than thorough summaries.</i>
+  </div>
+
     {% for post in site.posts %}
     {% unless post.next %}
       <h3 class="code">{{ post.date | date: '%b %Y' }}</h3>

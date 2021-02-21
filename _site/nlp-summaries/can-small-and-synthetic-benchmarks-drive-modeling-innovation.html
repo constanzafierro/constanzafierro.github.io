@@ -14,7 +14,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-02-07T19:00:00+01:00" />
 <script type="application/ld+json">
-{"headline":"Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches","dateModified":"2021-02-07T19:00:00+01:00","datePublished":"2021-02-07T19:00:00+01:00","url":"http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation"},"url":"http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation","@type":"BlogPosting","headline":"Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches","dateModified":"2021-02-07T19:00:00+01:00","datePublished":"2021-02-07T19:00:00+01:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Constanza Fierro" /></head>
 <body><main class="page-content" aria-label="Content">
@@ -42,9 +42,9 @@
 </blockquote>
 
 <h2 id="main-idea">Main idea</h2>
-<p>We do need natural and big datasets for models that will be used in production, but for making modeling progress (i.e. to compare if an arquitecture is better than other) we could maybe use automatically generated datasets (through a database, or using some big text corpora).</p>
+<p>We do need natural and big datasets for models that will be used in production, but for making modeling progress (i.e. to compare if an architecture is better than other) we could maybe use automatically generated datasets (through a database, or using some big text corpora).</p>
 
-<p>They constructed synthetic benchmarks that do not resemble natural language, yet have high concurrence with SQuAD, demonstrating that <u>naturalness</u> and <u>size</u> are not necessary for reflecting historical modeling improvements on SQuAD.</p>
+<p>They showed that many human-constructed benchmarks (NewsQA, NaturalQuestions, HotpotQA, …) have high concurrence with SQuAD. They also constructed synthetic benchmarks that do not resemble natural language, yet have high concurrence with SQuAD, demonstrating that <u>naturalness</u> and <u>size</u> are not necessary for reflecting historical modeling improvements on SQuAD.</p>
 
 <h2 id="concurrence">Concurrence</h2>
 <p>Concurrence is used in the paper to compare datasets and to be able to say: if two datasets have high concurrence then we could compare modeling decision with either of them, e.g. SQuAD has high concurrence with \(X\), and \(X\) is way cheaper to produce so we might have achieved similar progress using dataset \(X\) as benchmark.</p>
@@ -80,7 +80,7 @@
   <li>Question: the triple that contains the answer, with the answer element masked and randomly transforming it by:
     <ul>
       <li>Replacing the predicate with the inverse and then inverting the subject and the object, e.g.: <code class="highlighter-rouge">(Mae_C._Jemison, employer, [MASK])</code> \(\rightarrow\) <code class="highlighter-rouge">([MASK], employee, Mae_C._Jemison)</code>.</li>
-      <li>Replace the unmasked entity with its hypernyms (e.g. NASA \(\rightarrow\) spce agency).</li>
+      <li>Replace the unmasked entity with its hypernyms (e.g. NASA \(\rightarrow\) space agency).</li>
     </ul>
   </li>
 </ul>
@@ -90,17 +90,19 @@
   <li>It has high concurrence with SQuAD.
 -This result indicates that naturalness is not a necessary quality of benchmarks with high concurrence with SQuAD.</li>
   <li>They think that this high correlation may be caused by  the fact that a model needs to reason about.</li>
-  <li>The Wikidata aliases provides great lexical complexity  to the benchmark, such that the benchmark is not trivially solvable through string pattern-matching (removing aliases from the generation procedure results in near-perfect performance from all modeling approaches).</li>
+  <li>The Wikidata aliases provide great lexical complexity  to the benchmark, such that the benchmark is not trivially solvable through string pattern-matching (removing aliases from the generation procedure results in near-perfect performance from all modeling approaches).</li>
 </ul>
+
 <h1 class="post-thoughts"><span>Questions/Thoughts</span></h1>
 <ul>
-  <li>Did their synthetic benchmarks worked well because they knew the SQuAD dataset and knew which capacities they needed to measure?
+  <li>Did their synthetic benchmarks work well because they knew the SQuAD dataset and knew which capacities they needed to measure?
     <ul>
       <li>Do we generally know which capabilities we want to measure?</li>
     </ul>
   </li>
   <li>I think this is an interesting idea to directly prove capabilities of a model. E.g. if I want to prove that my model understands antonyms I can build a synthetic dataset that contains that and test it. It’s good because it’d be more specific and more controlled, I’m sure at what level the model is good. Naturally generated datasets are created by humans, from whatever they thought at the moment or  understood from the task that was asked from them.</li>
   <li>It’s important (and maybe difficult to measure) to create a dataset that contains the lexical properties that one wants, while not being trivially solvable.</li>
+  <li>On the negative  side, benchmarks inspire problems/issues of current approaches. Having a manually created dataset wouldn’t create this inspiration.</li>
 </ul>
 
   </div><a class="u-url" href="/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation" hidden></a>
