@@ -1,184 +1,184 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-21T21:30:57+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza Fierro</title><entry><title type="html">Handling Divergent Reference Texts when Evaluating Table-to-Text Generation</title><link href="http://localhost:4000/nlp-summaries/parent-metric" rel="alternate" type="text/html" title="Handling Divergent Reference Texts when Evaluating Table-to-Text Generation" /><published>2021-02-21T19:00:00+01:00</published><updated>2021-02-21T19:00:00+01:00</updated><id>http://localhost:4000/nlp-summaries/parent</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/parent-metric">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-05T18:47:12+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Constanza Fierro</title><entry><title type="html">Handling Divergent Reference Texts when Evaluating Table-to-Text Generation</title><link href="http://localhost:4000/nlp-summaries/parent-metric" rel="alternate" type="text/html" title="Handling Divergent Reference Texts when Evaluating Table-to-Text Generation" /><published>2021-02-21T18:00:00+00:00</published><updated>2021-02-21T18:00:00+00:00</updated><id>http://localhost:4000/nlp-summaries/parent</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/parent-metric"><![CDATA[<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1906.01081.pdf&quot;&gt;LINK TO PAPER&lt;/a&gt;&lt;/p&gt;
+<p><a href="https://arxiv.org/pdf/1906.01081.pdf">LINK TO PAPER</a></p>
 
-&lt;blockquote&gt;
-  &lt;p&gt;They proposed a new metric called PARENT that uses a union of the target text and the table, to reward correct information missing from the reference. They showed that this metric correlates better with human judgment compared to BLEU.&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>They proposed a new metric called PARENT that uses a union of the target text and the table, to reward correct information missing from the reference. They showed that this metric correlates better with human judgment compared to BLEU.</p>
+</blockquote>
 
-&lt;p&gt;PARENT = &lt;strong&gt;P&lt;/strong&gt;recision &lt;strong&gt;A&lt;/strong&gt;nd &lt;strong&gt;R&lt;/strong&gt;ecall of &lt;strong&gt;E&lt;/strong&gt;ntailed &lt;strong&gt;N&lt;/strong&gt;grams from the &lt;strong&gt;T&lt;/strong&gt;able.&lt;/p&gt;
+<p>PARENT = <strong>P</strong>recision <strong>A</strong>nd <strong>R</strong>ecall of <strong>E</strong>ntailed <strong>N</strong>grams from the <strong>T</strong>able.</p>
 
-&lt;h3 id=&quot;d2t-task-definition&quot;&gt;D2T task definition&lt;/h3&gt;
-&lt;p&gt;Given a table \(T = \{r_k\}_{k=1}^K\) with records \(r=(\text{entity, attribute, value})\) we want to generate a text \(G\) that summarizes \(T\). We will evaluate \(G\) by comparing it to a reference text \(R\). Thus, a set of tables to evaluate is the set \(D_M=\{T^i,G^i,R^i\}_{i=1}^N\).&lt;/p&gt;
+<h3 id="d2t-task-definition">D2T task definition</h3>
+<p>Given a table \(T = \{r_k\}_{k=1}^K\) with records \(r=(\text{entity, attribute, value})\) we want to generate a text \(G\) that summarizes \(T\). We will evaluate \(G\) by comparing it to a reference text \(R\). Thus, a set of tables to evaluate is the set \(D_M=\{T^i,G^i,R^i\}_{i=1}^N\).</p>
 
-&lt;p&gt;\(G^i_n\) and \(R^i_n\) represent the set of n-grams in \(G^i\) and \(R^i\) respectively, and so \(\#_{R^i_n}(g)\) represents how many n_grams ‘’\(g\)’’ there is in \(R^i_n\).&lt;/p&gt;
+<p>\(G^i_n\) and \(R^i_n\) represent the set of n-grams in \(G^i\) and \(R^i\) respectively, and so \(\#_{R^i_n}(g)\) represents how many n_grams ‘’\(g\)’’ there is in \(R^i_n\).</p>
 
-&lt;h3 id=&quot;metric-definition&quot;&gt;Metric definition&lt;/h3&gt;
-&lt;p&gt;It computes the recall and precision of the generated text \(G\) against both \(T\) and \(R\) (not only the text contrary to BLEU).&lt;/p&gt;
+<h3 id="metric-definition">Metric definition</h3>
+<p>It computes the recall and precision of the generated text \(G\) against both \(T\) and \(R\) (not only the text contrary to BLEU).</p>
 
-&lt;h4 id=&quot;entailment-probability-wg&quot;&gt;Entailment Probability \(w(g)\)&lt;/h4&gt;
-&lt;p&gt;It’s the probability than an n-gram in \(G\) is correct given \(T\). This \(P\) is estimated by:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Word overlap: the sum of tokens (\(g_j\)) that are contained in \(T\).&lt;/li&gt;
-  &lt;li&gt;Co-ocurrence: the geometric average of the probability that a token was produced by one or more words in \(T\), this probability is estimated using co-occurrence counts from a training set of table-reference pairs. In a formula that is:&lt;/li&gt;
-&lt;/ol&gt;
-
-\[\begin{align}
-&amp;amp;w(g) = \big(\prod _{j=1}^n P(g_j \Leftarrow T^i)\big)^{1/n} \\[5pt]
-&amp;amp;\text{where} \quad P(g_j \Leftarrow T^i) = \max_{v\in \overline{T}^i} P(g_j \Leftarrow v)\\[5pt]
-&amp;amp;\text{where} \quad P(g_j \Leftarrow v) = \frac{|\{(v \in T \wedge g_j \in R)\}|}{|\{T,R\}|}
-\end{align}\]
-
-&lt;h4 id=&quot;entailment-precision&quot;&gt;Entailment Precision.&lt;/h4&gt;
-&lt;p&gt;It’s the fraction of correct n-grams in \(G^i_n\). An n-gram is correct if it occurs in \(R^i_n\) or if it’s highly probable to be entailed by \(T\), so what we do to compute the entailment precision is to sum the probability of the n-gram being in the reference and the probability of it being entailed by the table (weighted by the probability  of the n-gram not being in \(R^i_n\)), and this sum is weighted by the times \(g\) (this n-gram) appears in \(G^i_n\) and normalized accordingly. In a formula:&lt;/p&gt;
+<h4 id="entailment-probability-wg">Entailment Probability \(w(g)\)</h4>
+<p>It’s the probability than an n-gram in \(G\) is correct given \(T\). This \(P\) is estimated by:</p>
+<ol>
+  <li>Word overlap: the sum of tokens (\(g_j\)) that are contained in \(T\).</li>
+  <li>Co-ocurrence: the geometric average of the probability that a token was produced by one or more words in \(T\), this probability is estimated using co-occurrence counts from a training set of table-reference pairs. In a formula that is:</li>
+</ol>
 
 \[\begin{align}
-&amp;amp;E_p^n = \frac{\sum_{g\in G_n^i} [P(g \in R^i_n) + P(g \notin R^i_n)w(g)]\#_{G^i_n(g)}}{\sum_{g\in G_i^n}\#_{G^i_n(g)}}\\[5pt]
-&amp;amp;\text{where} \quad P(g \in R^i_n) = \frac{\#_{G^i_n(g),R^i_n(g)}}{\#_{G^i_n(g)}}
+&amp;w(g) = \big(\prod _{j=1}^n P(g_j \Leftarrow T^i)\big)^{1/n} \\[5pt]
+&amp;\text{where} \quad P(g_j \Leftarrow T^i) = \max_{v\in \overline{T}^i} P(g_j \Leftarrow v)\\[5pt]
+&amp;\text{where} \quad P(g_j \Leftarrow v) = \frac{|\{(v \in T \wedge g_j \in R)\}|}{|\{T,R\}|}
 \end{align}\]
 
-&lt;p&gt;Note that \(P(g \in R^i_n)\) rewards the score for each time the n-gram appears in both the reference and the generation.&lt;/p&gt;
+<h4 id="entailment-precision">Entailment Precision.</h4>
+<p>It’s the fraction of correct n-grams in \(G^i_n\). An n-gram is correct if it occurs in \(R^i_n\) or if it’s highly probable to be entailed by \(T\), so what we do to compute the entailment precision is to sum the probability of the n-gram being in the reference and the probability of it being entailed by the table (weighted by the probability  of the n-gram not being in \(R^i_n\)), and this sum is weighted by the times \(g\) (this n-gram) appears in \(G^i_n\) and normalized accordingly. In a formula:</p>
 
-&lt;p&gt;Then the final entailment precision is the combination of n-grams 1-4 with a geometric average:&lt;/p&gt;
+\[\begin{align}
+&amp;E_p^n = \frac{\sum_{g\in G_n^i} [P(g \in R^i_n) + P(g \notin R^i_n)w(g)]\#_{G^i_n(g)}}{\sum_{g\in G_i^n}\#_{G^i_n(g)}}\\[5pt]
+&amp;\text{where} \quad P(g \in R^i_n) = \frac{\#_{G^i_n(g),R^i_n(g)}}{\#_{G^i_n(g)}}
+\end{align}\]
+
+<p>Note that \(P(g \in R^i_n)\) rewards the score for each time the n-gram appears in both the reference and the generation.</p>
+
+<p>Then the final entailment precision is the combination of n-grams 1-4 with a geometric average:</p>
 
 \[E_p = \Big(\prod_{n=1}^4 E_p^n\Big)^\frac{1}{4} \iff \exp\Big(\sum_{n=1}^4\log E_p^n\Big)\]
 
-&lt;h4 id=&quot;entailment-recall&quot;&gt;Entailment Recall.&lt;/h4&gt;
-&lt;p&gt;It’s the fraction of n-grams in \(R^i_n\) and in the table that are contained in \(G^i_n\), where the &lt;em&gt;and&lt;/em&gt; is trade-off by a \(\lambda\) parameter. Furthermore, we only want to consider as “TP” the n-grams that can be recalled from the table, thus we weigh by \(w(g)\) to force references not grounded in the table to be excluded.&lt;/p&gt;
+<h4 id="entailment-recall">Entailment Recall.</h4>
+<p>It’s the fraction of n-grams in \(R^i_n\) and in the table that are contained in \(G^i_n\), where the <em>and</em> is trade-off by a \(\lambda\) parameter. Furthermore, we only want to consider as “TP” the n-grams that can be recalled from the table, thus we weigh by \(w(g)\) to force references not grounded in the table to be excluded.</p>
 
 \[\begin{align}
-&amp;amp;E_r = E_r(R^i)^{(\lambda-1)}E_r(T^i)^{(\lambda)}\\[5pt]
-\text{where} \quad &amp;amp;E_r^n(R^i) = \frac{\sum_{g \in R^i_n}\#_{G^i_n(g),R^i_n(g)}w(g)}{\sum_{g \in R^i_n}\#_{R^i_n(g)}w(g)} \quad \text{,}\\[5pt]
-&amp;amp;E_r(T^i) = \frac{1}{K}\sum_{k=1}^K\frac{1}{|\overline{r}_k|}LCS(\overline{r}_k, G^i)
+&amp;E_r = E_r(R^i)^{(\lambda-1)}E_r(T^i)^{(\lambda)}\\[5pt]
+\text{where} \quad &amp;E_r^n(R^i) = \frac{\sum_{g \in R^i_n}\#_{G^i_n(g),R^i_n(g)}w(g)}{\sum_{g \in R^i_n}\#_{R^i_n(g)}w(g)} \quad \text{,}\\[5pt]
+&amp;E_r(T^i) = \frac{1}{K}\sum_{k=1}^K\frac{1}{|\overline{r}_k|}LCS(\overline{r}_k, G^i)
 \end{align}\]
 
-&lt;p&gt;Where \(\overline{r}_k\) is the string value of the records in \(T\), and \(LCS\) is the longest common substring which ensures that entity names appear in the same order in the text as in the table. Also, \(E_r^n(R^i)\) is combined with a geometric average for n-grams with n=1-4.&lt;/p&gt;
+<p>Where \(\overline{r}_k\) is the string value of the records in \(T\), and \(LCS\) is the longest common substring which ensures that entity names appear in the same order in the text as in the table. Also, \(E_r^n(R^i)\) is combined with a geometric average for n-grams with n=1-4.</p>
 
-&lt;p&gt;Fianlly, precision and recall are combined in an F-score which is the PARENT metric.&lt;/p&gt;</content><author><name></name></author><category term="Depth: 4" /><category term="data2text" /><category term="metrics" /><summary type="html"></summary></entry><entry><title type="html">PARENTing via Model-Agnostic Reinforcement Learning to Correct Pathological Behaviors in Data-to-Text Generation</title><link href="http://localhost:4000/nlp-summaries/parenting-via-model-agnostic-rl" rel="alternate" type="text/html" title="PARENTing via Model-Agnostic Reinforcement Learning to Correct Pathological Behaviors in Data-to-Text Generation" /><published>2021-02-17T19:00:00+01:00</published><updated>2021-02-17T19:00:00+01:00</updated><id>http://localhost:4000/nlp-summaries/arxiv-2010.10866</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/parenting-via-model-agnostic-rl">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
+<p>Fianlly, precision and recall are combined in an F-score which is the PARENT metric.</p>]]></content><author><name></name></author><category term="nlp-summaries" /><category term="Depth: 4" /><category term="data2text" /><category term="metrics" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">PARENTing via Model-Agnostic Reinforcement Learning to Correct Pathological Behaviors in Data-to-Text Generation</title><link href="http://localhost:4000/nlp-summaries/parenting-via-model-agnostic-rl" rel="alternate" type="text/html" title="PARENTing via Model-Agnostic Reinforcement Learning to Correct Pathological Behaviors in Data-to-Text Generation" /><published>2021-02-17T18:00:00+00:00</published><updated>2021-02-17T18:00:00+00:00</updated><id>http://localhost:4000/nlp-summaries/arxiv-2010.10866</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/parenting-via-model-agnostic-rl"><![CDATA[<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/2010.10866.pdf&quot;&gt;LINK TO THE PAPER&lt;/a&gt;&lt;/p&gt;
+<p><a href="https://arxiv.org/pdf/2010.10866.pdf">LINK TO THE PAPER</a></p>
 
-&lt;blockquote&gt;
-  &lt;p&gt;Using Reinforcement Learning optimizing the PARENT metric (&lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/parent-metric&quot;&gt;summary&lt;/a&gt;) leads to less omissions and hallucinations.&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>Using Reinforcement Learning optimizing the PARENT metric (<a href="https://cfierro94.github.io/nlp-summaries/parent-metric">summary</a>) leads to less omissions and hallucinations.</p>
+</blockquote>
 
-&lt;h2 id=&quot;main-idea&quot;&gt;Main idea&lt;/h2&gt;
-&lt;p&gt;They state that the data contains these two problems (hallucinations and omissions): (1) the target text contains elements that are not grounded in the structured data (due to automatic creation of the datasets), and (2) some datasets expect the text to use all table fields and others to only contain some. So if we train the model by maximizing likelihood, we’re forcing it to mimic the human behaviour and thus to mimic these dataset failures/inconsistencies.&lt;/p&gt;
+<h2 id="main-idea">Main idea</h2>
+<p>They state that the data contains these two problems (hallucinations and omissions): (1) the target text contains elements that are not grounded in the structured data (due to automatic creation of the datasets), and (2) some datasets expect the text to use all table fields and others to only contain some. So if we train the model by maximizing likelihood, we’re forcing it to mimic the human behaviour and thus to mimic these dataset failures/inconsistencies.</p>
 
-&lt;p&gt;They achieve SOTA in PARENT scores on WebNLG and WikiBio (with BLEU scores on par with previous SOTA).&lt;/p&gt;
+<p>They achieve SOTA in PARENT scores on WebNLG and WikiBio (with BLEU scores on par with previous SOTA).</p>
 
-&lt;h2 id=&quot;related-work&quot;&gt;Related work&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.aclweb.org/anthology/W19-8652.pdf&quot;&gt;Dusek et al. (2019)&lt;/a&gt; showed that cleaned data can significantly improve system ability to produce fact-accurate text.&lt;/p&gt;</content><author><name></name></author><category term="Depth: 1" /><category term="data2text" /><category term="generation" /><summary type="html"></summary></entry><entry><title type="html">Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches</title><link href="http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation" rel="alternate" type="text/html" title="Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches" /><published>2021-02-07T19:00:00+01:00</published><updated>2021-02-07T19:00:00+01:00</updated><id>http://localhost:4000/nlp-summaries/arxiv-2102.01065</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
+<h2 id="related-work">Related work</h2>
+<p><a href="https://www.aclweb.org/anthology/W19-8652.pdf">Dusek et al. (2019)</a> showed that cleaned data can significantly improve system ability to produce fact-accurate text.</p>]]></content><author><name></name></author><category term="nlp-summaries" /><category term="Depth: 1" /><category term="data2text" /><category term="generation" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches</title><link href="http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation" rel="alternate" type="text/html" title="Can Small and Synthetic Benchmarks Drive Modeling Innovation? A Retrospective Study of Question Answering Modeling Approaches" /><published>2021-02-07T18:00:00+00:00</published><updated>2021-02-07T18:00:00+00:00</updated><id>http://localhost:4000/nlp-summaries/arxiv-2102.01065</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/can-small-and-synthetic-benchmarks-drive-modeling-innovation"><![CDATA[<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1810.04805&quot;&gt;LINK TO THE PAPER&lt;/a&gt;&lt;/p&gt;
+<p><a href="https://arxiv.org/abs/1810.04805">LINK TO THE PAPER</a></p>
 
-&lt;blockquote&gt;
-  &lt;p&gt;Small and carefully designed synthetic benchmarks (not created through crowdsourcing 💸) may be useful as benchmarks for driving the development of new modeling approaches, instead of needing large and naturally created datasets.&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>Small and carefully designed synthetic benchmarks (not created through crowdsourcing 💸) may be useful as benchmarks for driving the development of new modeling approaches, instead of needing large and naturally created datasets.</p>
+</blockquote>
 
-&lt;h2 id=&quot;main-idea&quot;&gt;Main idea&lt;/h2&gt;
-&lt;p&gt;We do need natural and big datasets for models that will be used in production, but for making modeling progress (i.e. to compare if an architecture is better than other) we could maybe use automatically generated datasets (through a database, or using some big text corpora).&lt;/p&gt;
+<h2 id="main-idea">Main idea</h2>
+<p>We do need natural and big datasets for models that will be used in production, but for making modeling progress (i.e. to compare if an architecture is better than other) we could maybe use automatically generated datasets (through a database, or using some big text corpora).</p>
 
-&lt;p&gt;They showed that many human-constructed benchmarks (NewsQA, NaturalQuestions, HotpotQA, …) have high concurrence with SQuAD. They also constructed synthetic benchmarks that do not resemble natural language, yet have high concurrence with SQuAD, demonstrating that &lt;u&gt;naturalness&lt;/u&gt; and &lt;u&gt;size&lt;/u&gt; are not necessary for reflecting historical modeling improvements on SQuAD.&lt;/p&gt;
+<p>They showed that many human-constructed benchmarks (NewsQA, NaturalQuestions, HotpotQA, …) have high concurrence with SQuAD. They also constructed synthetic benchmarks that do not resemble natural language, yet have high concurrence with SQuAD, demonstrating that <u>naturalness</u> and <u>size</u> are not necessary for reflecting historical modeling improvements on SQuAD.</p>
 
-&lt;h2 id=&quot;concurrence&quot;&gt;Concurrence&lt;/h2&gt;
-&lt;p&gt;Concurrence is used in the paper to compare datasets and to be able to say: if two datasets have high concurrence then we could compare modeling decision with either of them, e.g. SQuAD has high concurrence with \(X\), and \(X\) is way cheaper to produce so we might have achieved similar progress using dataset \(X\) as benchmark.&lt;/p&gt;
+<h2 id="concurrence">Concurrence</h2>
+<p>Concurrence is used in the paper to compare datasets and to be able to say: if two datasets have high concurrence then we could compare modeling decision with either of them, e.g. SQuAD has high concurrence with \(X\), and \(X\) is way cheaper to produce so we might have achieved similar progress using dataset \(X\) as benchmark.</p>
 
-&lt;h4 id=&quot;definition&quot;&gt;Definition&lt;/h4&gt;
-&lt;p&gt;Two datasets have high concurrence if they rank a set of models similarly, when train on the dataset train set and evaluated on the dataset test set.&lt;/p&gt;
+<h4 id="definition">Definition</h4>
+<p>Two datasets have high concurrence if they rank a set of models similarly, when train on the dataset train set and evaluated on the dataset test set.</p>
 
-&lt;p&gt;Mathematically, concurrence is the correlation between the evaluations obtained in two different datasets for the same model.&lt;/p&gt;
+<p>Mathematically, concurrence is the correlation between the evaluations obtained in two different datasets for the same model.</p>
 
-&lt;p&gt;They used 2 correlation functions:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Measures that both evaluations have a linear relation (\(\implies\) ideally, if one model is \(k\) times better than other in dataset 1 it should be \(m*k\) better in dataset 2, with \(m\) a constant for all the model evaluations).&lt;/li&gt;
-  &lt;li&gt;Measures that both rankings (order) are similar.&lt;/li&gt;
-&lt;/ol&gt;
+<p>They used 2 correlation functions:</p>
+<ol>
+  <li>Measures that both evaluations have a linear relation (\(\implies\) ideally, if one model is \(k\) times better than other in dataset 1 it should be \(m*k\) better in dataset 2, with \(m\) a constant for all the model evaluations).</li>
+  <li>Measures that both rankings (order) are similar.</li>
+</ol>
 
-&lt;h2 id=&quot;synthetic-datasets&quot;&gt;Synthetic datasets&lt;/h2&gt;
-&lt;h3 id=&quot;fuzzysyntheticqa&quot;&gt;FuzzySyntheticQA&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Passage: random 150 tokens (from a token vocabulary).&lt;/li&gt;
-  &lt;li&gt;Answer: random token from the passage.&lt;/li&gt;
-  &lt;li&gt;Question: noisy cloze generation of the 10 token window of the answer token. Cloze means that the answer token is masked out, and it’s noisy because they applied noisy “operations” to  the window: token replacement + token permutation + word dropout.&lt;/li&gt;
-&lt;/ul&gt;
+<h2 id="synthetic-datasets">Synthetic datasets</h2>
+<h3 id="fuzzysyntheticqa">FuzzySyntheticQA</h3>
+<ul>
+  <li>Passage: random 150 tokens (from a token vocabulary).</li>
+  <li>Answer: random token from the passage.</li>
+  <li>Question: noisy cloze generation of the 10 token window of the answer token. Cloze means that the answer token is masked out, and it’s noisy because they applied noisy “operations” to  the window: token replacement + token permutation + word dropout.</li>
+</ul>
 
-&lt;p&gt;&lt;strong&gt;Results.&lt;/strong&gt; It has high concurrence with SQuAD on non-pretrained modeling approaches. This is non trivial, since existing synthetic benchmarks (&lt;a href=&quot;https://arxiv.org/abs/1502.05698&quot;&gt;bAbI task suite&lt;/a&gt;) have low concurrence with SQuAD.&lt;/p&gt;
+<p><strong>Results.</strong> It has high concurrence with SQuAD on non-pretrained modeling approaches. This is non trivial, since existing synthetic benchmarks (<a href="https://arxiv.org/abs/1502.05698">bAbI task suite</a>) have low concurrence with SQuAD.</p>
 
-&lt;h3 id=&quot;wikidatasyntheticqa&quot;&gt;WikidataSyntheticQA&lt;/h3&gt;
-&lt;p&gt;Motivation: build synthetic cloze benchmarks that do not resemble natural language, yet require some of the reasoning capabilities necessary to handle complex natural language phenomena in SQuAD.&lt;/p&gt;
+<h3 id="wikidatasyntheticqa">WikidataSyntheticQA</h3>
+<p>Motivation: build synthetic cloze benchmarks that do not resemble natural language, yet require some of the reasoning capabilities necessary to handle complex natural language phenomena in SQuAD.</p>
 
-&lt;p&gt;Derived from Wikidata triples ([subject, predicate, object]). Wikidata contains entities (subject/object) that relate to each other (predicate). Each entity has a label (its main name) and aliases (alternative names). They picked one entity and all the entities related to that one, then they sampled 50 triples to use.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Passage: It’s the concatenation of all 50 triples (separated by “.”) replacing the entity with the label or an alias. So to have a “text” version of the triple.&lt;/li&gt;
-  &lt;li&gt;Answer: Random element of a triple.&lt;/li&gt;
-  &lt;li&gt;Question: the triple that contains the answer, with the answer element masked and randomly transforming it by:
-    &lt;ul&gt;
-      &lt;li&gt;Replacing the predicate with the inverse and then inverting the subject and the object, e.g.: &lt;code class=&quot;highlighter-rouge&quot;&gt;(Mae_C._Jemison, employer, [MASK])&lt;/code&gt; \(\rightarrow\) &lt;code class=&quot;highlighter-rouge&quot;&gt;([MASK], employee, Mae_C._Jemison)&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;Replace the unmasked entity with its hypernyms (e.g. NASA \(\rightarrow\) space agency).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+<p>Derived from Wikidata triples ([subject, predicate, object]). Wikidata contains entities (subject/object) that relate to each other (predicate). Each entity has a label (its main name) and aliases (alternative names). They picked one entity and all the entities related to that one, then they sampled 50 triples to use.</p>
+<ul>
+  <li>Passage: It’s the concatenation of all 50 triples (separated by “.”) replacing the entity with the label or an alias. So to have a “text” version of the triple.</li>
+  <li>Answer: Random element of a triple.</li>
+  <li>Question: the triple that contains the answer, with the answer element masked and randomly transforming it by:
+    <ul>
+      <li>Replacing the predicate with the inverse and then inverting the subject and the object, e.g.: <code class="highlighter-rouge">(Mae_C._Jemison, employer, [MASK])</code> \(\rightarrow\) <code class="highlighter-rouge">([MASK], employee, Mae_C._Jemison)</code>.</li>
+      <li>Replace the unmasked entity with its hypernyms (e.g. NASA \(\rightarrow\) space agency).</li>
+    </ul>
+  </li>
+</ul>
 
-&lt;h4 id=&quot;results&quot;&gt;Results&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;It has high concurrence with SQuAD.
--This result indicates that naturalness is not a necessary quality of benchmarks with high concurrence with SQuAD.&lt;/li&gt;
-  &lt;li&gt;They think that this high correlation may be caused by  the fact that a model needs to reason about.&lt;/li&gt;
-  &lt;li&gt;The Wikidata aliases provide great lexical complexity  to the benchmark, such that the benchmark is not trivially solvable through string pattern-matching (removing aliases from the generation procedure results in near-perfect performance from all modeling approaches).&lt;/li&gt;
-&lt;/ul&gt;
+<h4 id="results">Results</h4>
+<ul>
+  <li>It has high concurrence with SQuAD.
+-This result indicates that naturalness is not a necessary quality of benchmarks with high concurrence with SQuAD.</li>
+  <li>They think that this high correlation may be caused by  the fact that a model needs to reason about.</li>
+  <li>The Wikidata aliases provide great lexical complexity  to the benchmark, such that the benchmark is not trivially solvable through string pattern-matching (removing aliases from the generation procedure results in near-perfect performance from all modeling approaches).</li>
+</ul>
 
-&lt;h1 class=&quot;post-thoughts&quot;&gt;&lt;span&gt;Questions/Thoughts&lt;/span&gt;&lt;/h1&gt;
-&lt;ul&gt;
-  &lt;li&gt;Did their synthetic benchmarks work well because they knew the SQuAD dataset and knew which capacities they needed to measure?
-    &lt;ul&gt;
-      &lt;li&gt;Do we generally know which capabilities we want to measure?&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I think this is an interesting idea to directly prove capabilities of a model. E.g. if I want to prove that my model understands antonyms I can build a synthetic dataset that contains that and test it. It’s good because it’d be more specific and more controlled, I’m sure at what level the model is good. Naturally generated datasets are created by humans, from whatever they thought at the moment or  understood from the task that was asked from them.&lt;/li&gt;
-  &lt;li&gt;It’s important (and maybe difficult to measure) to create a dataset that contains the lexical properties that one wants, while not being trivially solvable.&lt;/li&gt;
-  &lt;li&gt;On the negative  side, benchmarks inspire problems/issues of current approaches. Having a manually created dataset wouldn’t create this inspiration.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Depth: 4" /><category term="datasets" /><summary type="html"></summary></entry><entry><title type="html">Recipes for building an open-domain chatbot</title><link href="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" rel="alternate" type="text/html" title="Recipes for building an open-domain chatbot" /><published>2020-05-23T20:00:00+02:00</published><updated>2020-05-23T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
+<h1 class="post-thoughts"><span>Questions/Thoughts</span></h1>
+<ul>
+  <li>Did their synthetic benchmarks work well because they knew the SQuAD dataset and knew which capacities they needed to measure?
+    <ul>
+      <li>Do we generally know which capabilities we want to measure?</li>
+    </ul>
+  </li>
+  <li>I think this is an interesting idea to directly prove capabilities of a model. E.g. if I want to prove that my model understands antonyms I can build a synthetic dataset that contains that and test it. It’s good because it’d be more specific and more controlled, I’m sure at what level the model is good. Naturally generated datasets are created by humans, from whatever they thought at the moment or  understood from the task that was asked from them.</li>
+  <li>It’s important (and maybe difficult to measure) to create a dataset that contains the lexical properties that one wants, while not being trivially solvable.</li>
+  <li>On the negative  side, benchmarks inspire problems/issues of current approaches. Having a manually created dataset wouldn’t create this inspiration.</li>
+</ul>]]></content><author><name></name></author><category term="nlp-summaries" /><category term="Depth: 4" /><category term="datasets" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Recipes for building an open-domain chatbot</title><link href="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot" rel="alternate" type="text/html" title="Recipes for building an open-domain chatbot" /><published>2020-05-23T19:00:00+01:00</published><updated>2020-05-23T19:00:00+01:00</updated><id>http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/recipes-open-domain-chatbot"><![CDATA[<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-&lt;blockquote&gt;
-  &lt;p&gt;(&lt;a href=&quot;https://arxiv.org/abs/2004.13637&quot;&gt;Roller et. al, 2020&lt;/a&gt;). This paper studies in depth the performance of a chatbot based on the Transformer. It shows that it’s able to respond in a really human way, and it’s able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other speaker is saying.&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>(<a href="https://arxiv.org/abs/2004.13637">Roller et. al, 2020</a>). This paper studies in depth the performance of a chatbot based on the Transformer. It shows that it’s able to respond in a really human way, and it’s able to maintain a chit chat conversation. However, they also show that the model lacks in-depth knowledge, it forgets facts stated before and it tends to repeat what the other speaker is saying.</p>
+</blockquote>
 
-&lt;h3 id=&quot;what-does-it-propose&quot;&gt;What does it propose?&lt;/h3&gt;
+<h3 id="what-does-it-propose">What does it propose?</h3>
 
-&lt;p&gt;The paper constructs different chatbots based on the Transformer, and it analyses different axes of developing a chatbot. It finds that:&lt;/p&gt;
+<p>The paper constructs different chatbots based on the Transformer, and it analyses different axes of developing a chatbot. It finds that:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;Fine tuning on datasets that focus on personality, empathy, knowledge, etc. makes the chatbot more human (even when using smaller models).&lt;/li&gt;
-  &lt;li&gt;It tries different decoding strategies, showing that beam search can be as good or better than  sampling.&lt;/li&gt;
-  &lt;li&gt;It presents some of the the flaws of the developed models.&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>Fine tuning on datasets that focus on personality, empathy, knowledge, etc. makes the chatbot more human (even when using smaller models).</li>
+  <li>It tries different decoding strategies, showing that beam search can be as good or better than  sampling.</li>
+  <li>It presents some of the the flaws of the developed models.</li>
+</ul>
 
-&lt;p&gt;To construct a chatbot we need to build a system that generates text answers given a previous dialogue. To achieve this we need: a model, training data, a way to train this model (a loss function), a decoder (or simply an algorithm) to produce an answer given the model output, and finally evaluation metrics. In the following sections (1–5), we’ll go through the different strategies tested in this paper for each of those steps, and then we’ll look at the results obtained (Section 6).&lt;/p&gt;
+<p>To construct a chatbot we need to build a system that generates text answers given a previous dialogue. To achieve this we need: a model, training data, a way to train this model (a loss function), a decoder (or simply an algorithm) to produce an answer given the model output, and finally evaluation metrics. In the following sections (1–5), we’ll go through the different strategies tested in this paper for each of those steps, and then we’ll look at the results obtained (Section 6).</p>
 
-&lt;h2 id=&quot;1-models&quot;&gt;1. Models&lt;/h2&gt;
+<h2 id="1-models">1. Models</h2>
 
-&lt;h3 id=&quot;11-retriever&quot;&gt;1.1 Retriever&lt;/h3&gt;
+<h3 id="11-retriever">1.1 Retriever</h3>
 
-&lt;p&gt;(&lt;a href=&quot;https://arxiv.org/pdf/1905.01969&quot;&gt;Humeau et al., 2019&lt;/a&gt;)&lt;/p&gt;
+<p>(<a href="https://arxiv.org/pdf/1905.01969">Humeau et al., 2019</a>)</p>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-03/poly_encoder.png&quot; alt=&quot;Figure 1. Poly encoder architecture.&quot; style=&quot;width:45%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1. Poly encoder architecture.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-03/poly_encoder.png" alt="Figure 1. Poly encoder architecture." style="width:45%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. Poly encoder architecture.</figcaption>
+</figure>
 
-&lt;p&gt;&lt;u&gt;The idea&lt;/u&gt;: given a dialogue history (context), it retrieves the next dialogue utterance by scoring a large set of candidate responses (typically all possible training responses).&lt;/p&gt;
+<p><u>The idea</u>: given a dialogue history (context), it retrieves the next dialogue utterance by scoring a large set of candidate responses (typically all possible training responses).</p>
 
-&lt;p&gt;&lt;u&gt;How&lt;/u&gt;: It constructs an embedding of the context (\(y_{ctxt}\)) and one for each response candidate (\(y_{cand_i}\)), to then calculate the score of each with the dot product: \(y_{cand_i}\cdot y_{ctxt}\). These embeddings representations are constructed as follows:&lt;/p&gt;
+<p><u>How</u>: It constructs an embedding of the context (\(y_{ctxt}\)) and one for each response candidate (\(y_{cand_i}\)), to then calculate the score of each with the dot product: \(y_{cand_i}\cdot y_{ctxt}\). These embeddings representations are constructed as follows:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;Right side of Figure 1: It obtains the candidates embeddings  using a transformer encoder (BERT) and an aggregator function, that can be simply taking the classifier embedding \(C\) of the output, or the average of the tokens.&lt;/li&gt;
-  &lt;li&gt;Left side of Figure 1: It encodes the context using another transformer and then performing \(m\) attentions (with \(m\) a hyper parameter). Each attention (see the definition &lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need#scaled-dot-product-attention&quot;&gt;here&lt;/a&gt;) uses as keys and values the transformer output and as query a learned code \(c_i\) unique for each attention. It then computes another attention on top of those embeddings, where the query is the \(y_{cand_i}\) and the keys and values are the output from the other attention \(y^i_{ctxt}\). In equations:&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li>Right side of Figure 1: It obtains the candidates embeddings  using a transformer encoder (BERT) and an aggregator function, that can be simply taking the classifier embedding \(C\) of the output, or the average of the tokens.</li>
+  <li>Left side of Figure 1: It encodes the context using another transformer and then performing \(m\) attentions (with \(m\) a hyper parameter). Each attention (see the definition <a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need#scaled-dot-product-attention">here</a>) uses as keys and values the transformer output and as query a learned code \(c_i\) unique for each attention. It then computes another attention on top of those embeddings, where the query is the \(y_{cand_i}\) and the keys and values are the output from the other attention \(y^i_{ctxt}\). In equations:</li>
+</ol>
 
 \[T(x) = (h_1, ..., h_N) \qquad \text{(Transformer output)}\\\]
 
@@ -188,539 +188,539 @@
 \[y_{ctxt} = \sum_iw_i y^i_{ctxt} \qquad \text{, where:}\\
 (w_1, ..., w_m) = \text{softmax}(y_{cand_i}\cdot y_{ctxt}^1, ..., y_{cand_i}\cdot y_{ctxt}^m)\]
 
-&lt;h3 id=&quot;12-generator&quot;&gt;1.2 Generator&lt;/h3&gt;
+<h3 id="12-generator">1.2 Generator</h3>
 
-&lt;p&gt;(&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;Aswani et. al, 2017&lt;/a&gt;)&lt;/p&gt;
+<p>(<a href="https://arxiv.org/abs/1706.03762">Aswani et. al, 2017</a>)</p>
 
-&lt;p&gt;Standard Seq2seq model, like the transformer of “Attention is all you need” (&lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need&quot;&gt;summary here&lt;/a&gt;) but way bigger (90M, 2.7B, 9.4B). In comparison, Meena Google’s chatbot (&lt;a href=&quot;https://arxiv.org/abs/2001.09977&quot;&gt;Adiwardana et. al, 2020&lt;/a&gt;) has 2.7B parameters.&lt;/p&gt;
+<p>Standard Seq2seq model, like the transformer of “Attention is all you need” (<a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need">summary here</a>) but way bigger (90M, 2.7B, 9.4B). In comparison, Meena Google’s chatbot (<a href="https://arxiv.org/abs/2001.09977">Adiwardana et. al, 2020</a>) has 2.7B parameters.</p>
 
-&lt;h3 id=&quot;13-retrieve-and-refine&quot;&gt;1.3 Retrieve and refine&lt;/h3&gt;
+<h3 id="13-retrieve-and-refine">1.3 Retrieve and refine</h3>
 
-&lt;p&gt;(&lt;a href=&quot;https://arxiv.org/abs/1808.04776&quot;&gt;Weston et al., 2018&lt;/a&gt;)&lt;/p&gt;
+<p>(<a href="https://arxiv.org/abs/1808.04776">Weston et al., 2018</a>)</p>
 
-&lt;p&gt;Trying to solve the problems of generator models (hallucinate knowledge, unable to read and access external knowledge, dull and repetitive responses). Here they mix the two models above appending to the input of a generator model the output of a retriever model (Figure 2), using a special separator token. They experiment with two types:&lt;/p&gt;
+<p>Trying to solve the problems of generator models (hallucinate knowledge, unable to read and access external knowledge, dull and repetitive responses). Here they mix the two models above appending to the input of a generator model the output of a retriever model (Figure 2), using a special separator token. They experiment with two types:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Dialogue retrieval&lt;/strong&gt;: it uses the dialog history and it produces a response (Same retriever architecture)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Knowledge retriever&lt;/strong&gt;: it retrieves from a large knowledge base, where the candidates are obtained from a TF-IDF-based inverted index lookup over a Wikipedia dump. For this case a transformer is additionally trained to decide when to add the knowledge retrieval and when not to (as some contexts do not require knowledge).&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li><strong>Dialogue retrieval</strong>: it uses the dialog history and it produces a response (Same retriever architecture)</li>
+  <li><strong>Knowledge retriever</strong>: it retrieves from a large knowledge base, where the candidates are obtained from a TF-IDF-based inverted index lookup over a Wikipedia dump. For this case a transformer is additionally trained to decide when to add the knowledge retrieval and when not to (as some contexts do not require knowledge).</li>
+</ol>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-03/retnrefine.png&quot; alt=&quot;Figure 2. Retrieve and Refine architecture.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 2. Retrieve and Refine architecture.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-03/retnrefine.png" alt="Figure 2. Retrieve and Refine architecture." style="width:55%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 2. Retrieve and Refine architecture.</figcaption>
+</figure>
 
-&lt;h2 id=&quot;2-training-objectives&quot;&gt;2. Training objectives&lt;/h2&gt;
+<h2 id="2-training-objectives">2. Training objectives</h2>
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;u&gt;Retriever&lt;/u&gt;: cross entropy over the \(y_{cand_i}\) where \(y_{cand_1}\) is the score of the correct response and the rest are negatives.&lt;/li&gt;
-  &lt;li&gt;&lt;u&gt;Generator&lt;/u&gt;: standard maximum likelihood estimation (MLE)&lt;/li&gt;
-  &lt;li&gt;&lt;u&gt;Dialogue retrieval&lt;/u&gt;: it has been proven that simply using MLE makes the model ignore completely the retrieved utterance. This probably happens because the relation between the retrieval response and the gold label (the correct final answer) is not clear. Thus, here they replace the gold label with the retrieved utterance α% of the times.&lt;/li&gt;
-  &lt;li&gt;&lt;u&gt;Knowledge retrieval&lt;/u&gt;: here we can simply use MLE because the fine-tuning datasets used have a clear correspondence between the correct knowledge retrieval and response.&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li><u>Retriever</u>: cross entropy over the \(y_{cand_i}\) where \(y_{cand_1}\) is the score of the correct response and the rest are negatives.</li>
+  <li><u>Generator</u>: standard maximum likelihood estimation (MLE)</li>
+  <li><u>Dialogue retrieval</u>: it has been proven that simply using MLE makes the model ignore completely the retrieved utterance. This probably happens because the relation between the retrieval response and the gold label (the correct final answer) is not clear. Thus, here they replace the gold label with the retrieved utterance α% of the times.</li>
+  <li><u>Knowledge retrieval</u>: here we can simply use MLE because the fine-tuning datasets used have a clear correspondence between the correct knowledge retrieval and response.</li>
+</ul>
 
-&lt;h3 id=&quot;21-unlikelihood-training&quot;&gt;2.1 Unlikelihood training&lt;/h3&gt;
+<h3 id="21-unlikelihood-training">2.1 Unlikelihood training</h3>
 
-&lt;p&gt;(&lt;a href=&quot;https://arxiv.org/pdf/1908.04319&quot;&gt;Welleck et al., 2020&lt;/a&gt;)&lt;/p&gt;
+<p>(<a href="https://arxiv.org/pdf/1908.04319">Welleck et al., 2020</a>)</p>
 
-&lt;p&gt;They also tried this objective because it was created to mitigate problems of MLE when training language models, such as repetition (using the same tokens more frequently than a human), and token distribution mismatch (using specific tokens that have  low frequency too rarely compared to humans).&lt;/p&gt;
+<p>They also tried this objective because it was created to mitigate problems of MLE when training language models, such as repetition (using the same tokens more frequently than a human), and token distribution mismatch (using specific tokens that have  low frequency too rarely compared to humans).</p>
 
-&lt;p&gt;&lt;u&gt;Main idea:&lt;/u&gt; to decrease the model’s probability of certain tokens, called negative candidates \(C_t\). To do this, will add an expression to the MLE loss that we’ll take these candidates into account, this is what we call unlikelihood loss:&lt;/p&gt;
+<p><u>Main idea:</u> to decrease the model’s probability of certain tokens, called negative candidates \(C_t\). To do this, will add an expression to the MLE loss that we’ll take these candidates into account, this is what we call unlikelihood loss:</p>
 
-\[-\sum_{c\in C_t}\log(1-p_\theta(c|x_{&amp;lt; t}))\]
+\[-\sum_{c\in C_t}\log(1-p_\theta(c|x_{&lt; t}))\]
 
-&lt;p&gt;Where \(p_\theta\) is our language model predictions, and \(x_{&amp;lt; t}\) is the sequence of \(t\) preceding tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximizing the logarithm, therefore we’ll be maximizing whatever is inside it. Since in this case we don’t want the negative candidates (\(c\)) to be highly probable, we’ll maximize the likelihood of not having them, so we’ll maximize \(1-p_\theta(...)\).&lt;/p&gt;
+<p>Where \(p_\theta\) is our language model predictions, and \(x_{&lt; t}\) is the sequence of \(t\) preceding tokens. As typically with losses, we have a negative logarithm that we will minimize, which is equivalent to maximizing the logarithm, therefore we’ll be maximizing whatever is inside it. Since in this case we don’t want the negative candidates (\(c\)) to be highly probable, we’ll maximize the likelihood of not having them, so we’ll maximize \(1-p_\theta(...)\).</p>
 
-&lt;p&gt;Thus, the actual training objective will be a mixture (gated by \(\alpha\) hyper parameter) of the unlikelihood of bad candidates and the likelihood of the next token:&lt;/p&gt;
+<p>Thus, the actual training objective will be a mixture (gated by \(\alpha\) hyper parameter) of the unlikelihood of bad candidates and the likelihood of the next token:</p>
 
-\[-\alpha \underbrace{-\sum_{c\in C_t}\log(1-p_\theta(c|x_{&amp;lt;t}))}_{\text{unlikelihood}} \underbrace{- \log(p_\theta(x_t|x_{&amp;lt;t}))}_{\text{likelihood}}\]
+\[-\alpha \underbrace{-\sum_{c\in C_t}\log(1-p_\theta(c|x_{&lt;t}))}_{\text{unlikelihood}} \underbrace{- \log(p_\theta(x_t|x_{&lt;t}))}_{\text{likelihood}}\]
 
-&lt;p&gt;In the paper they defined the set of bad candidates as the tokens that were generated more frequently by the model than by humans. To measure these frequencies they kept a running count of the distribution of the tokens generated by the model and they compared it to the distribution of the gold responses.&lt;/p&gt;
+<p>In the paper they defined the set of bad candidates as the tokens that were generated more frequently by the model than by humans. To measure these frequencies they kept a running count of the distribution of the tokens generated by the model and they compared it to the distribution of the gold responses.</p>
 
-&lt;h2 id=&quot;3-decoding&quot;&gt;3. Decoding&lt;/h2&gt;
+<h2 id="3-decoding">3. Decoding</h2>
 
-&lt;p&gt;They tried different decoding strategies:&lt;/p&gt;
+<p>They tried different decoding strategies:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Beam search&lt;/strong&gt; (&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#beam-search&quot;&gt;summary here&lt;/a&gt;)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Top-k sampling&lt;/strong&gt;: at each time step the word \(i\) is selected by sampling from the k (=10) most likely candidates from the model distribution.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Sample-and-rank sampling&lt;/strong&gt;: \(N\) independent sentences are sampled (following the model probabilities) and then the one with the highest probability is selected.&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li><strong>Beam search</strong> (<a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#beam-search">summary here</a>)</li>
+  <li><strong>Top-k sampling</strong>: at each time step the word \(i\) is selected by sampling from the k (=10) most likely candidates from the model distribution.</li>
+  <li><strong>Sample-and-rank sampling</strong>: \(N\) independent sentences are sampled (following the model probabilities) and then the one with the highest probability is selected.</li>
+</ol>
 
-&lt;p&gt;They also tried additional constraints for the decoding process:&lt;/p&gt;
+<p>They also tried additional constraints for the decoding process:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Minimum length&lt;/strong&gt;: Force the model to produce an answer of a defined length.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Predictive length&lt;/strong&gt;: Predict (with a retriever model) the minimum length of the answer (e.g., &amp;lt;10, &amp;lt;20, &amp;lt;30, &amp;gt;30 tokens). And then we do the same as in 1.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Beam blocking&lt;/strong&gt;: Force the model to not produce in the next utterance a trigram (group of 3 words) that’s in the input or in the utterance itself. That can be achieved by setting to 0 the probability of the words that would create a trigram that already exists.&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li><strong>Minimum length</strong>: Force the model to produce an answer of a defined length.</li>
+  <li><strong>Predictive length</strong>: Predict (with a retriever model) the minimum length of the answer (e.g., &lt;10, &lt;20, &lt;30, &gt;30 tokens). And then we do the same as in 1.</li>
+  <li><strong>Beam blocking</strong>: Force the model to not produce in the next utterance a trigram (group of 3 words) that’s in the input or in the utterance itself. That can be achieved by setting to 0 the probability of the words that would create a trigram that already exists.</li>
+</ol>
 
-&lt;h2 id=&quot;4-training-data&quot;&gt;4. Training data&lt;/h2&gt;
+<h2 id="4-training-data">4. Training data</h2>
 
-&lt;p&gt;Train:&lt;/p&gt;
+<p>Train:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;Pushshift.io Reddit: reddit discussions covering a &lt;strong&gt;vast range of topics&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>Pushshift.io Reddit: reddit discussions covering a <strong>vast range of topics</strong>.</li>
+</ul>
 
-&lt;p&gt;Two-way conversational data to fine tune the models:&lt;/p&gt;
+<p>Two-way conversational data to fine tune the models:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;ConvAI2 dataset (&lt;a href=&quot;https://arxiv.org/abs/1801.07243&quot;&gt;Zhang et al., 2018&lt;/a&gt;) focuses on &lt;strong&gt;personality&lt;/strong&gt; and engaging the other speaker. It gives a persona description to the speaker (which is concatenated to the history to use it as input in the model).&lt;/li&gt;
-  &lt;li&gt;Empathetic Dialogues (&lt;a href=&quot;https://arxiv.org/abs/1811.00207&quot;&gt;Rashkin et al., 2018&lt;/a&gt;) focuses on &lt;strong&gt;empathy&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;Wizard of Wikipedia (&lt;a href=&quot;https://arxiv.org/abs/1811.01241&quot;&gt;Dinan et al., 2018&lt;/a&gt;) focuses on &lt;strong&gt;knowledge&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;Blended Skill Talk (&lt;a href=&quot;https://arxiv.org/pdf/2004.08449&quot;&gt;Smith et al., 2020&lt;/a&gt;) provides a dataset that focuses on blending all the previous skills. This is constructed with one human speaking freely (using its persona) and the other one guided, that is he/she has to choose an utterance response from 3 different possibilities constructed by a model trained in each of the three previous datasets.&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>ConvAI2 dataset (<a href="https://arxiv.org/abs/1801.07243">Zhang et al., 2018</a>) focuses on <strong>personality</strong> and engaging the other speaker. It gives a persona description to the speaker (which is concatenated to the history to use it as input in the model).</li>
+  <li>Empathetic Dialogues (<a href="https://arxiv.org/abs/1811.00207">Rashkin et al., 2018</a>) focuses on <strong>empathy</strong>.</li>
+  <li>Wizard of Wikipedia (<a href="https://arxiv.org/abs/1811.01241">Dinan et al., 2018</a>) focuses on <strong>knowledge</strong>.</li>
+  <li>Blended Skill Talk (<a href="https://arxiv.org/pdf/2004.08449">Smith et al., 2020</a>) provides a dataset that focuses on blending all the previous skills. This is constructed with one human speaking freely (using its persona) and the other one guided, that is he/she has to choose an utterance response from 3 different possibilities constructed by a model trained in each of the three previous datasets.</li>
+</ul>
 
-&lt;h2 id=&quot;5-evaluation-methods&quot;&gt;5. Evaluation methods&lt;/h2&gt;
+<h2 id="5-evaluation-methods">5. Evaluation methods</h2>
 
-&lt;h4 id=&quot;51-acute-eval&quot;&gt;5.1 ACUTE-eval&lt;/h4&gt;
+<h4 id="51-acute-eval">5.1 ACUTE-eval</h4>
 
-&lt;p&gt;This is a manual evaluation where two different dialogues (between a model and a human) are presented to a person that needs to choose one of the conversations, that is to choose one of the two models, for each following question:&lt;/p&gt;
+<p>This is a manual evaluation where two different dialogues (between a model and a human) are presented to a person that needs to choose one of the conversations, that is to choose one of the two models, for each following question:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;“Who would you prefer to talk to for a long conversation?” (Engagingness)&lt;/li&gt;
-  &lt;li&gt;“Which speaker sounds more human?” (Humanness)&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>“Who would you prefer to talk to for a long conversation?” (Engagingness)</li>
+  <li>“Which speaker sounds more human?” (Humanness)</li>
+</ul>
 
-&lt;p&gt;So, we send the two dialogues to several raters and we count the votes given to each model.&lt;/p&gt;
+<p>So, we send the two dialogues to several raters and we count the votes given to each model.</p>
 
-&lt;h4 id=&quot;52-self-chat-acute-eval&quot;&gt;5.2 Self-Chat ACUTE-Eval&lt;/h4&gt;
+<h4 id="52-self-chat-acute-eval">5.2 Self-Chat ACUTE-Eval</h4>
 
-&lt;p&gt;Same as ACUTE-eval but we the dialogues are generated by the model talking to itself instead of a human.&lt;/p&gt;
+<p>Same as ACUTE-eval but we the dialogues are generated by the model talking to itself instead of a human.</p>
 
-&lt;h2 id=&quot;6-results&quot;&gt;6. Results&lt;/h2&gt;
+<h2 id="6-results">6. Results</h2>
 
-&lt;p&gt;The results are comparisons in the votes given for each question presented above. In the paper they say that some results are “not significant”, which basically means that given the amount of answers collected and the votes in each side, is not certain if one is better than the other, as in the difference could be noise of the measure.&lt;/p&gt;
+<p>The results are comparisons in the votes given for each question presented above. In the paper they say that some results are “not significant”, which basically means that given the amount of answers collected and the votes in each side, is not certain if one is better than the other, as in the difference could be noise of the measure.</p>
 
-&lt;h3 id=&quot;61-results-of-self-chat-acute-eval&quot;&gt;6.1 Results of Self-Chat ACUTE-Eval&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;When comparing the &lt;strong&gt;3 models&lt;/strong&gt; using standard beam search (beam size 10, no minimum beam decoding constraint, but with context and response 3-gram blocking), the results are Retriever &amp;gt; RetNRef &amp;gt; Generator.&lt;/li&gt;
-  &lt;li&gt;When comparing &lt;u&gt;decoding choices&lt;/u&gt;:
-    &lt;ul&gt;
-      &lt;li&gt;In terms of &lt;strong&gt;minimum length&lt;/strong&gt;: The best results were encountered when setting a minimum length of 20 or 40, or when predicting the minimum length using the buckets 10,20,30,40.&lt;/li&gt;
-      &lt;li&gt;In terms of &lt;strong&gt;beam blocking&lt;/strong&gt;: Blocking both context and response 3-grams during generation gives highest scores, however, the differences were not significant.&lt;/li&gt;
-      &lt;li&gt;Comparing different &lt;strong&gt;beam sizes and sampling methods&lt;/strong&gt;, it appears that a beam value of 10 is superior to 1 or 30, and a 10 size beam is on par with sampling methods.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Larger models perform better&lt;/li&gt;
-  &lt;li&gt;Fine tuning in the 4 extra datasets give huge improvements&lt;/li&gt;
-  &lt;li&gt;Using the persona context (description about a specific persona) after having fine tuning gives a little improvement compared to not using them.&lt;/li&gt;
-  &lt;li&gt;Unlikelihood training has a small gain (although it’s not statistically significant). Notice that the conversations in these experiments are short so maybe the advantages of this training objective are not totally exploited.&lt;/li&gt;
-&lt;/ul&gt;
+<h3 id="61-results-of-self-chat-acute-eval">6.1 Results of Self-Chat ACUTE-Eval</h3>
+
+<ul>
+  <li>When comparing the <strong>3 models</strong> using standard beam search (beam size 10, no minimum beam decoding constraint, but with context and response 3-gram blocking), the results are Retriever &gt; RetNRef &gt; Generator.</li>
+  <li>When comparing <u>decoding choices</u>:
+    <ul>
+      <li>In terms of <strong>minimum length</strong>: The best results were encountered when setting a minimum length of 20 or 40, or when predicting the minimum length using the buckets 10,20,30,40.</li>
+      <li>In terms of <strong>beam blocking</strong>: Blocking both context and response 3-grams during generation gives highest scores, however, the differences were not significant.</li>
+      <li>Comparing different <strong>beam sizes and sampling methods</strong>, it appears that a beam value of 10 is superior to 1 or 30, and a 10 size beam is on par with sampling methods.</li>
+    </ul>
+  </li>
+  <li>Larger models perform better</li>
+  <li>Fine tuning in the 4 extra datasets give huge improvements</li>
+  <li>Using the persona context (description about a specific persona) after having fine tuning gives a little improvement compared to not using them.</li>
+  <li>Unlikelihood training has a small gain (although it’s not statistically significant). Notice that the conversations in these experiments are short so maybe the advantages of this training objective are not totally exploited.</li>
+</ul>
 
-&lt;h3 id=&quot;62-results-of-acute-eval&quot;&gt;6.2 Results of ACUTE-eval&lt;/h3&gt;
+<h3 id="62-results-of-acute-eval">6.2 Results of ACUTE-eval</h3>
 
-&lt;p&gt;Results of conversations of 14 turns between humans-chatbot.&lt;/p&gt;
+<p>Results of conversations of 14 turns between humans-chatbot.</p>
 
-&lt;ul&gt;
-  &lt;li&gt;Comparing the 3 models with the improved decoding strategy (beam size 10, minimum length 20, blocking context and response) the results were: RetNRef &amp;gt; Generator &amp;gt; Retriever.&lt;/li&gt;
-  &lt;li&gt;Comparing to Meena (&lt;a href=&quot;https://arxiv.org/abs/2001.09977&quot;&gt;Adiwardana et. al, 2020&lt;/a&gt;):
-    &lt;ul&gt;
-      &lt;li&gt;In the engagingness question the generative model of the same size is better 75% of the times.&lt;/li&gt;
-      &lt;li&gt;In the humanness question the generative model of the same size is better 65% of the times, and the generative of the same size trained with unlikelihood is better 70% of the times.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>Comparing the 3 models with the improved decoding strategy (beam size 10, minimum length 20, blocking context and response) the results were: RetNRef &gt; Generator &gt; Retriever.</li>
+  <li>Comparing to Meena (<a href="https://arxiv.org/abs/2001.09977">Adiwardana et. al, 2020</a>):
+    <ul>
+      <li>In the engagingness question the generative model of the same size is better 75% of the times.</li>
+      <li>In the humanness question the generative model of the same size is better 65% of the times, and the generative of the same size trained with unlikelihood is better 70% of the times.</li>
+    </ul>
+  </li>
+</ul>
 
-&lt;p&gt;When comparing one human-chatbot dialogue to a human-human dialogue: the results that are statistically significant show that the models in this paper are 37% of the times better than human-human dialogues in the engagingness question. Additionally, the generative model is 49% of the times better in the same question, but this is not statistically significant. Even though this result sounds promising, the model is not this close to a human dialogue, below we can see the flaws that the authors presented and that are not really measured by this evaluation.&lt;/p&gt;
+<p>When comparing one human-chatbot dialogue to a human-human dialogue: the results that are statistically significant show that the models in this paper are 37% of the times better than human-human dialogues in the engagingness question. Additionally, the generative model is 49% of the times better in the same question, but this is not statistically significant. Even though this result sounds promising, the model is not this close to a human dialogue, below we can see the flaws that the authors presented and that are not really measured by this evaluation.</p>
 
-&lt;h3 id=&quot;63-failure-cases&quot;&gt;6.3 Failure cases&lt;/h3&gt;
+<h3 id="63-failure-cases">6.3 Failure cases</h3>
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Words repetition.&lt;/strong&gt; The minimum length helps to create more detailed messages, but the core problem still remains. Some 3-grams were over-expressed compared to human-human conversations, such as: “do you like”, “lot of fun”, “have any hobbies”.
-    &lt;ul&gt;
-      &lt;li&gt;Evaluation problem: the current evaluation does not seem to expose this as boring because the conversations are short and are evaluated separately.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Ideas repetition.&lt;/strong&gt; Beam blocking helps with this issue, but it can be seen that the model has a tendency to repeat what the other part says, if the human says he/she has a dog then the bot repeats that it has one too, the chatbot likes the same bands as you, etc.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Forgetfulness.&lt;/strong&gt; The model does not link correctly to past statements, for example you tell the model you have a dog, but then later in the conversation it asks what pets do you have.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Contradiction.&lt;/strong&gt; It makes contradictions linked to overall knowledge, for example it says it lives in the MidWest and then it specifies it lives in Georgia (which is not in the midwest).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Knowledge&lt;/strong&gt;. They observed that the models often switch topics, avoiding the challenge of going “deeper”. The reading of knowledge only hurt the model in the evaluation setup, possibly due to:
-    &lt;ul&gt;
-      &lt;li&gt;The model attempts to use knowledge when there is no need, or using it incorrectly.&lt;/li&gt;
-      &lt;li&gt;Evaluation problem: deeper knowledge is not really required in this setup, since the dialogues are short and tend to cover only shallow topics whereby the speakers get to know each other.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Context length.&lt;/strong&gt; The models in this paper have a hard limit of 128 tokens, there’s been some research in this problem but it would need another setup to be evaluated (with dialogues longer than 14 turns).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Deeper understanding.&lt;/strong&gt; These models cannot be taught a concept through further conversation, so as-is they will always be stunted. See fun examples in Figure 3.&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li><strong>Words repetition.</strong> The minimum length helps to create more detailed messages, but the core problem still remains. Some 3-grams were over-expressed compared to human-human conversations, such as: “do you like”, “lot of fun”, “have any hobbies”.
+    <ul>
+      <li>Evaluation problem: the current evaluation does not seem to expose this as boring because the conversations are short and are evaluated separately.</li>
+    </ul>
+  </li>
+  <li><strong>Ideas repetition.</strong> Beam blocking helps with this issue, but it can be seen that the model has a tendency to repeat what the other part says, if the human says he/she has a dog then the bot repeats that it has one too, the chatbot likes the same bands as you, etc.</li>
+  <li><strong>Forgetfulness.</strong> The model does not link correctly to past statements, for example you tell the model you have a dog, but then later in the conversation it asks what pets do you have.</li>
+  <li><strong>Contradiction.</strong> It makes contradictions linked to overall knowledge, for example it says it lives in the MidWest and then it specifies it lives in Georgia (which is not in the midwest).</li>
+  <li><strong>Knowledge</strong>. They observed that the models often switch topics, avoiding the challenge of going “deeper”. The reading of knowledge only hurt the model in the evaluation setup, possibly due to:
+    <ul>
+      <li>The model attempts to use knowledge when there is no need, or using it incorrectly.</li>
+      <li>Evaluation problem: deeper knowledge is not really required in this setup, since the dialogues are short and tend to cover only shallow topics whereby the speakers get to know each other.</li>
+    </ul>
+  </li>
+  <li><strong>Context length.</strong> The models in this paper have a hard limit of 128 tokens, there’s been some research in this problem but it would need another setup to be evaluated (with dialogues longer than 14 turns).</li>
+  <li><strong>Deeper understanding.</strong> These models cannot be taught a concept through further conversation, so as-is they will always be stunted. See fun examples in Figure 3.</li>
+</ul>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-03/dialogues.png&quot; alt=&quot;Figure 3. Pun dialogues failures.&quot; style=&quot;width:100%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 3. Pun dialogues failures.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-03/dialogues.png" alt="Figure 3. Pun dialogues failures." style="width:100%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 3. Pun dialogues failures.</figcaption>
+</figure>
 
-&lt;h2 id=&quot;whats-next&quot;&gt;What’s next!&lt;/h2&gt;
+<h2 id="whats-next">What’s next!</h2>
 
-&lt;p&gt;This paper shows a really robust and advanced chatbot, however it also presented a lot of remaining challenges to really be near a human-like bot. If you’re interested in one of the challenges presented in this summary go and read the paper! 😀 Because it cites work that is trying to overcome these issues.&lt;/p&gt;</content><author><name></name></author><category term="Depth: 5" /><category term="chatbot" /><category term="generation" /><summary type="html"></summary></entry><entry><title type="html">Pre-training of Deep Bidirectional Transformers for Language Understanding</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Pre-training of Deep Bidirectional Transformers for Language Understanding" /><published>2020-05-02T13:00:00+02:00</published><updated>2020-05-02T13:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
+<p>This paper shows a really robust and advanced chatbot, however it also presented a lot of remaining challenges to really be near a human-like bot. If you’re interested in one of the challenges presented in this summary go and read the paper! 😀 Because it cites work that is trying to overcome these issues.</p>]]></content><author><name></name></author><category term="nlp-summaries" /><category term="Depth: 5" /><category term="chatbot" /><category term="generation" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Pre-training of Deep Bidirectional Transformers for Language Understanding</title><link href="http://localhost:4000/nlp-summaries/bert" rel="alternate" type="text/html" title="Pre-training of Deep Bidirectional Transformers for Language Understanding" /><published>2020-05-02T12:00:00+01:00</published><updated>2020-05-02T12:00:00+01:00</updated><id>http://localhost:4000/nlp-summaries/bert</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/bert"><![CDATA[<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-&lt;blockquote&gt;
-  &lt;p&gt;Pre-training of Deep Bidirectional Transformers for Language Understanding (&lt;a href=&quot;https://arxiv.org/abs/1810.04805&quot;&gt;link&lt;/a&gt;)&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>Pre-training of Deep Bidirectional Transformers for Language Understanding (<a href="https://arxiv.org/abs/1810.04805">link</a>)</p>
+</blockquote>
 
-&lt;h2 id=&quot;why-is-it-important&quot;&gt;Why is it important?&lt;/h2&gt;
+<h2 id="why-is-it-important">Why is it important?</h2>
 
-&lt;ol&gt;
-  &lt;li&gt;BERT is a language model that can be used directly to approach other NLP tasks (summarization, question answering, etc.).&lt;/li&gt;
-  &lt;li&gt;It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times as of today).&lt;/li&gt;
-  &lt;li&gt;It has been shown that it’s capable of learning actual linguistic notions (&lt;a href=&quot;https://arxiv.org/pdf/1906.04341v1.pdf&quot;&gt;Clark et., al 2019&lt;/a&gt;, &lt;a href=&quot;https://dair.ai/Aspects-of-language-captured-by-BERT/&quot;&gt;summary here&lt;/a&gt;).&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li>BERT is a language model that can be used directly to approach other NLP tasks (summarization, question answering, etc.).</li>
+  <li>It proved to be consistently better than the other language models proposed at the time, and it has been shown to be really good in many other tasks afterwards (cited 4.832 times as of today).</li>
+  <li>It has been shown that it’s capable of learning actual linguistic notions (<a href="https://arxiv.org/pdf/1906.04341v1.pdf">Clark et., al 2019</a>, <a href="https://dair.ai/Aspects-of-language-captured-by-BERT/">summary here</a>).</li>
+</ol>
 
-&lt;p&gt;It achieves this with just a couple of changes to the transformer architecture together with new tasks for pre training.&lt;/p&gt;
+<p>It achieves this with just a couple of changes to the transformer architecture together with new tasks for pre training.</p>
 
-&lt;h2 id=&quot;what-does-it-propose&quot;&gt;What does it propose?&lt;/h2&gt;
+<h2 id="what-does-it-propose">What does it propose?</h2>
 
-&lt;p&gt;This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT token representations outperform others because they are learnt using both left and right context of the sentence.&lt;/p&gt;
+<p>This paper proposed a new way of thinking about language models presenting 2 new pre training tasks. BERT token representations outperform others because they are learnt using both left and right context of the sentence.</p>
 
-&lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
+<h2 id="how-does-it-work">How does it work?</h2>
 
-&lt;p&gt;BERT is basically the transformer architecture (&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;Vaswani et. al 2017&lt;/a&gt;, &lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need&quot;&gt;summary here&lt;/a&gt;) trained to learn language representations, and conceived to be used as the main architecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left and right from the word itself). Let’s now understand the training proposed to learn these language representations and then how they are directly used for other NLP tasks.&lt;/p&gt;
+<p>BERT is basically the transformer architecture (<a href="https://arxiv.org/abs/1706.03762">Vaswani et. al 2017</a>, <a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need">summary here</a>) trained to learn language representations, and conceived to be used as the main architecture to NLP tasks. It mainly differs from the precedent language models because its learned representations contain context from both sides of the sentences (left and right from the word itself). Let’s now understand the training proposed to learn these language representations and then how they are directly used for other NLP tasks.</p>
 
-&lt;h3 id=&quot;bert-training&quot;&gt;BERT training&lt;/h3&gt;
+<h3 id="bert-training">BERT training</h3>
 
-&lt;p&gt;BERT is trained using two objectives:&lt;/p&gt;
+<p>BERT is trained using two objectives:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;Some tokens from the input sequence are masked and the model learns to predict these words (Masked language model).&lt;/li&gt;
-  &lt;li&gt;Two “sentences” are fed as input and the model is trained to predict if one sentence follows the other one or not (next sentence prediction NSP).&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li>Some tokens from the input sequence are masked and the model learns to predict these words (Masked language model).</li>
+  <li>Two “sentences” are fed as input and the model is trained to predict if one sentence follows the other one or not (next sentence prediction NSP).</li>
+</ol>
 
-&lt;p&gt;So we’ll feed BERT with two sentences masked, and we’ll obtain the prediction whether they’re subsequent or not, and the sentences without masked words, as Figure 1 shows.&lt;/p&gt;
+<p>So we’ll feed BERT with two sentences masked, and we’ll obtain the prediction whether they’re subsequent or not, and the sentences without masked words, as Figure 1 shows.</p>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-02/masked.png&quot; alt=&quot;Figure 1: Example of input and output for two masked sentences.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1: Example of input and output for two masked sentences.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-02/masked.png" alt="Figure 1: Example of input and output for two masked sentences." style="width:55%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1: Example of input and output for two masked sentences.</figcaption>
+</figure>
 
-&lt;h4 id=&quot;masked-language-model&quot;&gt;Masked language model&lt;/h4&gt;
+<h4 id="masked-language-model">Masked language model</h4>
 
-&lt;p&gt;From each input sequence 15% of the tokens are processed as follows:&lt;/p&gt;
+<p>From each input sequence 15% of the tokens are processed as follows:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;with 0.8 probability the token is replaced by [MASK]&lt;/li&gt;
-  &lt;li&gt;with 0.1 probability the token is replaced by other random token&lt;/li&gt;
-  &lt;li&gt;with 0.1 probability the token is unchanged&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>with 0.8 probability the token is replaced by [MASK]</li>
+  <li>with 0.1 probability the token is replaced by other random token</li>
+  <li>with 0.1 probability the token is unchanged</li>
+</ul>
 
-&lt;p&gt;The motivation of this setup is that if we always replace 15% of the input sequence with [MASK] then the model will be learning just to detect the masked word and not actual word representations, besides the downstream tasks won’t have [MASK] tokens.&lt;/p&gt;
+<p>The motivation of this setup is that if we always replace 15% of the input sequence with [MASK] then the model will be learning just to detect the masked word and not actual word representations, besides the downstream tasks won’t have [MASK] tokens.</p>
 
-&lt;h4 id=&quot;next-sentence-prediction&quot;&gt;Next sentence prediction&lt;/h4&gt;
+<h4 id="next-sentence-prediction">Next sentence prediction</h4>
 
-&lt;p&gt;The input is composed of two sentences, which are not actual linguistic sentences but are spans of contiguous text. These two sentences A and B are separated with the special token [SEP], and are formed in such a way that 50% of the time B is the actual next sentence and 50% of the time is a random sentence.&lt;/p&gt;
+<p>The input is composed of two sentences, which are not actual linguistic sentences but are spans of contiguous text. These two sentences A and B are separated with the special token [SEP], and are formed in such a way that 50% of the time B is the actual next sentence and 50% of the time is a random sentence.</p>
 
-&lt;h4 id=&quot;bert-input&quot;&gt;BERT input&lt;/h4&gt;
+<h4 id="bert-input">BERT input</h4>
 
-&lt;p&gt;As the Figure 2 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “classification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the &lt;em&gt;positional encoding&lt;/em&gt; in the Transformer paper). All these embeddings are then summed up for each token.&lt;/p&gt;
+<p>As the Figure 2 describes, the input sequence of BERT is composed by two sentences with a [SEP] token in between, and the initial “classification token” [CLS] that will later be used for prediction. Each token has a corresponding embedding, a segment embedding that identifies each sentence, and a position embedding to distinguish the position of each token (same as the <em>positional encoding</em> in the Transformer paper). All these embeddings are then summed up for each token.</p>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-02/input.png&quot; alt=&quot;Figure 2: Input construction.&quot; style=&quot;width:55%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 2: Input construction.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-02/input.png" alt="Figure 2: Input construction." style="width:55%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 2: Input construction.</figcaption>
+</figure>
 
-&lt;p&gt;The datasets used were: BooksCorpus (800M words) (&lt;a href=&quot;https://arxiv.org/abs/1506.06724&quot;&gt;Zhu et al., 2015&lt;/a&gt;) and English Wikipedia (2,500M words).&lt;/p&gt;
+<p>The datasets used were: BooksCorpus (800M words) (<a href="https://arxiv.org/abs/1506.06724">Zhu et al., 2015</a>) and English Wikipedia (2,500M words).</p>
 
-&lt;h4 id=&quot;tokens-construction&quot;&gt;Tokens construction&lt;/h4&gt;
+<h4 id="tokens-construction">Tokens construction</h4>
 
-&lt;p&gt;The tokens are defined using the Wordpiece model (&lt;a href=&quot;https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf&quot;&gt;Schuster et al., 2012&lt;/a&gt;). This is similar to BPE (&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding&quot;&gt;summary here&lt;/a&gt;) but instead of adding the pair of tokens that’s the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:&lt;/p&gt;
+<p>The tokens are defined using the Wordpiece model (<a href="https://storage.googleapis.com/pub-tools-public-publication-data/pdf/37842.pdf">Schuster et al., 2012</a>). This is similar to BPE (<a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding">summary here</a>) but instead of adding the pair of tokens that’s the most frequent in the corpus, we’ll add the pair that increases the likelihood of a language model over the vocabulary. More formally put, the likelihood of the LM is the product of the likelihood of each word in the corpus:</p>
 
 \[\prod_{i=0}^{|\text{corpus}|} \text{LM}(t_i)\]
 
-&lt;p&gt;So the pair that will increase the most this likelihood will be the \(t_it_j\) such that:&lt;/p&gt;
+<p>So the pair that will increase the most this likelihood will be the \(t_it_j\) such that:</p>
 
 \[\max_{t_i,t_j}\,\big\{\text{LM}^*(t_it_j) - \big(\text{LM}(t_i) + \text{LM}(t_j)\big) \quad\forall i,j \in \{1...|\text{corpus}|\} \; i\ne j \}\]
 
-&lt;p&gt;For the LM* that will include that pair in its vocabulary.&lt;/p&gt;
+<p>For the LM* that will include that pair in its vocabulary.</p>
 
-&lt;h4 id=&quot;bert-output&quot;&gt;BERT output&lt;/h4&gt;
+<h4 id="bert-output">BERT output</h4>
 
-&lt;p&gt;The final layer of BERT contains a token representation \(T_i\) and the classifier embedding \(C\), then each \(T_i\) is used to predict whether the token was masked or not and the \(C\) representation to predict if the two sentences were contiguous or not.&lt;/p&gt;
+<p>The final layer of BERT contains a token representation \(T_i\) and the classifier embedding \(C\), then each \(T_i\) is used to predict whether the token was masked or not and the \(C\) representation to predict if the two sentences were contiguous or not.</p>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-02/architecture.png&quot; alt=&quot;Figure 3: The BERT architecture.&quot; style=&quot;width:40%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 3: The BERT architecture.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-02/architecture.png" alt="Figure 3: The BERT architecture." style="width:40%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 3: The BERT architecture.</figcaption>
+</figure>
 
-&lt;h3 id=&quot;bert-in-some-nlp-tasks&quot;&gt;BERT in some NLP tasks&lt;/h3&gt;
+<h3 id="bert-in-some-nlp-tasks">BERT in some NLP tasks</h3>
 
-&lt;p&gt;BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to be the architecture of the task. In general, we feed the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).&lt;/p&gt;
+<p>BERT was conceived to be used directly in other NLP tasks, that is, not to be used as input to other task-specific architecture, but instead to be the architecture of the task. In general, we feed the input of the task into BERT, add a layer at the end to convert the prediction into the task specific answer, and then fine-tune all the parameters end-to-end. This fine tuning is relatively inexpensive (1hr on a TPU, a couple of hours on a GPU).</p>
 
-&lt;p&gt;In general, the &lt;strong&gt;input&lt;/strong&gt; of a NLP task is either a text pair (Q&amp;amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-\(\emptyset\). At the &lt;strong&gt;output&lt;/strong&gt;, we use the last layer representations to either:&lt;/p&gt;
+<p>In general, the <strong>input</strong> of a NLP task is either a text pair (Q&amp;A) that can be directly used as we saw before, or just one text (text classification) in which case we can set as input the pair text-\(\emptyset\). At the <strong>output</strong>, we use the last layer representations to either:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Feed the token representations \(T_i\) into an output layer for &lt;u&gt;token-level tasks&lt;/u&gt;, such as sequence tagging or question answering:&lt;/p&gt;
+<ol>
+  <li>
+    <p>Feed the token representations \(T_i\) into an output layer for <u>token-level tasks</u>, such as sequence tagging or question answering:</p>
 
-    &lt;p&gt;This output layer can differ from task to task, but in general it’ll be a computation from one/more added vectors and each \(T_i\). For example for a Q&amp;amp;A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors \(S\) and \(E\) (&lt;em&gt;start&lt;/em&gt; and &lt;em&gt;end&lt;/em&gt; embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with \(S \cdot T_j + E \cdot T_{j+t}\). Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Feed the [CLS] representation \(C\) into an output layer for &lt;u&gt;classification&lt;/u&gt;, such as sentiment analysis.&lt;/p&gt;
+    <p>This output layer can differ from task to task, but in general it’ll be a computation from one/more added vectors and each \(T_i\). For example for a Q&amp;A task where the input is a question and a passage that contains the answer, this output layer can be composed by two vectors \(S\) and \(E\) (<em>start</em> and <em>end</em> embeddings), that we use to calculate the dot product with each token representation to obtain the score of a candidate phrase with \(S \cdot T_j + E \cdot T_{j+t}\). Therefore we use as loss the sum of the log-likelihoods of the correct start and end positions.</p>
+  </li>
+  <li>
+    <p>Feed the [CLS] representation \(C\) into an output layer for <u>classification</u>, such as sentiment analysis.</p>
 
-    &lt;p&gt;This output layer can be basically a softmax over a transformation matrix \(W\) that takes the output \(C\) to the labels dimension (\(K\)), i.e.:&lt;/p&gt;
+    <p>This output layer can be basically a softmax over a transformation matrix \(W\) that takes the output \(C\) to the labels dimension (\(K\)), i.e.:</p>
 
 \[\text{softmax}(CW^T) \quad \text{with} \; W \in R^{K \times H}, C \in R^H\]
 
-    &lt;p&gt;And then we can use as loss the logarithm of that softmax.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+    <p>And then we can use as loss the logarithm of that softmax.</p>
+  </li>
+</ol>
 
-&lt;p&gt;For more examples on how to define the output of BERT for a specific task you can check the paper!&lt;/p&gt;
+<p>For more examples on how to define the output of BERT for a specific task you can check the paper!</p>
 
-&lt;h2 id=&quot;whats-next&quot;&gt;What’s next!&lt;/h2&gt;
+<h2 id="whats-next">What’s next!</h2>
 
-&lt;p&gt;Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&amp;amp;As setup to encode the question and the paragraph separately and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.&lt;/p&gt;</content><author><name></name></author><category term="Depth: 5" /><category term="BERT" /><summary type="html"></summary></entry><entry><title type="html">Deep dive: Attention is all you need.</title><link href="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need" rel="alternate" type="text/html" title="Deep dive: Attention is all you need." /><published>2020-04-25T18:00:00+02:00</published><updated>2020-04-25T18:00:00+02:00</updated><id>http://localhost:4000/nlp-deep-dive/deep-dive-attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
+<p>Personally, I think that BERT is a great example to notice that letting the model learn where to attend and how to represent all the input outperforms strategies like forcing the model to learn from right-to-left, or in Q&amp;As setup to encode the question and the paragraph separately and then concatenate them. Therefore, we will probably achieve better results if we let the model define how to represent the input, and just feed it with all the information and then define the loss and prediction that we want to do.</p>]]></content><author><name></name></author><category term="nlp-summaries" /><category term="Depth: 5" /><category term="BERT" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Deep dive: Attention is all you need.</title><link href="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need" rel="alternate" type="text/html" title="Deep dive: Attention is all you need." /><published>2020-04-25T17:00:00+01:00</published><updated>2020-04-25T17:00:00+01:00</updated><id>http://localhost:4000/nlp-deep-dive/deep-dive-attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-deep-dive/attention-is-all-you-need"><![CDATA[<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-&lt;blockquote&gt;
-  &lt;p&gt;The objective of this article is to understand the concepts on which the transformer architecture (&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;Vaswani et. al&lt;/a&gt;) is based on.&lt;br /&gt;
-If you want a general overview of the paper you can check the &lt;a href=&quot;https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need&quot;&gt;summary&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>The objective of this article is to understand the concepts on which the transformer architecture (<a href="https://arxiv.org/abs/1706.03762">Vaswani et. al</a>) is based on.<br />
+If you want a general overview of the paper you can check the <a href="https://cfierro94.github.io/nlp-summaries/attention-is-all-you-need">summary</a>.</p>
+</blockquote>
 
-&lt;p&gt;Here I’m going to present a summary of:&lt;/p&gt;
+<p>Here I’m going to present a summary of:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding&quot;&gt;Byte pair encoding&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#beam-search&quot;&gt;Beam search&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#label-smoothing&quot;&gt;Label smoothing&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#dropout&quot;&gt;Dropout&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#layer-normalization&quot;&gt;Layer Normalization&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li><a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#byte-pair-encoding">Byte pair encoding</a></li>
+  <li><a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#beam-search">Beam search</a></li>
+  <li><a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#label-smoothing">Label smoothing</a></li>
+  <li><a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#dropout">Dropout</a></li>
+  <li><a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need#layer-normalization">Layer Normalization</a></li>
+</ul>
 
-&lt;h2 id=&quot;byte-pair-encoding&quot;&gt;Byte Pair Encoding&lt;/h2&gt;
+<h2 id="byte-pair-encoding">Byte Pair Encoding</h2>
 
-&lt;h4 id=&quot;context&quot;&gt;Context&lt;/h4&gt;
+<h4 id="context">Context</h4>
 
-&lt;p&gt;This is an algorithm to define the tokens for which we’re going to learn vector embeddings. The simplest way to do this is consider each word and punctuation in the text as a token. The problem with this approach is that in testing we won’t have an embedding for words we didn’t see before. Some research has successfully used characters as tokens (&lt;a href=&quot;https://arxiv.org/abs/1508.06615&quot;&gt;Kim et. al 2016&lt;/a&gt;, &lt;a href=&quot;https://arxiv.org/abs/1603.00810&quot;&gt;Costa-Jussa et. al 2016&lt;/a&gt;). Byte pair encoding can be put in the middle of these two techniques.&lt;/p&gt;
+<p>This is an algorithm to define the tokens for which we’re going to learn vector embeddings. The simplest way to do this is consider each word and punctuation in the text as a token. The problem with this approach is that in testing we won’t have an embedding for words we didn’t see before. Some research has successfully used characters as tokens (<a href="https://arxiv.org/abs/1508.06615">Kim et. al 2016</a>, <a href="https://arxiv.org/abs/1603.00810">Costa-Jussa et. al 2016</a>). Byte pair encoding can be put in the middle of these two techniques.</p>
 
-&lt;h4 id=&quot;the-algorithm&quot;&gt;The algorithm&lt;/h4&gt;
+<h4 id="the-algorithm">The algorithm</h4>
 
-&lt;p&gt;The motivation behind the algorithm is to define a set of tokens that can be used to construct any word, but also contain the most typical words. So we can learn good representations for the most common terms but at the same time remain flexible and have some knowledge for unknown words. The algorithm then is as follows:&lt;/p&gt;
+<p>The motivation behind the algorithm is to define a set of tokens that can be used to construct any word, but also contain the most typical words. So we can learn good representations for the most common terms but at the same time remain flexible and have some knowledge for unknown words. The algorithm then is as follows:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;We start the tokens set with each of the possible characters plus an end-word character.&lt;/li&gt;
-  &lt;li&gt;We determine the number of merges that we want to do.&lt;/li&gt;
-  &lt;li&gt;For every merge, we will count the occurences of each pair of tokens in our corpus, and we’re going to add as a string the pair (the concatenation) the most frequent. Therefore, adding 1 new token to our set.&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li>We start the tokens set with each of the possible characters plus an end-word character.</li>
+  <li>We determine the number of merges that we want to do.</li>
+  <li>For every merge, we will count the occurences of each pair of tokens in our corpus, and we’re going to add as a string the pair (the concatenation) the most frequent. Therefore, adding 1 new token to our set.</li>
+</ol>
 
-&lt;p&gt;With this, the size of the vocabulary = the number of merges + the number of different characters + 1 (the end-word character). So if we define the number of merges as \(\inf\) then the vocabulary is all the possible characters and all the different words.&lt;/p&gt;
+<p>With this, the size of the vocabulary = the number of merges + the number of different characters + 1 (the end-word character). So if we define the number of merges as \(\inf\) then the vocabulary is all the possible characters and all the different words.</p>
 
-&lt;h2 id=&quot;beam-search&quot;&gt;Beam Search&lt;/h2&gt;
+<h2 id="beam-search">Beam Search</h2>
 
-&lt;h4 id=&quot;context-1&quot;&gt;Context&lt;/h4&gt;
+<h4 id="context-1">Context</h4>
 
-&lt;p&gt;There are different algorithms to decode the final output sequence. This is because our model outputs a probability distribution over our vocabulary, and then we need to choose one word each time until we arrived at the end character. One option (&lt;em&gt;greddy decoding&lt;/em&gt;) would be to choose at each step the word with the highest probability, but the problem is that this may not lead to the highest probability sentence because it’s calculated as:&lt;/p&gt;
+<p>There are different algorithms to decode the final output sequence. This is because our model outputs a probability distribution over our vocabulary, and then we need to choose one word each time until we arrived at the end character. One option (<em>greddy decoding</em>) would be to choose at each step the word with the highest probability, but the problem is that this may not lead to the highest probability sentence because it’s calculated as:</p>
 
 \[P(w_0...w_n) = \prod_i P(w_i) \\
 \iff \log(P(w_0...w_n)) = \sum_i \log(w_i)\]
 
-&lt;h4 id=&quot;the-algorithm-1&quot;&gt;The algorithm&lt;/h4&gt;
+<h4 id="the-algorithm-1">The algorithm</h4>
 
-&lt;p&gt;Instead of being that greedy, beam search proposes to maintain &lt;code class=&quot;highlighter-rouge&quot;&gt;beam_size&lt;/code&gt; hypothesis (possible sentences). Then at each step:&lt;/p&gt;
+<p>Instead of being that greedy, beam search proposes to maintain <code class="highlighter-rouge">beam_size</code> hypothesis (possible sentences). Then at each step:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;We predict the next &lt;code class=&quot;highlighter-rouge&quot;&gt;beam_size&lt;/code&gt; tokens for each hypothesis&lt;/li&gt;
-  &lt;li&gt;From all those possible sentences we take the &lt;code class=&quot;highlighter-rouge&quot;&gt;beam_size&lt;/code&gt; most probable hypothesis.&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li>We predict the next <code class="highlighter-rouge">beam_size</code> tokens for each hypothesis</li>
+  <li>From all those possible sentences we take the <code class="highlighter-rouge">beam_size</code> most probable hypothesis.</li>
+</ol>
 
-&lt;p&gt;We can stop when we complete \(n\) sentences (arrived at the end character), or after \(t\) steps. Additionally, they propose to normalize (to divide) the sentence probability by \(\alpha\), so longer sentences are not less probable.&lt;/p&gt;
+<p>We can stop when we complete \(n\) sentences (arrived at the end character), or after \(t\) steps. Additionally, they propose to normalize (to divide) the sentence probability by \(\alpha\), so longer sentences are not less probable.</p>
 
-&lt;h2 id=&quot;label-smoothing&quot;&gt;Label smoothing&lt;/h2&gt;
+<h2 id="label-smoothing">Label smoothing</h2>
 
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1512.00567&quot;&gt;(Szegedy et. al)&lt;/a&gt;&lt;/p&gt;
+<p><a href="https://arxiv.org/abs/1512.00567">(Szegedy et. al)</a></p>
 
-&lt;p&gt;This is a regularization technique that encourages the model to be less confident, therefore more adaptable.&lt;/p&gt;
+<p>This is a regularization technique that encourages the model to be less confident, therefore more adaptable.</p>
 
-&lt;p&gt;In classifications problems we have ground truth data that follows a distribution \(q\) that we usually define as a one hot vector:&lt;/p&gt;
+<p>In classifications problems we have ground truth data that follows a distribution \(q\) that we usually define as a one hot vector:</p>
 
-\[q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp;amp; \text{if} \quad y=y_i \\0 &amp;amp; \text{if} \quad \text{otherwise} \\\end{array} \right.\]
+\[q(y|x_i) = \delta_{y,y_i} := \left\{\begin{array}{ll}1 &amp; \text{if} \quad y=y_i \\0 &amp; \text{if} \quad \text{otherwise} \\\end{array} \right.\]
 
-&lt;p&gt;If we use the softmax to calculate the output probabilities and we use cross entropy as the loss, then this labels representation can lead to overfitting, therefore this technique proposes to use smoother labels.&lt;/p&gt;
+<p>If we use the softmax to calculate the output probabilities and we use cross entropy as the loss, then this labels representation can lead to overfitting, therefore this technique proposes to use smoother labels.</p>
 
-&lt;h3 id=&quot;understanding-the-problem&quot;&gt;Understanding the problem&lt;/h3&gt;
+<h3 id="understanding-the-problem">Understanding the problem</h3>
 
-&lt;p&gt;In classification problems where we predict the label with a softmax as&lt;/p&gt;
+<p>In classification problems where we predict the label with a softmax as</p>
 
 \[p(y_j|z) = \frac{\exp(z_j)}{\sum_i \exp(z_i)}\]
 
-&lt;p&gt;Where \(x\) is the input, \(y_j\) is one of the possible labels, and \(z\) the logits (the output score of our model). And we use the cross entropy loss as shown below for one example (\(l\)) and for all of them (\(L\)):&lt;/p&gt;
+<p>Where \(x\) is the input, \(y_j\) is one of the possible labels, and \(z\) the logits (the output score of our model). And we use the cross entropy loss as shown below for one example (\(l\)) and for all of them (\(L\)):</p>
 
 \[l = H(q,p) = - \sum_{y=1}^K q(y|x) \log p(y|x)\\\implies L = - \sum_{i=1}^n \sum_{y=1}^K q(y|x_i) \log p(y|x_i)\]
 
-&lt;p&gt;When we take the ground truth distribution discrete, that is \(\delta_{y,y_i}\) (see definition above of \(q\)), then \(q=0\) for all \(y\) different than \(y_i\) (the correct label for element \(i\)), then:&lt;/p&gt;
+<p>When we take the ground truth distribution discrete, that is \(\delta_{y,y_i}\) (see definition above of \(q\)), then \(q=0\) for all \(y\) different than \(y_i\) (the correct label for element \(i\)), then:</p>
 
 \[l = - \log p(y_i|x_i)\\\]
 
-&lt;p&gt;Let’s now calculate the derivative of this to find the minimum of the loss,&lt;/p&gt;
+<p>Let’s now calculate the derivative of this to find the minimum of the loss,</p>
 
 \[\frac{\partial l}{\partial z_k} = \frac{\partial}{\partial z_k}\bigg(-\log \Big(\frac{\exp(z_i)}{\sum_j \exp(z_j)}\Big) \bigg)\\\iff \frac{\partial}{\partial z_k} \bigg( \log \Big(\sum_j \exp(z_j)\Big) - z_i \bigg)\\\iff \frac{1}{\sum_j \exp(z_j)}\frac{\partial}{\partial z_k}\Big(\sum_j \exp(z_j)\Big) - \frac{\partial z_i}{\partial z_k}\\\iff \frac{\exp(z_k)}{\sum_j \exp(z_j)} - \delta_{z_i=z_k}\\\iff p(y_k) - q(y_k)\]
 
-&lt;p&gt;Thus,&lt;/p&gt;
+<p>Thus,</p>
 
 \[\frac{\partial l}{\partial z_k} = p(y_k) - q(y_k) \in [-1, 1]\\\]
 
-&lt;p&gt;Then the function is minimized (it’s derivative is zero) when \(p(y_k) = q(y_k)\). Which is approachable if \(z_i &amp;gt;&amp;gt; z_k \; \forall i \ne k\), in words having the correct logit way bigger than the rest. Because with these values the softmax \(p\) would output 1 for the \(i\) index and zero elsewhere. This can cause two problems:&lt;/p&gt;
+<p>Then the function is minimized (it’s derivative is zero) when \(p(y_k) = q(y_k)\). Which is approachable if \(z_i &gt;&gt; z_k \; \forall i \ne k\), in words having the correct logit way bigger than the rest. Because with these values the softmax \(p\) would output 1 for the \(i\) index and zero elsewhere. This can cause two problems:</p>
 
-&lt;ol&gt;
-  &lt;li&gt;If the model learns to output \(z_i &amp;gt;&amp;gt; z_k\), then it will be overfitting the groundtruth data and it’s not guaranteed to generalize.&lt;/li&gt;
-  &lt;li&gt;It encourages the differences between the largest logit and all others to become large, and this, combined with the fact that the gradient is between -1 and 1 , reduces the ability of the model to adapt. In other words, the model becomes too confident of its predictions.&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li>If the model learns to output \(z_i &gt;&gt; z_k\), then it will be overfitting the groundtruth data and it’s not guaranteed to generalize.</li>
+  <li>It encourages the differences between the largest logit and all others to become large, and this, combined with the fact that the gradient is between -1 and 1 , reduces the ability of the model to adapt. In other words, the model becomes too confident of its predictions.</li>
+</ol>
 
-&lt;h3 id=&quot;proposed-solution&quot;&gt;Proposed solution&lt;/h3&gt;
+<h3 id="proposed-solution">Proposed solution</h3>
 
-&lt;p&gt;Instead of using a one hot vector, we introduce a noise distribution \(u(y)\) on the following way:&lt;/p&gt;
+<p>Instead of using a one hot vector, we introduce a noise distribution \(u(y)\) on the following way:</p>
 
 \[q'(y|x_i) = (1-\epsilon)\delta_{y,y_i} + \epsilon u(y)\]
 
-&lt;p&gt;Thus we have a mixture between the old distribution \(q\) and the fixed distribution \(u\), with weights \((1-\epsilon)\) and \(\epsilon\). We can see this as in, for a \(y_j\) label we first set it to the ground truth label  \(\delta_{y_j,y_i}\) and then with probability \(\epsilon\) we replace the label with the distribution \(u\).&lt;/p&gt;
+<p>Thus we have a mixture between the old distribution \(q\) and the fixed distribution \(u\), with weights \((1-\epsilon)\) and \(\epsilon\). We can see this as in, for a \(y_j\) label we first set it to the ground truth label  \(\delta_{y_j,y_i}\) and then with probability \(\epsilon\) we replace the label with the distribution \(u\).</p>
 
-&lt;p&gt;In the &lt;a href=&quot;https://arxiv.org/pdf/1512.00567&quot;&gt;paper&lt;/a&gt; where this regularization was proposed they used the uniform distribution \(u(y) = 1/K\). If we look at the cross entropy now, it would be:&lt;/p&gt;
+<p>In the <a href="https://arxiv.org/pdf/1512.00567">paper</a> where this regularization was proposed they used the uniform distribution \(u(y) = 1/K\). If we look at the cross entropy now, it would be:</p>
 
 \[H(q', p) = - \sum_{y=1}^K q'(y|x) \log p(y|x)\\= (1-\epsilon)H(q,p) + \epsilon H(u, p)\]
 
-&lt;p&gt;Where the term \(\epsilon H(u, p)\) is penalising the deviation of \(p\) from the prior \(u\), because if these two are too alike, then its cross entropy (\(H(u, p)\)) will be bigger and therefore the loss will be bigger.&lt;/p&gt;
+<p>Where the term \(\epsilon H(u, p)\) is penalising the deviation of \(p\) from the prior \(u\), because if these two are too alike, then its cross entropy (\(H(u, p)\)) will be bigger and therefore the loss will be bigger.</p>
 
-&lt;h2 id=&quot;dropout&quot;&gt;Dropout&lt;/h2&gt;
+<h2 id="dropout">Dropout</h2>
 
-&lt;p&gt;&lt;a href=&quot;http://jmlr.org/papers/v15/srivastava14a.html&quot;&gt;(Srivastava et. al)&lt;/a&gt;&lt;/p&gt;
+<p><a href="http://jmlr.org/papers/v15/srivastava14a.html">(Srivastava et. al)</a></p>
 
-&lt;p&gt;This is another regularization technique that is pretty simple but highly effective. It turns off neurons with a probability \((1-p)\), or in other words it keeps neurons with a probability \(p\). Doing this the model can learn more relevant patterns and is less prone to overfit, therefore it can achieve better performance.&lt;/p&gt;
+<p>This is another regularization technique that is pretty simple but highly effective. It turns off neurons with a probability \((1-p)\), or in other words it keeps neurons with a probability \(p\). Doing this the model can learn more relevant patterns and is less prone to overfit, therefore it can achieve better performance.</p>
 
-&lt;p&gt;The intuition behind dropout is that when we delete random neurons, we’re potentially training exponential sub neural networks at the same time! And then at prediction time, we will be averaging each of those predictions.&lt;/p&gt;
+<p>The intuition behind dropout is that when we delete random neurons, we’re potentially training exponential sub neural networks at the same time! And then at prediction time, we will be averaging each of those predictions.</p>
 
-&lt;p&gt;In test time we don’t drop (turn off) neurons, and since it is not feasible to explicitly average the predictions from exponentially many thinned models, we approximate this by multiplying by \(p\) the output of the hidden unit. So in this way the expected output of a hidden unit is the same during training and testing.&lt;/p&gt;
+<p>In test time we don’t drop (turn off) neurons, and since it is not feasible to explicitly average the predictions from exponentially many thinned models, we approximate this by multiplying by \(p\) the output of the hidden unit. So in this way the expected output of a hidden unit is the same during training and testing.</p>
 
-&lt;h2 id=&quot;layer-normalization&quot;&gt;Layer Normalization&lt;/h2&gt;
+<h2 id="layer-normalization">Layer Normalization</h2>
 
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1607.06450.pdf&quot;&gt;(Lei Ba et. al 2016)&lt;/a&gt;&lt;/p&gt;
+<p><a href="https://arxiv.org/pdf/1607.06450.pdf">(Lei Ba et. al 2016)</a></p>
 
-&lt;p&gt;Motivation: During training neural networks converge faster if the input is whitened, that is, linearly transformed to have zero mean and unit variance and decorrelated (&lt;a href=&quot;http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf&quot;&gt;LeCun et. al 1998&lt;/a&gt;). So we can see the output of one layer as the input of another network, therefore it’s clear that normalizing the intermediate values in the network could be beneficial.  The main problem is that each layer has to readjust to the changes in the distribution of the input.&lt;/p&gt;
+<p>Motivation: During training neural networks converge faster if the input is whitened, that is, linearly transformed to have zero mean and unit variance and decorrelated (<a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf">LeCun et. al 1998</a>). So we can see the output of one layer as the input of another network, therefore it’s clear that normalizing the intermediate values in the network could be beneficial.  The main problem is that each layer has to readjust to the changes in the distribution of the input.</p>
 
-&lt;p&gt;This problem was presented by &lt;a href=&quot;https://arxiv.org/pdf/1502.03167&quot;&gt;Ioffe et. al 2015&lt;/a&gt;, where they proposed Batch Normalization to overcome this issue, as a way to normalize the inputs of each layer in the network.&lt;/p&gt;
+<p>This problem was presented by <a href="https://arxiv.org/pdf/1502.03167">Ioffe et. al 2015</a>, where they proposed Batch Normalization to overcome this issue, as a way to normalize the inputs of each layer in the network.</p>
 
-&lt;h3 id=&quot;batch-normalization&quot;&gt;Batch Normalization&lt;/h3&gt;
+<h3 id="batch-normalization">Batch Normalization</h3>
 
-&lt;p&gt;In a nutshell, we can think of Batch Normalization as an extra layer after each hidden layer, that transforms the inputs for the next layer from \(x\) to \(y\). If we consider \(\mathcal{B} = \{x_1...x_m\}\) to be the mini batch where each \(x_j = (x_j^{(1)}...x_j^{(H)})\) is an input vector of a hidden layer, then the normalization of each dimension is the following:&lt;/p&gt;
+<p>In a nutshell, we can think of Batch Normalization as an extra layer after each hidden layer, that transforms the inputs for the next layer from \(x\) to \(y\). If we consider \(\mathcal{B} = \{x_1...x_m\}\) to be the mini batch where each \(x_j = (x_j^{(1)}...x_j^{(H)})\) is an input vector of a hidden layer, then the normalization of each dimension is the following:</p>
 
 \[\hat{x}^{(k)} = \frac{x^{(k)} - \text{E}[x^{(k)}]}{\sqrt{\text{Var}(x^{(k)})}}\]
 
-&lt;p&gt;We’ll approximate the expectation ($\mu$) and the variance (\(\sigma^2\)) calculating them at the mini batch level. Then the batch normalization will be:&lt;/p&gt;
+<p>We’ll approximate the expectation ($\mu$) and the variance (\(\sigma^2\)) calculating them at the mini batch level. Then the batch normalization will be:</p>
 
 \[\mu_\mathcal{B} = \frac{1}{m} \sum_{i=1}^m x_i\\\sigma_\mathcal{B}^2 = \frac{1}{m} \sum_{i=1}^m (x_i - \mu_\mathcal{B})\\\hat{x}_i = \frac{x_i - \mu_\mathcal{B}}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}\\y_i = \gamma \hat{x}_i + \beta \equiv \text{BN}_{\gamma,\beta} (x_i)\]
 
-&lt;p&gt;Where \(\epsilon\) is a constant added for numerical stability, and \(\gamma\) and \(\beta\) are parameters of this “layer”, learnt through backpropagation. These parameters are used to be able to keep the representational power of the layer, so by setting \(\gamma = \sqrt{\sigma^2_\mathcal{B}}\) and \(\beta = \mu\) we can recover the original output, if it were to be the optimal one.&lt;/p&gt;
+<p>Where \(\epsilon\) is a constant added for numerical stability, and \(\gamma\) and \(\beta\) are parameters of this “layer”, learnt through backpropagation. These parameters are used to be able to keep the representational power of the layer, so by setting \(\gamma = \sqrt{\sigma^2_\mathcal{B}}\) and \(\beta = \mu\) we can recover the original output, if it were to be the optimal one.</p>
 
-&lt;p&gt;Additionally, during inference we’ll use \(\gamma\) and \(\beta\) fixed and the expectation and variance will be computed over the entire population (using the first equation).&lt;/p&gt;
+<p>Additionally, during inference we’ll use \(\gamma\) and \(\beta\) fixed and the expectation and variance will be computed over the entire population (using the first equation).</p>
 
-&lt;h3 id=&quot;back-to-layer-normalization&quot;&gt;Back to Layer Normalization&lt;/h3&gt;
+<h3 id="back-to-layer-normalization">Back to Layer Normalization</h3>
 
-&lt;p&gt;Batch normalization is not easily extendable to Recurrent Neural Networks (RNN), because it requires running averages of the summed input statistics, to compute \(\mu_\mathcal{B}\) and \(\sigma^2_\mathcal{B}\). However, the summed inputs in a RNN often vary with the length of the sequence, so applying batch normalization to RNNs appears to require different statistics for different time-steps. Moreover it cannot be applied to online learning tasks (with batch size = 1).&lt;/p&gt;
+<p>Batch normalization is not easily extendable to Recurrent Neural Networks (RNN), because it requires running averages of the summed input statistics, to compute \(\mu_\mathcal{B}\) and \(\sigma^2_\mathcal{B}\). However, the summed inputs in a RNN often vary with the length of the sequence, so applying batch normalization to RNNs appears to require different statistics for different time-steps. Moreover it cannot be applied to online learning tasks (with batch size = 1).</p>
 
-&lt;p&gt;So they proposed layer normalization, that normalises the layers as follows:&lt;/p&gt;
+<p>So they proposed layer normalization, that normalises the layers as follows:</p>
 
-&lt;p&gt;Let \(a^l\) be the vector of outputs of the \(l^{\text{th}}\) hidden layer, and \(a^l \in R^H\) (each hidden layer has \(H\) hidden units), then:&lt;/p&gt;
+<p>Let \(a^l\) be the vector of outputs of the \(l^{\text{th}}\) hidden layer, and \(a^l \in R^H\) (each hidden layer has \(H\) hidden units), then:</p>
 
 \[\mu^l = \frac{1}{H} \sum_{i=1}^H a_i^l \qquad \sigma^l = \sqrt{\frac{1}{H}\sum_{i=1}^H (a_i^l - \mu^l)^2}\]
 
-&lt;p&gt;This looks really similar to the above equations for \(\mu_\mathcal{B}\) and \(\sigma^2_\mathcal{B}\), however the equations here use only the hidden layer output whereas the ones above use the whole batch.&lt;/p&gt;
+<p>This looks really similar to the above equations for \(\mu_\mathcal{B}\) and \(\sigma^2_\mathcal{B}\), however the equations here use only the hidden layer output whereas the ones above use the whole batch.</p>
 
-&lt;p&gt;Similarly as BN, we’ll learn a linear function (\(\gamma\) and \(\beta\)) or as they call it in the paper, a gain function \(g\).&lt;/p&gt;
+<p>Similarly as BN, we’ll learn a linear function (\(\gamma\) and \(\beta\)) or as they call it in the paper, a gain function \(g\).</p>
 
-&lt;p&gt;Unlike BN, LN is used the same way in training and test times.&lt;/p&gt;
+<p>Unlike BN, LN is used the same way in training and test times.</p>
 
-&lt;h4 id=&quot;comparison-to-bn&quot;&gt;Comparison to BN&lt;/h4&gt;
+<h4 id="comparison-to-bn">Comparison to BN</h4>
 
-&lt;p&gt;In the paper they showed that LN works better (converges faster and it’s robust to changes in the batch size) for RNNs and feed-forward networks. However BN outperforms LN when applied to CNNs.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Summary: Attention is all you need, the transformer architecture.</title><link href="http://localhost:4000/nlp-summaries/attention-is-all-you-need" rel="alternate" type="text/html" title="Summary: Attention is all you need, the transformer architecture." /><published>2020-04-18T20:00:00+02:00</published><updated>2020-04-18T20:00:00+02:00</updated><id>http://localhost:4000/nlp-summaries/attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/attention-is-all-you-need">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
+<p>In the paper they showed that LN works better (converges faster and it’s robust to changes in the batch size) for RNNs and feed-forward networks. However BN outperforms LN when applied to CNNs.</p>]]></content><author><name></name></author><category term="nlp-deep-dive" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Summary: Attention is all you need, the transformer architecture.</title><link href="http://localhost:4000/nlp-summaries/attention-is-all-you-need" rel="alternate" type="text/html" title="Summary: Attention is all you need, the transformer architecture." /><published>2020-04-18T19:00:00+01:00</published><updated>2020-04-18T19:00:00+01:00</updated><id>http://localhost:4000/nlp-summaries/attention-is-all-you-need</id><content type="html" xml:base="http://localhost:4000/nlp-summaries/attention-is-all-you-need"><![CDATA[<script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-&lt;blockquote&gt;
-  &lt;p&gt;Paper summary: Attention is all you need , Dec. 2017. (&lt;a href=&quot;https://arxiv.org/abs/1706.03762&quot;&gt;link&lt;/a&gt;)&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>Paper summary: Attention is all you need , Dec. 2017. (<a href="https://arxiv.org/abs/1706.03762">link</a>)</p>
+</blockquote>
 
-&lt;h2 id=&quot;why-is-it-important&quot;&gt;Why is it important?&lt;/h2&gt;
+<h2 id="why-is-it-important">Why is it important?</h2>
 
-&lt;p&gt;This is the paper that first introduced the transformer architecture, which allowed language models to be way bigger than before thanks to its capability of being easily parallelizable. Consequently, models such as BERT and GPT achieved far better results in diverse NLP tasks.&lt;/p&gt;
+<p>This is the paper that first introduced the transformer architecture, which allowed language models to be way bigger than before thanks to its capability of being easily parallelizable. Consequently, models such as BERT and GPT achieved far better results in diverse NLP tasks.</p>
 
-&lt;h2 id=&quot;what-does-it-propose&quot;&gt;What does it propose?&lt;/h2&gt;
+<h2 id="what-does-it-propose">What does it propose?</h2>
 
-&lt;p&gt;This work proposed a network architecture to perform neural machine translation (NMT). This new model is entirely based on the attention mechanism, contrary to the standard at that point of using recurrent networks with attention. The architecture was tested in two NMT tasks and it outperformed the best existent models, in addition to using less resources. Furthermore, the model was also successfully tested in a different task (english constituency parsing).&lt;/p&gt;
+<p>This work proposed a network architecture to perform neural machine translation (NMT). This new model is entirely based on the attention mechanism, contrary to the standard at that point of using recurrent networks with attention. The architecture was tested in two NMT tasks and it outperformed the best existent models, in addition to using less resources. Furthermore, the model was also successfully tested in a different task (english constituency parsing).</p>
 
-&lt;p&gt;The inherently sequential nature of RNNs precludes parallelization within training examples, moreover the best RNNs architectures don’t rely solely on one or a couple of hidden states, but use attention to attend to the most relevant hidden states. That’s why the architecture presented in this paper is so relevant and impactful, it’s able to achieve better results getting rid of the sequentiality of RNNs.&lt;/p&gt;
+<p>The inherently sequential nature of RNNs precludes parallelization within training examples, moreover the best RNNs architectures don’t rely solely on one or a couple of hidden states, but use attention to attend to the most relevant hidden states. That’s why the architecture presented in this paper is so relevant and impactful, it’s able to achieve better results getting rid of the sequentiality of RNNs.</p>
 
-&lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
+<h2 id="how-does-it-work">How does it work?</h2>
 
-&lt;p&gt;The Transformer is an encoder-decoder architecture, the encoder corresponds to the left side of the image below (Figure 1) and the decoder to the right one. In this paper the authors introduced the multi-head self-attention layer and the positional encodings used in the architecture (details in the next 2 sections).&lt;/p&gt;
+<p>The Transformer is an encoder-decoder architecture, the encoder corresponds to the left side of the image below (Figure 1) and the decoder to the right one. In this paper the authors introduced the multi-head self-attention layer and the positional encodings used in the architecture (details in the next 2 sections).</p>
 
-&lt;p&gt;Essentially, token embeddings are added with their positional encoding and used as inputs in the encoder and decoder. The encoder is composed of a stack of N=6 layers, we can see one of such layers in Figure 1. The decoder is also composed of a stack of N=6 identical layers, which has the two sub-layers of the encoder but it inserts a third sub-layer first that performs a multi-head attention over the output. Each feed-forward and multi-head self-attention layer is followed by a residual connection and a layer normalization, thus the output of each sub-layer is \(\text{LayerNorm}(x+\text{SubLayer}(x))\).&lt;/p&gt;
+<p>Essentially, token embeddings are added with their positional encoding and used as inputs in the encoder and decoder. The encoder is composed of a stack of N=6 layers, we can see one of such layers in Figure 1. The decoder is also composed of a stack of N=6 identical layers, which has the two sub-layers of the encoder but it inserts a third sub-layer first that performs a multi-head attention over the output. Each feed-forward and multi-head self-attention layer is followed by a residual connection and a layer normalization, thus the output of each sub-layer is \(\text{LayerNorm}(x+\text{SubLayer}(x))\).</p>
 
-&lt;p&gt;Some extra details:&lt;/p&gt;
+<p>Some extra details:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;Byte pair encoding is used to define the tokens of the text.&lt;/li&gt;
-  &lt;li&gt;The feed forward network consists of two linear transformations with a ReLu in between.&lt;/li&gt;
-  &lt;li&gt;Regularizations:
-    &lt;ul&gt;
-      &lt;li&gt;Dropout on the output of each sub-layer (before it’s added and normalized).&lt;/li&gt;
-      &lt;li&gt;Label smoothing.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Beam search is used to generate the text.&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>Byte pair encoding is used to define the tokens of the text.</li>
+  <li>The feed forward network consists of two linear transformations with a ReLu in between.</li>
+  <li>Regularizations:
+    <ul>
+      <li>Dropout on the output of each sub-layer (before it’s added and normalized).</li>
+      <li>Label smoothing.</li>
+    </ul>
+  </li>
+  <li>Beam search is used to generate the text.</li>
+</ul>
 
-&lt;p&gt;(for further explanations in these concepts you can check my &lt;a href=&quot;https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need&quot;&gt;deep dive of this paper&lt;/a&gt;)&lt;/p&gt;
+<p>(for further explanations in these concepts you can check my <a href="https://cfierro94.github.io/nlp-deep-dive/attention-is-all-you-need">deep dive of this paper</a>)</p>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-01/architecture.png&quot; alt=&quot;Figure 1. The Transformer architecture.&quot; style=&quot;width:60%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 1. The Transformer architecture.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-01/architecture.png" alt="Figure 1. The Transformer architecture." style="width:60%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 1. The Transformer architecture.</figcaption>
+</figure>
 
-&lt;h3 id=&quot;positional-encoding&quot;&gt;Positional Encoding&lt;/h3&gt;
+<h3 id="positional-encoding">Positional Encoding</h3>
 
-&lt;p&gt;&lt;strong&gt;Motivation&lt;/strong&gt;: Since there’s no recurrence, a positional encoding vector is added to the token embedding to inject information about its position in the text.&lt;/p&gt;
+<p><strong>Motivation</strong>: Since there’s no recurrence, a positional encoding vector is added to the token embedding to inject information about its position in the text.</p>
 
-&lt;p&gt;The \(PE(w_t)\), the positional encoding for the word \(w\) at position \(t\), is a vector of dimension \(d_{model}\) equal to the embedding dimension. We compute each dimension \(i\) of this vector as follows:&lt;/p&gt;
+<p>The \(PE(w_t)\), the positional encoding for the word \(w\) at position \(t\), is a vector of dimension \(d_{model}\) equal to the embedding dimension. We compute each dimension \(i\) of this vector as follows:</p>
 
-\[PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) &amp;amp; \text{if} \quad i=2j \\      cos(k_j* t) &amp;amp; \text{if} \quad i=2j+1 \\\end{array} \right. \\[20pt]\text{where,} \quad k_j = \frac{1}{10000^{2i/d_{model}}}\]
+\[PE_i(w_t) = \left\{\begin{array}{ll}      sin(k_j*t) &amp; \text{if} \quad i=2j \\      cos(k_j* t) &amp; \text{if} \quad i=2j+1 \\\end{array} \right. \\[20pt]\text{where,} \quad k_j = \frac{1}{10000^{2i/d_{model}}}\]
 
-&lt;p&gt;Which give as,&lt;/p&gt;
+<p>Which give as,</p>
 
 \[PE(w_t) = \begin{bmatrix}sin(k_0t)\\cos(k_0t)\\... \\sin(k_{d/2}t)\\cos(k_{d/2}t)\end{bmatrix}\]
 
-&lt;p&gt;We can think of this as a bit representation of numbers, with each dimension of the vector as a bit, since each bit changes periodically and we can tell that one number is bigger than another because of the bits activated and their order. More of this intuition in &lt;a href=&quot;https://kazemnejad.com/blog/transformer_architecture_positional_encoding/&quot;&gt;this blog post&lt;/a&gt;.&lt;/p&gt;
+<p>We can think of this as a bit representation of numbers, with each dimension of the vector as a bit, since each bit changes periodically and we can tell that one number is bigger than another because of the bits activated and their order. More of this intuition in <a href="https://kazemnejad.com/blog/transformer_architecture_positional_encoding/">this blog post</a>.</p>
 
-&lt;p&gt;The authors showed that learned positional embeddings were as good as these in their test sets. But they think sin/cos is better because it could extrapolate better.&lt;/p&gt;
+<p>The authors showed that learned positional embeddings were as good as these in their test sets. But they think sin/cos is better because it could extrapolate better.</p>
 
-&lt;h3 id=&quot;attention-layer&quot;&gt;Attention Layer&lt;/h3&gt;
+<h3 id="attention-layer">Attention Layer</h3>
 
-&lt;p&gt;Instead of just having one attention layer the authors found beneficial to linearly project the attention mechanism, thus performing multiple attentions in parallel (Figure 2). Each of the attention mechanisms is a scaled dot-product attention (explained below).&lt;/p&gt;
+<p>Instead of just having one attention layer the authors found beneficial to linearly project the attention mechanism, thus performing multiple attentions in parallel (Figure 2). Each of the attention mechanisms is a scaled dot-product attention (explained below).</p>
 
-&lt;p&gt;The intuition behind is that having just one attention will lead to average all the different aspects of the text, whereas when we do parallel attention we are able to look at each of these details separately (the subject, the intention, the action, etc).&lt;/p&gt;
+<p>The intuition behind is that having just one attention will lead to average all the different aspects of the text, whereas when we do parallel attention we are able to look at each of these details separately (the subject, the intention, the action, etc).</p>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-01/attentions.png&quot; alt=&quot;Figure 2. Attention mechanisms of the Transformer.&quot; style=&quot;width:70%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 2. Attention mechanisms of the Transformer.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-01/attentions.png" alt="Figure 2. Attention mechanisms of the Transformer." style="width:70%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 2. Attention mechanisms of the Transformer.</figcaption>
+</figure>
 
-&lt;h4 id=&quot;scaled-dot-product-attention&quot;&gt;Scaled Dot-Product Attention&lt;/h4&gt;
+<h4 id="scaled-dot-product-attention">Scaled Dot-Product Attention</h4>
 
-&lt;p&gt;Attention is a function that takes a query and a set of key-value pairs as inputs, and computes a weighted sum of the values, where the weights are obtained from a compatibility function between the query and the corresponding key.&lt;/p&gt;
+<p>Attention is a function that takes a query and a set of key-value pairs as inputs, and computes a weighted sum of the values, where the weights are obtained from a compatibility function between the query and the corresponding key.</p>
 
-&lt;p&gt;The specific attention used here, is called &lt;em&gt;scaled dot-product&lt;/em&gt; because the compatibility function used is:&lt;/p&gt;
+<p>The specific attention used here, is called <em>scaled dot-product</em> because the compatibility function used is:</p>
 
 \[\text{weight}(q,k_i) =\text{softmax}(\frac{q\cdot k_i}{\sqrt{d_k}}) \quad \text{where} \, q,k_i \in \!R^{d_k}\]
 
-&lt;p&gt;The authors decided to use a dot-product attention over an additive attention because it is faster to compute and more space-efficient. But it has been shown to perform worse for larger dimensions of the input (\(d_k\)), thus they added the scaling factor \(\sqrt{d_k}\) to counteract the effect of the dot product getting too large (which they suspect is the problem).&lt;/p&gt;
+<p>The authors decided to use a dot-product attention over an additive attention because it is faster to compute and more space-efficient. But it has been shown to perform worse for larger dimensions of the input (\(d_k\)), thus they added the scaling factor \(\sqrt{d_k}\) to counteract the effect of the dot product getting too large (which they suspect is the problem).</p>
 
-&lt;h4 id=&quot;masked-multi-head-self-attention&quot;&gt;Masked Multi-Head Self-Attention&lt;/h4&gt;
+<h4 id="masked-multi-head-self-attention">Masked Multi-Head Self-Attention</h4>
 
-&lt;p&gt;In training we don’t want to show the complete output sentence to our model, but instead we want to present the words one by one to not let extra information flow in the decoder. That’s why in Figure 2 we see a “Mask opt.” which refers to setting those vectors to -inf, making them 0 after the softmax. Figure 3 can help to understand how this affects the architecture overall.&lt;/p&gt;
+<p>In training we don’t want to show the complete output sentence to our model, but instead we want to present the words one by one to not let extra information flow in the decoder. That’s why in Figure 2 we see a “Mask opt.” which refers to setting those vectors to -inf, making them 0 after the softmax. Figure 3 can help to understand how this affects the architecture overall.</p>
 
-&lt;figure&gt;
-&lt;img src=&quot;../assets/img/nlp-summary-01/mask-transformer.png&quot; alt=&quot;Figure 3. The Transformer architecture masking the output.&quot; style=&quot;width:70%; display: block;margin-left: auto;margin-right: auto;&quot; /&gt;
-&lt;figcaption style=&quot;text-align: center;&quot;&gt;Figure 3. The Transformer architecture masking the output.&lt;/figcaption&gt;
-&lt;/figure&gt;
+<figure>
+<img src="../assets/img/nlp-summary-01/mask-transformer.png" alt="Figure 3. The Transformer architecture masking the output." style="width:70%; display: block;margin-left: auto;margin-right: auto;" />
+<figcaption style="text-align: center;">Figure 3. The Transformer architecture masking the output.</figcaption>
+</figure>
 
-&lt;h2 id=&quot;whats-next&quot;&gt;What’s next!&lt;/h2&gt;
+<h2 id="whats-next">What’s next!</h2>
 
-&lt;p&gt;BERT and GPT are just some of the applications that the Transformer can have, but it has also been applied to &lt;a href=&quot;http://openaccess.thecvf.com/content_cvpr_2018/html/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.html&quot;&gt;images&lt;/a&gt;, &lt;a href=&quot;https://arxiv.org/abs/1710.10903]&quot;&gt;graph networks&lt;/a&gt;, &lt;a href=&quot;https://arxiv.org/abs/1805.08318&quot;&gt;GANs&lt;/a&gt;, among others, achieving state-of-the-art results. It has also been useful to interpret a part of the models that use it (&lt;a href=&quot;https://arxiv.org/abs/1910.05276&quot;&gt;https://arxiv.org/abs/1910.05276&lt;/a&gt;).&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+<p>BERT and GPT are just some of the applications that the Transformer can have, but it has also been applied to <a href="http://openaccess.thecvf.com/content_cvpr_2018/html/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.html">images</a>, <a href="https://arxiv.org/abs/1710.10903]">graph networks</a>, <a href="https://arxiv.org/abs/1805.08318">GANs</a>, among others, achieving state-of-the-art results. It has also been useful to interpret a part of the models that use it (<a href="https://arxiv.org/abs/1910.05276">https://arxiv.org/abs/1910.05276</a>).</p>]]></content><author><name></name></author><category term="nlp-summaries" /><summary type="html"><![CDATA[]]></summary></entry></feed>
