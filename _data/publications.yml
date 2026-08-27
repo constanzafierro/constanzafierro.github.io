@@ -1,0 +1,36 @@
+# Selected publications. Edit this file to add/remove/reorder entries.
+# `authors` is plain text; wrap your own name in <b>...</b> to bold it.
+# `paper` and `code` are optional — omit or leave empty to hide the link.
+
+- title: "Steering Language Models with Weight Arithmetic"
+  authors: "<b>Constanza Fierro</b>, Fabien Roger"
+  venue: "The Fourteenth International Conference on Learning Representations (ICLR)"
+  year: 2026
+  paper: "https://openreview.net/forum?id=S0D3EFWohd"
+  code: "https://github.com/safety-research/weight-steering"
+
+- title: "How Do Multilingual Language Models Remember Facts?"
+  authors: "<b>Constanza Fierro</b>, Negar Foroutan, Desmond Elliott, Anders Søgaard"
+  venue: "Findings of the Association for Computational Linguistics: ACL 2025"
+  year: 2025
+  paper: "https://aclanthology.org/2025.findings-acl.827/"
+  code: "https://github.com/constanzafierro/multilingual_factual_memorization"
+
+- title: "Defining Knowledge: Bridging Epistemology and Large Language Models"
+  authors: "<b>Constanza Fierro</b>, Ruchira Dhar, Filippos Stamatiou, Nicolas Garneau, Anders Søgaard"
+  venue: "Empirical Methods in Natural Language Processing (EMNLP)"
+  year: 2024
+  paper: "https://aclanthology.org/2024.emnlp-main.900/"
+
+- title: "Learning to Plan and Generate Text with Citations"
+  authors: "<b>Constanza Fierro</b>, Reinald Kim Amplayo, Fantine Huot, Nicola De Cao, Joshua Maynez, Shashi Narayan, Mirella Lapata"
+  venue: "Association for Computational Linguistics (ACL)"
+  year: 2024
+  paper: "https://aclanthology.org/2024.acl-long.615/"
+
+- title: "MuLan: A Study of Fact Mutability in Language Models"
+  authors: "<b>Constanza Fierro</b>, Nicolas Garneau, Emanuele Bugliarello, Yova Kementchedjhieva, Anders Søgaard"
+  venue: "North American Chapter of the Association for Computational Linguistics (NAACL)"
+  year: 2024
+  paper: "https://aclanthology.org/2024.naacl-short.67/"
+  code: "https://github.com/coastalcph/fact_mutability"

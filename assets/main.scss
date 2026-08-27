@@ -11,6 +11,12 @@
   font-family: "Proxima-Nova-Bold";
   src: url("fonts/Proxima-Nova-Bold.otf");
 }
+/* bold face for the body family, so <b>/<strong> use the real font */
+@font-face {
+  font-family: "Proxima-Nova-Regular";
+  src: url("fonts/Proxima-Nova-Bold.otf");
+  font-weight: bold;
+}
 @font-face {
   font-family: "Proxima-Nova-Thin";
   src: url("fonts/Proxima-Nova-Thin.otf");
@@ -25,7 +31,8 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Proxima-Nova-Bold',sans-serif;
-  font-weight: bold;
+  font-weight: normal;
+  color: $grey-color-dark;
   margin: 1em 0 0.3em;
 }
 
@@ -238,4 +245,31 @@ blockquote {
 .home .title {
   font-family: Consolas, monaco, monospace;
   font-size: 1em;
+}
+
+/* site title, styled like an <h2> */
+.site-title {
+  font-family: 'Proxima-Nova-Bold',sans-serif;
+  font-size: 1.5em;
+  font-weight: normal;
+  letter-spacing: normal;
+}
+
+/******************/
+/* Publications */
+.publications b {
+  color: $grey-color-dark;
+}
+
+.publications h4 {
+  font-family: 'Proxima-Nova-Bold', sans-serif;
+  margin-bottom: 0.2em;
+}
+
+.pub-venue {
+  font-style: italic;
+}
+
+.pub-links {
+  font-size: $small-font-size;
 }
