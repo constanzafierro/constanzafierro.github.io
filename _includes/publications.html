@@ -5,12 +5,11 @@
   <a href="{{ pub.paper }}">{{ pub.title }}</a>
   <p>
     {{ pub.authors }}<br>
-    <span class="pub-venue">{{ pub.venue }} {{ pub.year }}</span>
+    <span class="pub-venue">{{ pub.venue }}, {{ pub.year }}.</span>
     {%- if pub.paper or pub.code -%}
     <span class="pub-links">
       <br>
       {%- if pub.paper %} <a href="{{ pub.paper }}">paper</a>{% endif -%}
-      {%- if pub.paper and pub.code %} &middot;{% endif -%}
       {%- if pub.code %} <a href="{{ pub.code }}">code</a>{% endif -%}
     </span>
     {%- endif -%}

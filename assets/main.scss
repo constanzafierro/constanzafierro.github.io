@@ -273,3 +273,19 @@ blockquote {
 .pub-links {
   font-size: $small-font-size;
 }
+
+/* paper / code as simple buttons, like minima's footer icons */
+.pub-links a {
+  display: inline-block;
+  margin-top: 0.3em;
+  margin-right: 0.4em;
+  padding: 2px 8px;
+  border: 1px solid $grey-color-light;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.pub-links a:hover {
+  border-color: darken($grey-color-light, 6%);
+  text-decoration: none;
+}

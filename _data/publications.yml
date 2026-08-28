@@ -11,7 +11,7 @@
 
 - title: "How Do Multilingual Language Models Remember Facts?"
   authors: "<b>Constanza Fierro</b>, Negar Foroutan, Desmond Elliott, Anders Søgaard"
-  venue: "Findings of the Association for Computational Linguistics: ACL 2025"
+  venue: "Findings of the Association for Computational Linguistics (ACL)"
   year: 2025
   paper: "https://aclanthology.org/2025.findings-acl.827/"
   code: "https://github.com/constanzafierro/multilingual_factual_memorization"
